@@ -198,14 +198,33 @@ Create a Public DNS record.
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
-Navigate to `/environments/sandbox.yml` file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
+Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
 ```yaml
-CNAME:
+cname:
 ...
-- name: "labs-goldenpath-felix"
+- name: "afdverify.labs-ozzyib-walkthrough"
+  ttl: 300
+  record: "afdverify.hmcts-sbox.azurefd.net"
+- name: "labs-ozzyib-walkthrough"
   ttl: 300
   record: "hmcts-sbox.azurefd.net"
+  shutter: false
+- name: "cdnverify.labs-ozzyib-walkthrough"
+  ttl: 300
+  record: "cdnverify.hmcts-labs-ozzyib-walkthrough-shutter-sbox.azureedge.net"
 ```
+
+📣 **NOTE:** You will need to add all 3 entries to enable Azure frontdoor verify your DNS record.
+
+You should now see the similar entries as below
+
+<details>
+
+<summary>Public DNS entries</summary>
+
+<img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
+
+</details>
 
 ### Step 9 
 Create a corresponding Frontdoor entries
