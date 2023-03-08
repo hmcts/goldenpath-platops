@@ -244,6 +244,28 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
 }
 ```
 
+### Step 10
+Verify that you can
+- Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` see your web ser er page
+  
+  <details>
+
+  <summary>Final result</summary>
+  
+  <img alt="Web Server page" src="./images/web-page.png" width="auto">
+  
+  </details>
+  
+- Navigate to the Panorama management UI and see your traffic logs.
+
+    <details>
+
+    <summary>Final result - logs</summary>
+  
+    <img alt="Panorama logs" src="./images/palo-logs.png" width="auto">
+  
+    </details>
+
 ## Section 2 - AKS Cluster
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
 applications in the AKS cluster. 
