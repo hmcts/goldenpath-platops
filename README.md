@@ -38,7 +38,13 @@ Select `yes` to build resource as terraform will prompt you to approve you actio
 
 Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have similar resources created
 
-![lab](./images/labs-resources.png)
+<details>
+
+<summary>Terraform resources</summary>
+
+<img alt="Address object" src="./images/labs-resources.png" width="auto">
+
+</details>
 
 📣 Verify the following
 - A Vnet exits
@@ -182,27 +188,65 @@ Resources would be similar to the following:
 
 📣 Keep a note of the public IP address
 
-8. Create a Public DNS record. 
-    Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
-   Navigate to /environments/sandbox.yml
-   add a new CNAME record using Azure Frontdoor url hmcts-sbox.azurefd.net create from above step
+At this point you should be abble to access your apache server from your browser using the default
+DNS record created which is associated with the Azure Firewall. The DNS record should
+be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
 
+
+### Step 8
+Create a Public DNS record. 
+
+Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
+
+Navigate to `/environments/sandbox.yml` file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
+```yaml
 CNAME:
 ...
 - name: "labs-goldenpath-felix"
   ttl: 300
   record: "hmcts-sbox.azurefd.net"
+```
 
-9. Create a Frontdoor
-   Check out the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
+### Step 9 
+Create a corresponding Frontdoor entries
+
+Check out the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
 
 
 ## Section 2 - AKS Cluster
 
 
 ## Section 3 - Clean Up
-Tear down
 
-- You need to disassociate the pip from the Azure firewall
-- If running from local, run terraform destroy to remove all resourcs in your resourse group
-- For all the other PR's create create new once removing only the bit you added then commit, review plan then merged
+After completing the above steps you should tear down all the resources created. This 
+saves the business money and helps prevent floating resources.
+
+To roll back, do the following
+- You need to disassociate the pip Azure Firewall created from the firewall
+
+  <details>
+  
+  <summary>AzFw disassociate pip</summary>
+  
+  <img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto">
+  
+  </details>
+- If you ran the [labs-azure-resource](/lab-azure-resource) from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group
+  ```cmd
+  terraform destroy
+  ```
+- For all the other PR's created, create new one removing only the bit you added following above steps, commit, review plan then merged.
+- Verify that all the resources no longer exist
+
+## Section 4 - Further Steps
+Now that you have come to the end of this exercise, there is still alot more to learn.
+
+You ,may have notice that you built your terraform resources from you loacal machine. This is far from how things
+are done in live environments. As a next step you could
+- Create a new Git repo using the code base as a start
+- Update the configuration so that it does not try to `destroy` and re-create everything with every `terraform plan`. the key is in the `local.prefix` variable
+- Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation
+  You can follow these recommended [blogs](link) for more information
+- Link your Git repo to Azure so that subsequent commits trigger a build
+- Set up backend state file
+
