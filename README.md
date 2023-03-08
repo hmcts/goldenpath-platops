@@ -4,6 +4,7 @@
 
 Checkout [goldenpath-platops](link) repo, cd into the labs-azure-resource folder
 
+### Step 1
 Run the following commands to confirm you are in the right repository
 ```cmd 
 az login
@@ -20,65 +21,90 @@ az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
 ```
 
-NOTE: run once, a re-run will rebuild
+### Step 2
 
-2. run the following command
-   terraform init
-   terraform plan
-   terraform apply
+Run the following command terraform commands
+```cmd 
+terraform init
+```
+```cmd 
+terraform plan
+```
+```cmd 
+terraform apply
+```
 
-seletct yes to build resource
+Select `yes` to build resource as terraform will prompt you to approve you action
 
-you should have the following resources created
+Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have similar resources created
 
-select the virtual network and copy the vnet address cidr e.g. 10.10.7.0/25
+![lab](./images/labs-resources.png)
 
-3. Checkout the hub-panorama-terraform repo and create a new branch
-   navigate to the address object under create a new address object call labs-goldenpath-yourname with the following
-   /components/groups/objects/address-objects/02-addresses-sbox.tf     
-    {
+📣 Verify the following
+- A Vnet exits
+- VNet has two peerings, one to the Hub and the other to the core management vnet
+- A route table to one default route to x.x.x.x
+
+Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25`
+
+### Step 3. 
+
+Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch 
+
+Navigate to `/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf` add a new address object called `labs-goldenpath-<yourname>` in the `02-addresses-sbox.tf` file with the following
+
+```json
+ {
    environments = ["sbox"]
    device_group = "sbox"
    name         = "labs-goldenpath-<yourname>"
    value        = "10.10.7.0/25"
-   }
-    The value should be the cidr address space for your vnet
+}
+```
+The value should be the cidr address space for your vnet
  
-  Next navigate to the /components/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf and
-  create a new security policy
-     {
-     environments          = ["sbox"]
-     device_group          = "sbox"
-     name                  = "labs-goldenpath-<yourname>"
-     source_zones          = [var.zone_untrusted]
-     destination_zones     = [var.zone_trusted]
-     source_addresses      = ["any"]
-     destination_addresses = ["labs-goldenpath-<yourname>"]
-     services              = ["service-http"]
-     action                = "allow"
-     disabled              = false
-     }
-     ]
- Ordering of security rules does mater, but you can add this just after the "trusted-default" policy. This is telling the firewall
+Next navigate to the `/components/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf` file and
+  create a new security policy with the following details
+```json
+{
+  environments          = ["sbox"]
+  device_group          = "sbox"
+  name                  = "labs-goldenpath-<yourname>"
+  source_zones          = [var.zone_untrusted]
+  destination_zones     = [var.zone_trusted]
+  source_addresses      = ["any"]
+  destination_addresses = ["labs-goldenpath-<yourname>"]
+  services              = ["service-http"]
+  action                = "allow"
+  disabled              = false
+}
+```
+
+Ordering of security rules does matter, but you can add this just after the "trusted-default" policy. This is telling the firewall
   to allow traffic coming from the untrusted zone, internet traffic, to your vnet in the trusted zone
-  
-4. Add your new address object to the G_Trusted group. What this does is to allow your vnet communicate with other vnet. e.g. when logged in
-   via the VPN you can ssh via the bastions to your vm
+
+### Step 4  
+
+Add your new address object to the `G_Trusted` group. What this does is to allow your vnet communicate with other vnet. e.g. when logged in via the VPN you can ssh via the bastions to your vm
    
-   Navigate to the Address Group folder to /components/groups/objects/address-gropus/02-address-groups-sbox.tf
-   add the following code
-   {
+To do this vavigate to the Address Group folder to `/components/groups/objects/address-gropus/02-address-groups-sbox.tf` add the following code
+```json
+ {
    environments = ["sbox"]
    device_group = "sbox"
    name         = "G_trusted"
    static_addresses = [
    ...,
-   "labs-goldenpath-felix"
+   "labs-goldenpath-<yourname>"
    ]
-   }
+}
+```  
 
-5. Commit your changes, add relevant details to your PR, review plan and merge
-6. Log into the Panorama managemt ui and review your changes are in place
+### Step 5
+Commit your changes, add relevant details to your PR, review plan and merge 
+
+### Step 6
+Log into the Panorama managemt ui and review your changes are in place
    To test that your rule will match the request type do the following xxxx
 7. Add an Azure Firewall DNAT rule (explain why dnat)
     Checkout the rdo-terraform-hub-dmz repo
