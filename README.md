@@ -48,7 +48,7 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 
 📣 Verify the following
 - A Vnet exits
-- VNet has two peerings, one to the Hub and the other to the core management vnet
+- VNet has two peerings, one to the Hub and the other to the Core Management vnet
 - A route table to one default route to x.x.x.x
 
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25`
@@ -60,6 +60,7 @@ Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terr
 Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file add a new address object called `labs-goldenpath-<yourname>`, for example
 
 ```json
+
  {
    environments = ["sbox"]
    device_group = "sbox"
@@ -67,7 +68,7 @@ Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terrafo
    value        = "10.10.7.0/25"
 }
 ```
-The value should be the cidr address space for your vnet
+The value should be the cidr address space of your vnet
  
 Next navigate to the `/components/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf` file and
   create a new security policy with the following details
@@ -87,13 +88,13 @@ Next navigate to the `/components/groups/policies/secuity-policy-rules/04-policy
 ```
 
 Ordering of security rules does matter, but you can add this just after the "trusted-default" policy. This is telling the firewall
-  to allow traffic coming from the untrusted zone, internet traffic, to your vnet in the trusted zone
+  to allow traffic coming from the untrusted zone, internet traffic and to your vnet in the trusted zone
 
 ### Step 4  
 
-Add your new address object to the `G_Trusted` group. What this does is to allow your vnet communicate with other vnet. e.g. when logged in via the VPN you can ssh via the bastions to your vm
+Add your new address object to the `G_Trusted` group and this allows your vnet to communicate with other vnets. e.g. when logged in via the VPN you can ssh via the bastions to your vm
    
-To do this navigate to the Address Group folder to `/components/groups/objects/address-gropus/02-address-groups-sbox.tf` add the your new address object to the existing `G_truted` group's `static_addresses` list. 
+To do this navigate to the Address Group folder to `/components/configuration/groups/objects/address-gropus/02-address-groups-sbox.tf` and add your new address object to the existing `G_truted` group's `static_addresses` list e.g. labs-goldenpath-yourname. 
 
 Example below
 ```json
@@ -109,12 +110,12 @@ Example below
 ```  
 
 ### Step 5
-Commit your changes, add relevant details to your PR, review plan and merge 
+Commit your changes, add the relevant details to your PR and review plan & merge 
 
 ### Step 6
-Log into the [sbox Panorama management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) ui and review your changes are in place. 
-Note, you need to be on the VPN to access this resource. To find out how to access the VPN if not already done so, please have a
-read of this [document](link).
+Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place. 
+Note, you need to be on the VPN to access this resource. To find out how to access the VPN, please
+read this [document](link).
 
 You should now have resources similar to the following:
 
@@ -144,9 +145,10 @@ You should now have resources similar to the following:
 
 
 ### Step 7
-Create an an Azure Firewall DNAT rule (explain why dnat). Checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+Create an Azure Firewall DNAT rule [what is DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
-To add a new DNAT rule, navigate to the xxx and add the following snipet, name should be the name of you lab and ip that of your apache server
+To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the VM created in step 2).
+
 Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
 ```json
 {
