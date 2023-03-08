@@ -2,7 +2,7 @@
 
 ## Section 1 - Virtual Networks
 
-Checkout [goldenpath-platops](link) repo, cd into the labs-azure-resource folder
+Checkout [goldenpath-platops](link) repo, change directory d into the `labs-azure-resource` folder and follow the below steps in order 🙂
 
 ### Step 1
 Run the following commands to confirm you are in the right repository
@@ -198,7 +198,8 @@ Create a Public DNS record.
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
-Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
+Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net`, below is an example snippet
+
 ```yaml
 cname:
 ...
@@ -301,15 +302,18 @@ To roll back, do the following
 - For all the other PR's created, create new one removing only the bit you added following above steps, commit, review plan then merged.
 - Verify that all the resources no longer exist
 
-## Section 4 - Further Steps
+## Section 4 - Further Steps 🏋🏽
 Now that you have come to the end of this exercise, there is still alot more to learn.
 
-You ,may have notice that you built your terraform resources from you loacal machine. This is far from how things
-are done in live environments. As a next step you could
+You may have noticed that you built your terraform resources from you local machine. This is far from how things
+are done in live environments. 
+
+As your next steps, you could
 - Create a new Git repo using the code base as a start
-- Update the configuration so that it does not try to `destroy` and re-create everything with every `terraform plan`. the key is in the `local.prefix` variable
-- Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation
-  You can follow these recommended [blogs](link) for more information
+- Update the configuration so that it does not try to `destroy` and re-create everything with every `terraform plan`. The key is the `local.prefix` variable
+- Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation.
+  Check out this [blog](https://thomasthornton.cloud/) which has good content of Azure DevOps
 - Link your Git repo to Azure so that subsequent commits trigger a build
 - Set up backend state file for your project
+- Create a 2 subnets with a `/28` mask and use one as the virtual machine subnet
 
