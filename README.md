@@ -246,7 +246,7 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
 
 ### Step 10
 Verify that you can
-- Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` see your web ser er page
+- Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` and see your web server default page
   
   <details>
 
@@ -262,6 +262,7 @@ Verify that you can
   ```cmd
   ( addr.dst in <your-vm-private-ip> )
   ```
+  
   Where `<your-vm-private-ip>` is the same as the IP on your virtual machine
 
     <details>
