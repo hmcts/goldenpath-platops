@@ -150,7 +150,7 @@ To add a new DNAT rule, navigate to the xxx and add the following snipet, name s
 Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
 ```json
 {
-   name : "labsgoldenpathfelix",
+   name : "labsgoldenpath<yourname>",
    palo_ips : {
    "uksouth" : "10.10.7.4",
    "ukwest" : "10.10.7.4"
@@ -202,16 +202,16 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
 ```yaml
 cname:
 ...
-- name: "afdverify.labs-ozzyib-walkthrough"
+- name: "afdverify.labs-goldenpath-felix"
   ttl: 300
   record: "afdverify.hmcts-sbox.azurefd.net"
-- name: "labs-ozzyib-walkthrough"
+- name: "labs-goldenpath-felix"
   ttl: 300
   record: "hmcts-sbox.azurefd.net"
   shutter: false
-- name: "cdnverify.labs-ozzyib-walkthrough"
+- name: "cdnverify.labs-goldenpath-felix"
   ttl: 300
-  record: "cdnverify.hmcts-labs-ozzyib-walkthrough-shutter-sbox.azureedge.net"
+  record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
 ```
 
 📣 **NOTE:** You will need to add all 3 entries to enable Azure frontdoor verify your DNS record.
@@ -227,10 +227,22 @@ You should now see the similar entries as below
 </details>
 
 ### Step 9 
-Create a corresponding Frontdoor entries
+Create a corresponding Frontdoor entries.
 
-Check out the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
+Checkout the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
 
+Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/sbox/sbox.tfvars) file and add the below entry to the `frontends` property list
+
+```json
+{
+  product          = "labs-goldenpath-<yourname>"
+  name             = "labs-goldenpath-<yourname>"
+  custom_domain    = "labs-goldenpath-<yourname>.sandbox.platform.hmcts.net"
+  backend_domain   = ["firewall-sbox-int-palo-labsgoldenpath<yourname>.uksouth.cloudapp.azure.com"]
+  certificate_name = "wildcard-sandbox-platform-hmcts-net"
+  disabled_rules   = {}
+}
+```
 
 ## Section 2 - AKS Cluster
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
