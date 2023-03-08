@@ -315,5 +315,5 @@ As your next steps, you could
   Check out this [blog](https://thomasthornton.cloud/) which has good content of Azure DevOps
 - Link your Git repo to Azure so that subsequent commits trigger a build
 - Set up backend state file for your project
-- Create a 2 subnets with a `/28` mask and use one as the virtual machine subnet
+- Create a 2 subnets with a `/26` mask and use one as the virtual machine subnet
 
