@@ -122,16 +122,16 @@ Example below
 ```  
 
 ### Step 5
-Commit your changes, add relevant details to your PR, review plan and merge 
+Commit your changes, add the relevant details to your PR and review plan & merge 
 
 #### What did i just create?
 From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
 in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
 
 ### Step 6
-Log into the [sbox Panorama management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) ui and review your changes are in place. 
-Note, you need to be on the VPN to access this resource. To find out how to access the VPN if not already done so, please have a
-read of this [document](link).
+Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place. 
+Note, you need to be on the VPN to access this resource. To find out how to access the VPN, please
+read this [document](link).
 
 You should now have resources similar to the following:
 
@@ -216,8 +216,7 @@ Create a Public DNS record.
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
-Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net`, below is an example snippet
-
+Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
 ```yaml
 cname:
 ...
@@ -263,6 +262,35 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
 }
 ```
 
+#### What did i just create?
+A custom domain that matches to your DNS entry created above, a backend pool that frondoor sends request to which matches
+the public ip created above and attached to the Azure firewall and a routing rule that Azure frontdoor needs to process
+your requests.
+
+  <details>
+
+  <summary>Custom Domain</summary>
+
+  <img alt="Custom domain" src="./images/fd-custom-domain.png" width="auto">
+
+  </details>
+
+  <details>
+
+  <summary>Backend pool</summary>
+
+  <img alt="Backend pool" src="./images/fd-backend-pool.png" width="auto">
+
+  </details>
+
+  <details>
+
+  <summary>Routing rule</summary>
+
+  <img alt="Routing rule" src="./images/fd-routing-rule.png" width="auto">
+
+  </details>
+
 ### Step 10
 Verify that you can
 - Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` and see your web server default page
@@ -296,7 +324,7 @@ Verify that you can
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
 applications in the AKS cluster. 
 
-📣 **NOTE:** You need to be on  the VPN to access the documentation
+📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the documentation
 
 ## Section 3 - Clean Up
 
@@ -320,7 +348,7 @@ To roll back, do the following
 - For all the other PR's created, create new one removing only the bit you added following above steps, commit, review plan then merged.
 - Verify that all the resources no longer exist
 
-## Section 4 - Further Steps 🏋🏽
+## Section 4 - Further Steps
 Now that you have come to the end of this exercise, there is still alot more to learn.
 
 You may have noticed that you built your terraform resources from you local machine. This is far from how things
