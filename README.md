@@ -106,7 +106,7 @@ Ordering of security rules does matter, but you can add this just after the "tru
 
 Add your new address object to the `G_Trusted` group. What this does is to allow your vnet communicate with other vnet. e.g. when logged in via the VPN you can ssh via the bastions to your vm
    
-To do this navigate to the Address Group folder to `/components/configuration/groups/objects/address-gropus/02-address-groups-sbox.tf` add the your new address object to the existing `G_truted` group's `static_addresses` list. 
+To do this navigate to the Address Group folder to `/components/groups/objects/address-gropus/02-address-groups-sbox.tf` add the your new address object to the existing `G_truted` group's `static_addresses` list. 
 
 Example below
 ```json
