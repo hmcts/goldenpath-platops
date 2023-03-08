@@ -70,7 +70,7 @@ Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terrafo
 ```
 The value should be the cidr address space of your vnet
  
-Next navigate to the `/components/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf` file and
+Next navigate to the `/components/configuration/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf` file and
   create a new security policy with the following details
 ```json
 {
