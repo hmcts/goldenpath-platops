@@ -140,9 +140,10 @@ You should now have resources similar to the following:
 ### Step 7
 Create an an Azure Firewall DNAT rule (explain why dnat). Checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
-To add a new DNAT rule, navigate to the xxx and add the foloowing snipet, name should be the name of you lab and ip that of your apache server
-   use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
-   {
+To add a new DNAT rule, navigate to the xxx and add the following snipet, name should be the name of you lab and ip that of your apache server
+Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
+```json
+{
    name : "labsgoldenpathfelix",
    palo_ips : {
    "uksouth" : "10.10.7.4",
@@ -150,10 +151,36 @@ To add a new DNAT rule, navigate to the xxx and add the foloowing snipet, name s
    },
    port : [80,]
    index : 6
-   }
+}
+``` 
 
-This will create a new public Ip address, you can verify your new IP by looking at the pi configuration in the IP Configuration menu right of
-the firewall menu you should see something similar to `fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip`. Copy the Ip address
+📣**Note:** Adding the `ukwest` option is not necessary in this instance as the resource of built in `uksouth` only.
+
+Commit your PR, review your plan and merge.
+
+Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview)
+This will create a new public Ip address, you can verify your new IP by looking at the IP configuration in the `IP Configuration` menu right of
+the firewall menu you should see something similar to `fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip`. 
+
+Resources would be similar to the following:
+
+<details>
+
+<summary>IP Configuration</summary>
+
+<img alt="IPs" src="./images/ip-configuration.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Azure Firewall rules</summary>
+
+<img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
+
+</details>
+
+📣 Keep a note of the public IP address
 
 8. Create a Public DNS record. 
     Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
