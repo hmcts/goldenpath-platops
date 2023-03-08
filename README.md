@@ -136,10 +136,11 @@ You should now have resources similar to the following:
 
 </details>
 
+
 ### Step 7
-Create an an Azure Firewall DNAT rule (explain why dnat)
-    Checkout the rdo-terraform-hub-dmz repo
-   To add a new DNAT rule, navigate to the xxx and add the foloowing snipet, name should be the name of you lab and ip that of your apache server
+Create an an Azure Firewall DNAT rule (explain why dnat). Checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+
+To add a new DNAT rule, navigate to the xxx and add the foloowing snipet, name should be the name of you lab and ip that of your apache server
    use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
    {
    name : "labsgoldenpathfelix",
