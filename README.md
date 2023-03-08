@@ -104,7 +104,9 @@ To do this vavigate to the Address Group folder to `/components/groups/objects/a
 Commit your changes, add relevant details to your PR, review plan and merge 
 
 ### Step 6
-Log into the Panorama managemt ui and review your changes are in place
+Log into the [sbox Panorama management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) ui and review your changes are in place. 
+Note, you need to be on the VPN to access this resouuce. To findout how to access the VPN if not already done so, please have a
+read of this document.
    To test that your rule will match the request type do the following xxxx
 7. Add an Azure Firewall DNAT rule (explain why dnat)
     Checkout the rdo-terraform-hub-dmz repo
