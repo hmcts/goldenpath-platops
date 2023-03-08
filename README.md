@@ -87,7 +87,9 @@ Ordering of security rules does matter, but you can add this just after the "tru
 
 Add your new address object to the `G_Trusted` group. What this does is to allow your vnet communicate with other vnet. e.g. when logged in via the VPN you can ssh via the bastions to your vm
    
-To do this vavigate to the Address Group folder to `/components/groups/objects/address-gropus/02-address-groups-sbox.tf` add the following code
+To do this navigate to the Address Group folder to `/components/groups/objects/address-gropus/02-address-groups-sbox.tf` add the your new address object to the existing `G_truted` group's `static_addresses` list. 
+
+Example below
 ```json
  {
    environments = ["sbox"]
@@ -105,10 +107,37 @@ Commit your changes, add relevant details to your PR, review plan and merge
 
 ### Step 6
 Log into the [sbox Panorama management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) ui and review your changes are in place. 
-Note, you need to be on the VPN to access this resouuce. To findout how to access the VPN if not already done so, please have a
-read of this document.
-   To test that your rule will match the request type do the following xxxx
-7. Add an Azure Firewall DNAT rule (explain why dnat)
+Note, you need to be on the VPN to access this resource. To find out how to access the VPN if not already done so, please have a
+read of this [document](link).
+
+You should now have resources similar to the following:
+
+<details>
+
+<summary>Address Object entry</summary>
+
+<img alt="Address object" src="./images/goldenpath-address.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Address Group entry</summary>
+
+<img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Security policy entry</summary>
+
+<img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
+
+</details>
+
+### Step 7
+Create an an Azure Firewall DNAT rule (explain why dnat)
     Checkout the rdo-terraform-hub-dmz repo
    To add a new DNAT rule, navigate to the xxx and add the foloowing snipet, name should be the name of you lab and ip that of your apache server
    use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
