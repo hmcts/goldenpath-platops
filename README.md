@@ -256,7 +256,13 @@ Verify that you can
   
   </details>
   
-- Navigate to the Panorama management UI and see your traffic logs.
+- Navigate to the [Panorama management UI](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) and see your traffic logs.
+
+  To filter the logs you can type in the belo query in the search bar
+  ```cmd
+  ( addr.dst in <your-vm-private-ip> )
+  ```
+  Where `<your-vm-private-ip>` is the same as the IP on your virtual machine
 
     <details>
 
