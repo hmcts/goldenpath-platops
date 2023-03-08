@@ -57,7 +57,7 @@ Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25`
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch 
 
-Navigate to `/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf` add a new address object called `labs-goldenpath-<yourname>` in the `02-addresses-sbox.tf` file with the following
+Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file add a new address object called `labs-goldenpath-<yourname>`, for example
 
 ```json
  {
