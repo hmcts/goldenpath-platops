@@ -214,7 +214,10 @@ Check out the [azure-platform-terraform](https://github.com/hmcts/azure-platform
 
 
 ## Section 2 - AKS Cluster
+There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
+applications in the AKS cluster. 
 
+📣 **NOTE:** You need to be on  the VPN to access the documentation
 
 ## Section 3 - Clean Up
 
@@ -248,5 +251,5 @@ are done in live environments. As a next step you could
 - Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation
   You can follow these recommended [blogs](link) for more information
 - Link your Git repo to Azure so that subsequent commits trigger a build
-- Set up backend state file
+- Set up backend state file for your project
 
