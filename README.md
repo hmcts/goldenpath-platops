@@ -51,7 +51,19 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 - VNet has two peerings, one to the Hub and the other to the Core Management vnet
 - A route table to one default route to x.x.x.x
 
-Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25`
+#### What did i just create?
+- A virtual network thats peered to 2 other vnets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
+  VNet peering is essential for cummunication between the various virtual networks
+  Most importantly, for network traffic to flow from the [Hub](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) vnet where the firewall lives to your vnet they need to be peered
+- [Tagged](https://tools.hmcts.net/confluence/display/DTSPO/Tagging+v1) resources using the [tagging module](https://github.com/hmcts/terraform-module-common-tags). Tagging is an important part of they way we manage resources and is essential for managing running infrastructure and costing.
+- A custom route table that routes all traffic to the hub. We operate a [hub and spoke](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) model. All network traffic should pass thriugh the hub for inspection before beign forwared to its destination. In our hub we have
+  2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop.
+- A virtual machine without a public IP. We normally dont allow direct access from the intrent to the backend resources. This has to con via another route which passes the hub and firewalls. This patter yu
+  will see in most if not all resources or applications
+- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the core-infra-mgmt vnet can access it via the HNCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will need
+  [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) for this
+
+Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 
 ### Step 3. 
 
@@ -60,7 +72,6 @@ Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terr
 Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file add a new address object called `labs-goldenpath-<yourname>`, for example
 
 ```json
-
  {
    environments = ["sbox"]
    device_group = "sbox"
@@ -205,7 +216,8 @@ Create a Public DNS record.
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
-Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net` 
+Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net`, below is an example snippet
+
 ```yaml
 cname:
 ...
