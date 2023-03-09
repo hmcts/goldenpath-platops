@@ -346,7 +346,8 @@ Follow the steps outlined in there and this would build your application in the 
 entries as described above.
 
 ### Points to note when going through the AKS steps
-- <Ozzy to fill these in>
+- Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application
+- There maybe needed some troubleshooting e,g version deprecated/update. 
 
 📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the documentation
 
