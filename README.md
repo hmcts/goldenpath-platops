@@ -60,7 +60,7 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
   2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop.
 - A virtual machine without a public IP. We normally dont allow direct access from the intrent to the backend resources. This has to con via another route which passes the hub and firewalls. This patter yu
   will see in most if not all resources or applications
-- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the core-infra-mgmt vnet can access it via the HNCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will need
+- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the core-infra-mgmt vnet can access it via the HMCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will need
   [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) for this
 
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
@@ -131,7 +131,7 @@ Commit your changes; add the relevant details to your PR, review the plan and me
 Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place. 
 Please note, you need to be on the VPN to access this resource. To find out how to access the VPN read the following [document](link).
 
-Commit your changes, add the relevant details to your PR and review plan & merge
+🛠️ Commit your changes, add the relevant details to your PR and review plan & merge
 
 #### What did i just create?
 From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
@@ -166,7 +166,7 @@ You should now have resources similar to the following:
 
 
 ### Step 7
-Create an Azure Firewall DNAT rule [what is DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
 To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
 
@@ -183,8 +183,7 @@ Use the next available index in your case, you can find this resource in [sbox-i
 }
 ``` 
 
-
-Commit your PR, review your plan and merge.
+🛠️ Create a new branch, commit, review and merge your PR
 
 Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview),
 this will create a new public IP address. You can verify your new IP by looking at the IP configuration (in the `IP Configuration` menu). On the right of
@@ -214,11 +213,9 @@ At this point you should be able to access your apache server from your browser 
 DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
 
-
 ### Step 8
 
 Create a Public DNS record.
-
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
@@ -237,6 +234,8 @@ cname:
   ttl: 300
   record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
 ```
+
+🛠️ Create a new branch, commit, review and merge your PR
 
 📣 **NOTE:** You will need to add all 3 entries to enable Azure Front Door verify your DNS record.
 
@@ -268,6 +267,8 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
   disabled_rules   = {}
 }
 ```
+
+🛠️  Create a new branch, commit, review and merge your PR. This PR takes a few minutes to complete, you can go grab a cup of coffee or tea
 
 #### What did i just create?
 A custom domain that matches to your DNS entry created above, a backend pool that frondoor sends request to which matches
@@ -327,9 +328,25 @@ Verify that you can
 
     </details>
 
+- `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
+  ```cmd
+  az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
+  ```
+  Once one the bastion `ssh` onto the VM using the below command
+  ```cmd
+  ssh labsAdmin2023@<your-vm-private-ip>
+  ```
+  Accept the fingerprint prompt and provide the VM password
+
 ## Section 2 - AKS Cluster
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
 applications in the AKS cluster.
+
+Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
+entries as described above.
+
+### Points to note when going through the AKS steps
+- <Ozzy to fill these in>
 
 📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the documentation
 
