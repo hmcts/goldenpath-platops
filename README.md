@@ -2,7 +2,7 @@
 
 ## Section 1 - Virtual Networks
 
-Checkout [goldenpath-platops](link) repo, change directory d into the `labs-azure-resource` folder and follow the below steps in order 🙂
+Checkout [goldenpath-platops](link) repo, change directory into the `labs-azure-resource` folder and follow the below steps in order 🙂
 
 ### Step 1
 Run the following commands to confirm you are in the right repository
@@ -61,9 +61,9 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 - A virtual machine without a public IP. We normally dont allow direct access from the intrent to the backend resources. This has to con via another route which passes the hub and firewalls. This patter yu
   will see in most if not all resources or applications
 - A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the core-infra-mgmt vnet can access it via the HNCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will need
-  [VPN access](link to docs) for this
+  [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) for this
 
-Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours your be differecnt if you used a different CIDR
+Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 
 ### Step 3. 
 
@@ -81,20 +81,21 @@ Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terrafo
 ```
 The value should be the cidr address space for your vnet
  
-Next navigate to the `/components/configuration/groups/policies/secuity-policy-rules/04-policy-rules-sbox/tf` file and
+Next navigate to the [sandbox policy rules](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/02-security-profiles.tf) file and
   create a new security policy with the following details
 ```json
-{
-  environments          = ["sbox"]
-  device_group          = "sbox"
-  name                  = "labs-goldenpath-<yourname>"
-  source_zones          = [var.zone_untrusted]
-  destination_zones     = [var.zone_trusted]
-  source_addresses      = ["any"]
-  destination_addresses = ["labs-goldenpath-<yourname>"]
-  services              = ["service-http"]
-  action                = "allow"
-  disabled              = false
+  {
+    environments          = ["sbox"]
+    device_group          = "sbox"
+    name                  = "labs-goldenpath-<yourname>"
+    source_zones          = [var.zone_untrusted]
+    destination_zones     = [var.zone_trusted]
+    source_addresses      = ["any"]
+    destination_addresses = ["labs-goldenpath-<yourname>"]
+    applications          = ["web-browsing"]
+    services              = ["application-default"]
+    action                = "allow"
+    disabled              = false
 }
 ```
 
@@ -122,6 +123,10 @@ Example below
 
 ### Step 5
 Commit your changes, add relevant details to your PR, review plan and merge 
+
+#### What did i just create?
+From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
+in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
 
 ### Step 6
 Log into the [sbox Panorama management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) ui and review your changes are in place. 
