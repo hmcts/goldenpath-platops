@@ -36,7 +36,7 @@ terraform apply
 
 Select `yes` to build resource as terraform will prompt you to approve you action
 
-Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have similar resources created
+Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created
 
 <details>
 
@@ -47,8 +47,8 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 </details>
 
 📣 Verify the following
-- A Vnet exits
-- VNet has two peerings, one to the Hub and the other to the Core Management vnet
+- A Vnet exist
+- VNet has two peerings, one to the Hub and the other to the Core Management Vnet
 - A route table to one default route to x.x.x.x
 
 #### What did i just create?
@@ -69,7 +69,7 @@ Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yo
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
 
-Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file add a new address object called `labs-goldenpath-<yourname>`, for example
+Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new address object called `labs-goldenpath-<yourname>` (example below)
 
 ```json
  {
@@ -79,10 +79,12 @@ Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terrafo
    value        = "10.10.7.0/25"
 }
 ```
+
 The value should be the cidr address space of your vnet
 
 Next navigate to the [sandbox policy rules](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/02-security-profiles.tf) file and
 create a new security policy with the following details
+
 ```json
   {
     environments          = ["sbox"]
@@ -99,14 +101,15 @@ create a new security policy with the following details
 }
 ```
 
-Ordering of security rules does matter, but you can add this just after the "trusted-default" policy. This is telling the firewall
-to allow traffic coming from the untrusted zone, internet traffic and to your vnet in the trusted zone
+
+The ordering of security rules doesn't matter, however we recommend you add this just after the "trusted-default" policy. This is telling the firewall
+  to allow traffic coming from the untrusted zone, internet traffic and to your Vnet in the trusted zone
 
 ### Step 4
 
-Add your new address object to the `G_Trusted` group and this allows your vnet to communicate with other vnets. e.g. when logged in via the VPN you can ssh via the bastions to your vm
-
-To do this navigate to the Address Group folder to `/components/configuration/groups/objects/address-gropus/02-address-groups-sbox.tf` and add your new address object to the existing `G_truted` group's `static_addresses` list e.g. labs-goldenpath-yourname.
+Add your new address object to the `G_Trusted` group and this allows your Vnet to communicate with other Vnets. For example, when you're logged in via the VPN you can ssh via the bastions to your virtual machine
+   
+To do this navigate to the Address Group folder to `/components/configuration/groups/objects/address-gropus/02-address-groups-sbox.tf` . Add your new address object to the existing `G_truted` group's `static_addresses` list e.g. labs-goldenpath-yourname (not the full code block). 
 
 Example below
 ```json
@@ -122,22 +125,24 @@ Example below
 ```  
 
 ### Step 5
+Commit your changes; add the relevant details to your PR, review the plan and merge (once approved). 
+
+### Step 6
+Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place. 
+Please note, you need to be on the VPN to access this resource. To find out how to access the VPN read the following [document](link).
+
 Commit your changes, add the relevant details to your PR and review plan & merge
 
 #### What did i just create?
 From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
 in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
 
-### Step 6
-Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place.
-Note, you need to be on the VPN to access this resource. To find out how to access the VPN, please
-read this [document](link).
 
 You should now have resources similar to the following:
 
 <details>
 
-<summary>Address Object entry</summary>
+<summary>Address Object Entry</summary>
 
 <img alt="Address object" src="./images/goldenpath-address.png" width="auto">
 
@@ -145,7 +150,7 @@ You should now have resources similar to the following:
 
 <details>
 
-<summary>Address Group entry</summary>
+<summary>Address Group Entry</summary>
 
 <img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
 
@@ -153,7 +158,7 @@ You should now have resources similar to the following:
 
 <details>
 
-<summary>Security policy entry</summary>
+<summary>Security Policy Entry</summary>
 
 <img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
 
@@ -163,7 +168,7 @@ You should now have resources similar to the following:
 ### Step 7
 Create an Azure Firewall DNAT rule [what is DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
-To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the VM created in step 2).
+To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
 
 Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
 ```json
@@ -178,13 +183,12 @@ Use the next available index in your case, you can find this resource in [sbox-i
 }
 ``` 
 
-📣**Note:** Adding the `ukwest` option is not necessary in this instance as the resource of built in `uksouth` only.
 
 Commit your PR, review your plan and merge.
 
-Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview)
-This will create a new public Ip address, you can verify your new IP by looking at the IP configuration in the `IP Configuration` menu right of
-the firewall menu you should see something similar to `fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip`.
+Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview),
+this will create a new public IP address. You can verify your new IP by looking at the IP configuration (in the `IP Configuration` menu). On the right of
+the firewall menu, you should see something similar to `fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip`. 
 
 Resources would be similar to the following:
 
@@ -206,13 +210,15 @@ Resources would be similar to the following:
 
 📣 Keep a note of the public IP address
 
-At this point you should be abble to access your apache server from your browser using the default
-DNS record created which is associated with the Azure Firewall. The DNS record should
+At this point you should be able to access your apache server from your browser by using the default
+DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
 
 
 ### Step 8
+
 Create a Public DNS record.
+
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
@@ -232,7 +238,7 @@ cname:
   record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
 ```
 
-📣 **NOTE:** You will need to add all 3 entries to enable Azure frontdoor verify your DNS record.
+📣 **NOTE:** You will need to add all 3 entries to enable Azure Front Door verify your DNS record.
 
 You should now see the similar entries as below
 
@@ -243,6 +249,7 @@ You should now see the similar entries as below
 <img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
 
 </details>
+
 
 ### Step 9
 Create a corresponding Frontdoor entries.
@@ -332,7 +339,7 @@ After completing the above steps you should tear down all the resources created.
 saves the business money and helps prevent floating resources.
 
 To roll back, do the following
-- You need to disassociate the pip Azure Firewall created from the firewall
+- You need to disassociate the PIP Azure Firewall created from the firewall
 
   <details>
 
@@ -345,7 +352,7 @@ To roll back, do the following
   ```cmd
   terraform destroy
   ```
-- For all the other PR's created, create new one removing only the bit you added following above steps, commit, review plan then merged.
+- For all the other PR's created, create a new one removing only the part you added following the above steps, commit, review plan and then merge.
 - Verify that all the resources no longer exist
 
 ## Section 4 - Further Steps
@@ -359,6 +366,7 @@ As your next steps, you could
 - Update the configuration so that it does not try to `destroy` and re-create everything with every `terraform plan`. The key is the `local.prefix` variable
 - Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation.
   Check out this [blog](https://thomasthornton.cloud/) which has good content of Azure DevOps
+  
 - Link your Git repo to Azure so that subsequent commits trigger a build
 - Set up backend state file for your project
 - Create a 2 subnets with a `/26` mask and use one as the virtual machine subnet
