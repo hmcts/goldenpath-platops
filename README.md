@@ -327,6 +327,16 @@ Verify that you can
 
     </details>
 
+- `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
+  ```cmd
+  az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
+  ```
+  Once one the bastion `ssh` onto the VM using the below command
+  ```cmd
+  ssh labsAdmin2023@<your-vm-private-ip>
+  ```
+  Accept the fingerprint prompt and provide the VM password
+
 ## Section 2 - AKS Cluster
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
 applications in the AKS cluster.
