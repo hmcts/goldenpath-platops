@@ -342,6 +342,12 @@ Verify that you can
 There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
 applications in the AKS cluster.
 
+Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
+entries as described above.
+
+### Points to note when going through the AKS steps
+- <Ozzy to fill these in>
+
 📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the documentation
 
 ## Section 3 - Clean Up
