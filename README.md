@@ -131,7 +131,7 @@ Commit your changes; add the relevant details to your PR, review the plan and me
 Log into the [Sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and review your changes are in place. 
 Please note, you need to be on the VPN to access this resource. To find out how to access the VPN read the following [document](link).
 
-Commit your changes, add the relevant details to your PR and review plan & merge
+🛠️ Commit your changes, add the relevant details to your PR and review plan & merge
 
 #### What did i just create?
 From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
@@ -166,7 +166,7 @@ You should now have resources similar to the following:
 
 
 ### Step 7
-Create an Azure Firewall DNAT rule [what is DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
 To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
 
@@ -183,8 +183,7 @@ Use the next available index in your case, you can find this resource in [sbox-i
 }
 ``` 
 
-
-Commit your PR, review your plan and merge.
+🛠️ Create a new branch, commit, review and merge your PR
 
 Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview),
 this will create a new public IP address. You can verify your new IP by looking at the IP configuration (in the `IP Configuration` menu). On the right of
@@ -214,11 +213,9 @@ At this point you should be able to access your apache server from your browser 
 DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
 
-
 ### Step 8
 
 Create a Public DNS record.
-
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
 
@@ -237,6 +234,8 @@ cname:
   ttl: 300
   record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
 ```
+
+🛠️ Create a new branch, commit, review and merge your PR
 
 📣 **NOTE:** You will need to add all 3 entries to enable Azure Front Door verify your DNS record.
 
@@ -268,6 +267,8 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
   disabled_rules   = {}
 }
 ```
+
+🛠️  Create a new branch, commit, review and merge your PR. This PR takes a few minutes to complete, you can go grab a cup of coffee or tea
 
 #### What did i just create?
 A custom domain that matches to your DNS entry created above, a backend pool that frondoor sends request to which matches
