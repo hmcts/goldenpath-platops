@@ -61,15 +61,9 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 - A virtual machine without a public IP. We normally dont allow direct access from the intrent to the backend resources. This has to con via another route which passes the hub and firewalls. This patter yu
   will see in most if not all resources or applications
 - A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the core-infra-mgmt vnet can access it via the HNCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will need
-<<<<<<< HEAD
-  [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) for this
-
-Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
-=======
   [VPN access](link to docs) for this
 
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours your be differecnt if you used a different CIDR
->>>>>>> 3e4a309 (update 6)
 
 ### Step 3. 
 
