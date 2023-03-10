@@ -360,7 +360,7 @@ entries as described above.
 
   <summary>Final result - Application default page</summary>
 
-  <img alt="Application default page" src="./images/xxx.png" width="auto">
+  <img alt="Application default page" src="./images/default-page.png" width="auto">
 
   </details>
 
