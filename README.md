@@ -1,5 +1,22 @@
 # GoldenPath HandsOn
 
+## Overview - Core Architecture
+
+The architecture diagram below represents core areas within Platform Operations. 
+This hands on would visit each one of them and provide you the basic knowledge to get comfortable with
+the technology stack.
+
+<details>
+
+<summary>PlatOps Core Architecture</summary>
+
+<img alt="PlatOps Core Architecture" src="./images/golden-path.png" width="auto">
+
+</details>
+
+At the end of the hands-on exercises, you can read up on the [technical documents](./technical-documantaion/README.md) for some more details on the core technilogies
+to help solidify the knowledge gained.
+
 ## Section 1 - Virtual Networks
 
 Checkout [goldenpath-platops](https://github.com/hmcts/goldenpath-platops) repo, change directory into the `labs-azure-resource` folder and follow the below steps in order 🙂
@@ -411,9 +428,11 @@ As your next steps, you could
 - Create a 2 subnets with a `/26` mask and use one as the virtual machine subnet
 
 #### [Some further information](https://tools.hmcts.net/confluence/display/DTSPO/Knowledge+sharing)
+- [The HMCTS way](https://hmcts.github.io/#the-hmcts-way)
 - [Network flows](https://cjscommonplatform.sharepoint.com/:v:/r/sites/DTSPlatformOperationsTeam/Shared%20Documents/KnowledgeShare/RedSquadKTSessions/PlatOps%20Team%20KTs/Network%20Flows-20220623_140255-Meeting%20Recording.mp4?csf=1&web=1&e=OAWVsJ) KT session
 - [Live services](https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/Shared%20Documents/KnowledgeShare/LiveServices/What%20live%20services%20we%20are%20running%20-%20KT-20210826_140438-Meeting%20Recording.mp4) KT session
 - [Azure DevOps](https://thomasthornton.cloud/) blogs
 - PlatOps [Knowledge share](https://cjscommonplatform-my.sharepoint.com/personal/felix_eyetan_hmcts_net/_layouts/15/onedrive.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare&listurl=https%3A%2F%2Fcjscommonplatform%2Esharepoint%2Ecom%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents&viewid=4636bcde%2D1e83%2D41b5%2D993e%2D22eb65556ee3) sessions
 - PlatOps [ops-runbooks](https://github.com/hmcts/ops-runbooks)
+- [Technical documentation](./technical-documantaion/README.md) on core technologies
 
