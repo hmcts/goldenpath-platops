@@ -5,3 +5,108 @@ weight: 100
 # <%= current_page.data.title %>
 
 ## Overview - Core Architecture
+
+The architecture diagram below represents core areas within Platform Operations. This hands on would visit each one of them and provide you the basic knowledge to get comfortable with the technology stack.
+<br>
+
+<img alt="PlatOps Core Architecture" src="./Images/golden-path.png" width="auto">
+At the end of the hands-on exercises, you can read up on the [technical documents](./technical-documantaion/README.md) for some more details on the core technilogies
+to help solidify the knowledge gained.
+<br>
+
+## Section 1 - Virtual Networks
+<br>
+Checkout [goldenpath-platops](https://github.com/hmcts/goldenpath-platops) repo, change directory into the `labs-azure-resource` folder and follow the below steps in order
+<br>
+
+### Step 1
+Run the following commands to confirm you are in the right repository
+
+```
+az login
+az account show
+az account set --subscription DTS-SHAREDSERVICES-SBOX
+az account show
+```
+
+### Step 2
+
+Run the following command terraform commands
+```
+terraform init
+terraform plan
+terraform apply
+```
+
+Select `yes` to build resource as terraform will prompt you to approve you action
+
+Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created
+
+<details>
+
+<summary>Terraform resources</summary>
+
+<img alt="Address object" src="./Images/labs-resources.png" width="auto">
+
+</details>
+<br>
+
+Verify the following exist
+- A Vnet exist
+- VNet has two peerings, one to the Hub and the other to the Core Management Vnet
+- A route table to one default route to `10.10.200.36`
+
+#### What did i just create?
+- A virtual network that's peered to 2 other vnets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
+  VNet peering is essential for communication between the various virtual networks.
+  Most importantly, for network traffic to flow from the [Hub](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) vnet where the [Palo Alto](https://www.paloaltonetworks.com/) firewall lives to your vnet they need to be peered
+- [Tagged](https://tools.hmcts.net/confluence/display/DTSPO/Tagging+v1) resources using the [tagging module](https://github.com/hmcts/terraform-module-common-tags). Tagging is an important part of the way we manage resources and is essential for managing running infrastructure and cost. This is enforced via Azure Policy and is defined in the [azure-policy](https://github.com/hmcts/azure-policy) repo
+- A custom route table that routes all traffic to the hub. We operate a [hub and spoke](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) model. All network traffic should pass through the [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) for inspection before being forwarded to it's destination. In our [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) we have
+  2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop which is usually another virtual network.
+- A virtual machine without a public IP. We normally dont allow direct access from the internet to the backend resources. This has to ingress via a route which passes the hub and firewalls. This pattern is followed for most if not all resources or applications.
+- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the [core-infra-vnet-mgmt](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings) vnet, it can be accessed via the HMCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will needto be on the [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum).
+<br>
+
+Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
+<br>
+
+### Step 3.
+
+Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
+
+Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new address object called `labs-goldenpath-<yourname>` (example below)
+<br>
+
+```json
+ {
+   environments = ["sbox"]
+   device_group = "sbox"
+   name         = "labs-goldenpath-<yourname>"
+   value        = "10.10.7.0/25"
+ }
+```
+
+The value should be the cidr address space of your vnet
+
+Next navigate to the [sandbox policy rules](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/02-security-profiles.tf) file and
+create a new security policy with the following details
+
+```json
+  {
+    environments          = ["sbox"]
+    device_group          = "sbox"
+    name                  = "labs-goldenpath-<yourname>"
+    source_zones          = [var.zone_untrusted]
+    destination_zones     = [var.zone_trusted]
+    source_addresses      = ["any"]
+    destination_addresses = ["labs-goldenpath-<yourname>"]
+    applications          = ["web-browsing"]
+    services              = ["application-default"]
+    action                = "allow"
+    disabled              = false
+  }
+```
+
+The ordering of security rules doesn't matter, however we recommend you add this just after the "trusted-default" policy. This is telling the firewall
+to allow traffic coming from the untrusted zone, internet traffic and to your Vnet in the trusted zone
+<br>
