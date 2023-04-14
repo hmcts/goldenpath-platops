@@ -68,7 +68,7 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 
-### Step 3.
+### Step 3
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
 
@@ -384,7 +384,7 @@ entries as described above.
 ### Points to note when going through the AKS steps
 
 - Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application
-- There maybe needed some troubleshooting e,g version deprecated/update. 
+- There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating. 
 
 
 📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the Backstage documentation
@@ -399,7 +399,7 @@ To roll back, do the following
 
   <details>
 
-  <summary>AzFw disassociate pip</summary>
+  <summary>Azure Firewall disassociate PIP</summary>
 
   <img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto">
 
