@@ -132,3 +132,215 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 <img alt="Git reviewers" src="./Images/git-reviewers.png" width="auto">
 
 </details>
+<br>
+
+### Step 6
+Log into the [sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and verify your changes are in place. 
+Please note, you need to be on the VPN to access this resource. To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation. 
+<br>
+
+🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
+<br>
+
+#### What did i just create?
+From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
+in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
+
+
+You should now have resources similar to the following:
+
+<details>
+
+<summary>Address Object Entry</summary>
+
+<img alt="Address object" src="./Images/goldenpath-address.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Address Group Entry</summary>
+
+<img alt="Address group" src="./Images/goldenpath-addres-group.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Security Policy Entry</summary>
+
+<img alt="Security policy" src="./Images/goldenpath-policy.png" width="auto">
+
+</details>
+<br>
+
+### Step 7
+Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+
+To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
+
+Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
+
+```json
+{
+   name : "labsgoldenpath<yourname>",
+   palo_ips : {
+   "uksouth" : "10.10.7.4",
+   "ukwest" : "10.10.7.4"
+   },
+   port : [80,]
+   index : 6
+}
+``` 
+
+🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
+
+Go to the Azure portal and review your changes in the [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview),
+this will create a new public IP address. You can verify your new IP by looking at the IP configuration (in the `IP Configuration` menu). On the right of
+the firewall menu, you should see something similar to `fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip`. 
+
+Resources would be similar to the following:
+
+<details>
+
+<summary>IP Configuration</summary>
+
+<img alt="IPs" src="./Images/ip-configuration.png" width="auto">
+
+</details>
+
+<details>
+
+<summary>Azure Firewall rules</summary>
+
+<img alt="DNAT rule" src="./Images/az-fw-rule.png" width="auto">
+
+</details>
+<br>
+
+📣 Keep a note of the public IP address
+
+At this point you should be able to access your apache server from your browser by using the default
+DNS record created, which is associated with the Azure Firewall. The DNS record should
+be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
+<br>
+
+### Step 8
+
+Create a Public DNS record.
+
+Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
+
+Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml) file add a new CNAME record using Azure Frontdoor url `hmcts-sbox.azurefd.net`
+
+```yaml
+  cname:
+  ...
+  - name: "afdverify.labs-goldenpath-felix"
+    ttl: 300
+    record: "afdverify.hmcts-sbox.azurefd.net"
+  - name: "labs-goldenpath-felix"
+    ttl: 300
+    record: "hmcts-sbox.azurefd.net"
+    shutter: false
+  - name: "cdnverify.labs-goldenpath-felix"
+    ttl: 300
+    record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
+```
+
+🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals and then merge
+
+📣 **NOTE:** You will need to add all 3 entries to enable Azure Front Door verify your DNS record.
+
+You should now see the similar entries as below
+
+<details>
+
+<summary>Public DNS entries</summary>
+
+<img alt="DNAT rule" src="./Images/dns-entries.png" width="auto">
+
+</details>
+<br>
+
+### Step 9
+Create a corresponding Frontdoor entries.
+
+Checkout the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
+
+Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/sbox/sbox.tfvars) file and add the below entry to the `frontends` property list
+
+```json
+  {
+    product          = "labs-goldenpath-<yourname>"
+    name             = "labs-goldenpath-<yourname>"
+    custom_domain    = "labs-goldenpath-<yourname>.sandbox.platform.hmcts.net"
+    backend_domain   = ["firewall-sbox-int-palo-labsgoldenpath<yourname>.uksouth.cloudapp.azure.com"]
+    certificate_name = "wildcard-sandbox-platform-hmcts-net"
+    disabled_rules   = {}
+  }
+```
+
+🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge. 
+
+📣 **Note:** This resource takes a few minutes to complete, you can go grab a cup of coffee or tea
+
+#### What did i just create?
+A custom domain that matches to your DNS entry created above, a backend pool that frontdoor sends request to which matches
+the public ip created above and attached to the Azure firewall and a routing rule that Azure frontdoor needs to process
+your requests.
+
+  <details>
+
+  <summary>Custom Domain</summary>
+
+  <img alt="Custom domain" src="./Images/fd-custom-domain.png" width="auto">
+
+  </details>
+
+  <details>
+
+  <summary>Backend pool</summary>
+
+  <img alt="Backend pool" src="./Images/fd-backend-pool.png" width="auto">
+
+  </details>
+
+  <details>
+
+  <summary>Routing rule</summary>
+
+  <img alt="Routing rule" src="./Images/fd-routing-rule.png" width="auto">
+
+  </details>
+  <br>
+
+  ### Step 10
+  
+  Verify that you can
+  - Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` and see your web server default page
+  
+    <details>
+  
+    <summary>Final result</summary>
+  
+    <img alt="Web Server page" src="./Images/web-page.png" width="auto">
+  
+    </details>
+  
+  - Navigate to the [Panorama management UI](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) and see your traffic logs.
+  
+    To filter the logs you can type in the below query in the search bar
+    
+    ```cmd
+    ( addr.dst in <your-vm-private-ip> )
+    ```
+  
+    Where `<your-vm-private-ip>` is the same as the IP on your virtual machine
+  
+    <details>
+  
+    <summary>Final result - logs</summary>
+  
+    <img alt="Panorama logs" src="./ 
+    <br>
