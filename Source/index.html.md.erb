@@ -22,6 +22,7 @@ At the end of the hands-on exercises, you can read up on the [technical document
 to help solidify the knowledge gained.
 <br>
 
+<hr>
 ## Section 1 - Virtual Networks
 <br>
 Checkout [goldenpath-platops](https://github.com/hmcts/goldenpath-platops) repo, change directory into the `labs-azure-resource` folder and follow the below steps in order
@@ -78,7 +79,7 @@ Verify the following exist
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 <br>
 
-### Step 3.
+### Step 3
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
 
@@ -153,13 +154,15 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 
 <img alt="Git reviewers" src="./Images/git-reviewers.png" width="auto">
 
-</details>
+</details> 
+
 <br>
 
+
 ### Step 6
+
 Log into the [sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and verify your changes are in place. 
-Please note, you need to be on the VPN to access this resource. To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation. 
-<br>
+Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation.</p> 
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br>
@@ -183,7 +186,7 @@ You should now have resources similar to the following:
 
 <summary>Address Group Entry</summary>
 
-<img alt="Address group" src="./Images/goldenpath-addres-group.png" width="auto">
+<img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
 
 </details>
 
@@ -227,7 +230,7 @@ Resources would be similar to the following:
 
 <summary>IP Configuration</summary>
 
-<img alt="IPs" src="./Images/ip-configuration.png" width="auto">
+<img alt="IPs" src="./images/ip-configuration.png" width="auto">
 
 </details>
 
@@ -235,7 +238,7 @@ Resources would be similar to the following:
 
 <summary>Azure Firewall rules</summary>
 
-<img alt="DNAT rule" src="./Images/az-fw-rule.png" width="auto">
+<img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
 
 </details>
 <br>
@@ -245,7 +248,6 @@ Resources would be similar to the following:
 At this point you should be able to access your apache server from your browser by using the default
 DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
-<br>
 
 ### Step 8
 
@@ -270,7 +272,7 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
     record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
 ```
 
-🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals and then merge
+🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 
 📣 **NOTE:** You will need to add all 3 entries to enable Azure Front Door verify your DNS record.
 
@@ -280,7 +282,7 @@ You should now see the similar entries as below
 
 <summary>Public DNS entries</summary>
 
-<img alt="DNAT rule" src="./Images/dns-entries.png" width="auto">
+<img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
 
 </details>
 <br>
@@ -316,7 +318,7 @@ your requests.
 
   <summary>Custom Domain</summary>
 
-  <img alt="Custom domain" src="./Images/fd-custom-domain.png" width="auto">
+  <img alt="Custom domain" src="./images/fd-custom-domain.png" width="auto">
 
   </details>
 
@@ -324,7 +326,7 @@ your requests.
 
   <summary>Backend pool</summary>
 
-  <img alt="Backend pool" src="./Images/fd-backend-pool.png" width="auto">
+  <img alt="Backend pool" src="./images/fd-backend-pool.png" width="auto">
 
   </details>
 
@@ -332,14 +334,17 @@ your requests.
 
   <summary>Routing rule</summary>
 
-  <img alt="Routing rule" src="./Images/fd-routing-rule.png" width="auto">
+  <img alt="Routing rule" src="./images/fd-routing-rule.png" width="auto">
 
   </details>
+
   <br>
 
-  ### Step 10
-  
+
+   ### Step 10
+
   Verify that you can
+   
   - Navigate to your url e.g. `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net` and see your web server default page
   
     <details>img
@@ -372,7 +377,7 @@ your requests.
 
     To learn more about Palo Alto firewall logs watch the [Navigating Palo Alto firewall logs](https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare%2FHUB%2FNavigating%20Palo%20Alto%20firewall%20logs%2Emp4) KT session
 
-    - `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
+  - `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
      
     ```cmd
     az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
@@ -387,7 +392,9 @@ your requests.
     <p> With the first `curl` command you should see the raw html output in the terminal to prove that you can reach your VM from the bastion VM.</p>
     <p> For the second command, accept the fingerprint prompt and provide the VM password, you should now be on your VM.</p>
     
-    ## Section 2 - AKS Cluster
+    <hr>
+
+    ## Section 2 - AKS Cluster 
     There is a [Backstage GoldenPath documentation](https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all) for the AKS cluster which would walk you through the steps required in creating
     applications in the AKS cluster.
     
@@ -416,54 +423,10 @@ your requests.
     
     
     📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the Backstage documentation
+    <hr>  
 
-    ## Section 3 - Clean Up
+    ##Section 3 - Clean Up 
 
-    After completing the above steps you should tear down all the resources created. This
-    saves the business money and helps prevent floating resources.
-    
-    <p>To roll back, do the following.</p>
-
-    - You need to disassociate the PIP Azure Firewall created from the firewall
-    
-      <details>
-    
-      <summary>Azure Firewall disassociate PIP</summary>
-    
-      <img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto">
-    
-      </details>
-      <br>
-
-    - If you ran the [labs-azure-resource](/lab-azure-resource) from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group
-      
-    ```cmd
-      terraform destroy
-    ```
-
-  ❗️Make sure your account is still set to the `DTS-SHAREDSERVICES-SBOX` subscription as described in `Step 1` above
-
-   - For all the other PR's created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge
-   - Verify that all the resources no longer exist
-   
-  ## Section 4 - Further Steps
-
-  Now that you have come to the end of this exercise, there is still alot more to learn.
-
- You may have noticed that you built your terraform resources from you local machine. This is far from how things
- are done in live environments.
-
- As your next steps, you could
- - Create a new Git repo using the code base as a start
- - Update the configuration so that it does not try to `destroy` and re-create everything with every `terraform plan`. The key is the `local.prefix` variable
- - Create a new Azure DevOps project under the [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation.
-  Check out this [blog](https://thomasthornton.cloud/) which has good content of Azure DevOps
-  
-- Link your Git repo to Azure so that subsequent commits trigger a build
-- Set up backend state file for your project
-- Create a 2 subnets with a `/26` mask and use one as the virtual machine subnet
-
-    ## Section 3 - Clean Up <hr>
     After completing the above steps you should tear down all the resources created. This
     saves the business money and helps prevent floating resources.
   
@@ -485,14 +448,15 @@ your requests.
       terraform destroy
     ```
 
-  ❗️Make sure your account is still set to the `DTS-SHAREDSERVICES-SBOX` subscription as described in `Step 1` above
+ ❗️Make sure your account is still set to the `DTS-SHAREDSERVICES-SBOX` subscription as described in `Step 1` above
 
    - For all the other PR's created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge
    - Verify that all the resources no longer exist.
-  
+   <hr> 
   
 
-   ### Section 4 - Further Steps <hr> 
+   ## Section 4 - Further Steps 
+
   Now that you have come to the end of this exercise, there is still alot more to learn.
 
   You may have noticed that you built your terraform resources from you local machine. This is far from how things
