@@ -5,24 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Search - HMCTS</title>
+    <title>HMCTS</title>
 
-    <link href="../stylesheets/manifest.css" rel="stylesheet" />
+    <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//search/">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//03-clean-up.html">
 
-      <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
-      <meta name="twitter:title" content="Search - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//search/" />
+      <meta name="twitter:title" content="HMCTS" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//03-clean-up.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Search" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//search/" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//03-clean-up.html" />
 
     
   </head>
@@ -74,7 +72,7 @@
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
             <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
-              <div class="search" data-module="search" data-path-to-site-root="../">
+              <div class="search" data-module="search" data-path-to-site-root="./">
   <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://hmcts-platops-goldenpath.github.io/"/>
     <label class="govuk-label search__label" for="search" aria-hidden="true">
@@ -94,19 +92,19 @@
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="../index.html"><span>Goldenpath PlatOps</span></a>
+    <a href="./index.html"><span>Goldenpath PlatOps</span></a>
   </li>
   <li>
-    <a href="../02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
+    <a href="./02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
   </li>
   <li>
-    <a href="../04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+    <a href="./04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
   </li>
   <li>
-    <a href="../03-clean-up.html"><span>Section 3 - Clean Up</span></a>
+    <a href="./03-clean-up.html"><span>Section 3 - Clean Up</span></a>
   </li>
   <li>
-    <a href="../01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
+    <a href="./01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
   </li>
 </ul>
 
@@ -117,37 +115,37 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <div id="search-help" class="search-help">
-  <h1 id="how-to-search">Search</h1>
+            <h1 id="section-3-clean-up">Section 3 - Clean Up</h1>
+<p>After completing the above steps you should tear down all the resources created. This
+saves the business money and helps prevent floating resources.</p>
+<p><p>To roll back, do the following.</p></p>
 
-  <p class="govuk-body search-help__no-js">
-    You need to turn on JavaScript in your browser to search this site. You can either:
+<ul>
+<li>You need to disassociate the PIP Azure Firewall created from the firewall</li>
+</ul>
+<p><details></p>
+<p><summary>Azure Firewall disassociate PIP</summary></p>
+<p><img alt="AzFw disassociate pip" src="./Images/az-pip-remove.png" width="auto"></p>
+<p></details></p>
 
-    <ul>
-      <li>turn on JavaScript in your browser</li>
-      <li>search this site using Google</li>
-    </ul>
-  </p>
+<ul>
+<li>If you ran the <a href="/lab-azure-resource">labs-azure-resource</a> from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    terraform destroy
+</code></pre></div><p>❗️Make sure your account is still set to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription as described in <code>Step 1</code> above</p>
 
-  <p class="govuk-body">
-    Enter a search term in the search box, then select the search button.
-  </p>
-</div>
-
-<div id="search-results" class="search-results" hidden aria-labelledby="search-results-title">
-  <div class="search-results__inner">
-    <h1 id="search-results-title" class="search-results__title" aria-live="assertive">Results</h1>
-    <div class="search-results__content"></div>
-  </div>
-</div>
+<ul>
+<li>For all the other PR&rsquo;s created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge</li>
+<li>Verify that all the resources no longer exist.</li>
+</ul>
 
             
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Search%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2Fsearch%2F%29&amp;labels=bug&amp;title=Re%3A+%27Search%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/03-clean-up.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2F03-clean-up.html%29&amp;labels=bug&amp;title=Re%3A+%27%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
@@ -207,6 +205,6 @@
   ga('send', 'pageview');
   </script>
 
-    <script src="../javascripts/application.js"></script>
+    <script src="javascripts/application.js"></script>
   </body>
 </html>

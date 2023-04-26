@@ -5,24 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Search - HMCTS</title>
+    <title>HMCTS</title>
 
-    <link href="../stylesheets/manifest.css" rel="stylesheet" />
+    <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//search/">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//04-futher-steps.html">
 
-      <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
-      <meta name="twitter:title" content="Search - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//search/" />
+      <meta name="twitter:title" content="HMCTS" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//04-futher-steps.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="Search" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//search/" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//04-futher-steps.html" />
 
     
   </head>
@@ -74,7 +72,7 @@
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
             <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
-              <div class="search" data-module="search" data-path-to-site-root="../">
+              <div class="search" data-module="search" data-path-to-site-root="./">
   <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://hmcts-platops-goldenpath.github.io/"/>
     <label class="govuk-label search__label" for="search" aria-hidden="true">
@@ -94,19 +92,19 @@
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
-    <a href="../index.html"><span>Goldenpath PlatOps</span></a>
+    <a href="./index.html"><span>Goldenpath PlatOps</span></a>
   </li>
   <li>
-    <a href="../02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
+    <a href="./02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
   </li>
   <li>
-    <a href="../04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+    <a href="./04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
   </li>
   <li>
-    <a href="../03-clean-up.html"><span>Section 3 - Clean Up</span></a>
+    <a href="./03-clean-up.html"><span>Section 3 - Clean Up</span></a>
   </li>
   <li>
-    <a href="../01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
+    <a href="./01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
   </li>
 </ul>
 
@@ -117,37 +115,39 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <div id="search-help" class="search-help">
-  <h1 id="how-to-search">Search</h1>
+            <h1 id="section-4-further-steps">Section 4 - Further Steps</h1>
+<p>Now that you have come to the end of this exercise, there is still alot more to learn.</p>
+<p>You may have noticed that you built your terraform resources from you local machine. This is far from how things
+are done in live environments.</p>
+<p>As your next steps, you could</p>
 
-  <p class="govuk-body search-help__no-js">
-    You need to turn on JavaScript in your browser to search this site. You can either:
+<ul>
+<li>Create a new Git repo using the code base as a start</li>
+<li>Update the configuration so that it does not try to <code>destroy</code> and re-create everything with every <code>terraform plan</code>. The key is the <code>local.prefix</code> variable</li>
+<li>Create a new Azure DevOps project under the <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> organisation.Check out this <a href="https://thomasthornton.cloud/">blog</a> which has good content of Azure DevOps</li>
+<li>Link your Git repo to Azure so that subsequent commits trigger a build</li>
+<li>Set up backend state file for your project</li>
+<li>Create a 2 subnets with a <code>/26</code> mask and use one as the virtual machine subnet</li>
+</ul>
+<h4 id="some-further-information"><a href="https://tools.hmcts.net/confluence/display/DTSPO/Knowledge+sharing">Some further information</a></h4>
 
-    <ul>
-      <li>turn on JavaScript in your browser</li>
-      <li>search this site using Google</li>
-    </ul>
-  </p>
-
-  <p class="govuk-body">
-    Enter a search term in the search box, then select the search button.
-  </p>
-</div>
-
-<div id="search-results" class="search-results" hidden aria-labelledby="search-results-title">
-  <div class="search-results__inner">
-    <h1 id="search-results-title" class="search-results__title" aria-live="assertive">Results</h1>
-    <div class="search-results__content"></div>
-  </div>
-</div>
+<ul>
+<li><a href="https://hmcts.github.io/#the-hmcts-way">The HMCTS way</a></li>
+<li><a href="https://cjscommonplatform.sharepoint.com/:v:/r/sites/DTSPlatformOperationsTeam/Shared%20Documents/KnowledgeShare/RedSquadKTSessions/PlatOps%20Team%20KTs/Network%20Flows-20220623_140255-Meeting%20Recording.mp4?csf=1&amp;web=1&amp;e=OAWVsJ">Network flows</a> KT session</li>
+<li><a href="https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/Shared%20Documents/KnowledgeShare/LiveServices/What%20live%20services%20we%20are%20running%20-%20KT-20210826_140438-Meeting%20Recording.mp4">Live services</a> KT session</li>
+<li><a href="https://thomasthornton.cloud/">Azure DevOps</a> blogs</li>
+<li>PlatOps <a href="https://cjscommonplatform-my.sharepoint.com/personal/felix_eyetan_hmcts_net/_layouts/15/onedrive.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare&amp;listurl=https%3A%2F%2Fcjscommonplatform%2Esharepoint%2Ecom%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents&amp;viewid=4636bcde%2D1e83%2D41b5%2D993e%2D22eb65556ee3">Knowledge share</a> sessions</li>
+<li>PlatOps <a href="https://github.com/hmcts/ops-runbooks">ops-runbooks</a></li>
+<li><a href="./technical-documantation/README.md">Technical documentation</a> on core technologies</li>
+</ul>
 
             
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Search%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2Fsearch%2F%29&amp;labels=bug&amp;title=Re%3A+%27Search%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/04-futher-steps.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2F04-futher-steps.html%29&amp;labels=bug&amp;title=Re%3A+%27%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
@@ -207,6 +207,6 @@
   ga('send', 'pageview');
   </script>
 
-    <script src="../javascripts/application.js"></script>
+    <script src="javascripts/application.js"></script>
   </body>
 </html>
