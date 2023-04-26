@@ -9,19 +9,19 @@
 
     <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/virtual-networks.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta name="twitter:title" content="Virtual Networks - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/virtual-networks.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
       <meta property="og:title" content="Virtual Networks" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/virtual-networks.html" />
 
     
   </head>
@@ -98,20 +98,20 @@
 <li><a href="../Walkthrough/index.html"><span>Walkthrough</span></a>
 <ul>
   <li>
-    <a href="../Walkthrough/01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
+    <a href="../Walkthrough/virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
   </li>
   <li>
-    <a href="../Walkthrough/02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
+    <a href="../Walkthrough/aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
   </li>
   <li>
-    <a href="../Walkthrough/03-clean-up.html"><span>Section 3 - Clean Up</span></a>
+    <a href="../Walkthrough/clean-up.html"><span>Section 3 - Clean Up</span></a>
   </li>
   <li>
-    <a href="../Walkthrough/04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+    <a href="../Walkthrough/futher-steps.html"><span>Section 4 - Further Steps</span></a>
   </li>
 </ul>
 </li>
-<li><a href="../Technical Documantaion/index.html"><span>Tech. Docs</span></a>
+<li><a href="../Technical Documantaion/index.html"><span>Technical Documentation</span></a>
 <ul>
   <li>
     <a href="../Technical Documantaion/1-clusters"><span>The AKS Cluster</span></a>
@@ -144,21 +144,17 @@
 Checkout <a href="https://github.com/hmcts/goldenpath-platops">goldenpath-platops</a> repo, change directory into the <code>labs-azure-resource</code> folder and follow the below steps in order
 <br></p>
 <h4 id="step-1">Step 1</h4>
-<p>Run the following commands to confirm you are in the right repository
-<code>
-az login
+<p>Run the following commands to confirm you are in the right repository</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>az login
 az account show
 az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
-</code></p>
-<h4 id="step-2">Step 2</h4>
-<p>Run the following command terraform commands
-<code>
-terraform init
+</code></pre></div><h4 id="step-2">Step 2</h4>
+<p>Run the following command terraform commands</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform plan
 terraform apply
-</code>
-Select <code>yes</code> to build resource as terraform will prompt you to approve you action
+</code></pre></div><p>Select <code>yes</code> to build resource as terraform will prompt you to approve you action
 Log into the Azure portal and navigate to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription, you should now have a similar resources created
 <details>
 <summary>Terraform resources</summary>
@@ -411,8 +407,8 @@ your requests.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/01-virtual-networks.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Virtual+Networks%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2F01-virtual-networks.html%29&amp;labels=bug&amp;title=Re%3A+%27Virtual+Networks%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/virtual-networks.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Virtual+Networks%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2Fvirtual-networks.html%29&amp;labels=bug&amp;title=Re%3A+%27Virtual+Networks%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
