@@ -5,22 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>HMCTS</title>
+    <title>Virtual Networks - HMCTS</title>
 
-    <link href="stylesheets/manifest.css" rel="stylesheet" />
+    <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//01-virtual-networks.html">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
-      <meta name="twitter:title" content="HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//01-virtual-networks.html" />
+      <meta name="twitter:title" content="Virtual Networks - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Virtual Networks" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//01-virtual-networks.html" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/01-virtual-networks.html" />
 
     
   </head>
@@ -72,7 +73,7 @@
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
             <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
-              <div class="search" data-module="search" data-path-to-site-root="./">
+              <div class="search" data-module="search" data-path-to-site-root="../">
   <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://hmcts-platops-goldenpath.github.io/"/>
     <label class="govuk-label search__label" for="search" aria-hidden="true">
@@ -91,21 +92,41 @@
               <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
+<li><a href="../Walkthrough/index.html"><span>Goldenpath PlatOps</span></a>
+<ul>
   <li>
-    <a href="./index.html"><span>Goldenpath PlatOps</span></a>
+    <a href="../Walkthrough/01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
   </li>
   <li>
-    <a href="./02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
+    <a href="../Walkthrough/02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
   </li>
   <li>
-    <a href="./04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+    <a href="../Walkthrough/03-clean-up.html"><span>Section 3 - Clean Up</span></a>
   </li>
   <li>
-    <a href="./03-clean-up.html"><span>Section 3 - Clean Up</span></a>
+    <a href="../Walkthrough/04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../Technical Documantaion/index.html"><span>Platform Operations</span></a>
+<ul>
+  <li>
+    <a href="../Technical Documantaion/1-clusters"><span>The AKS Cluster</span></a>
   </li>
   <li>
-    <a href="./01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
+    <a href="../Technical Documantaion/4-logs"><span>Logs</span></a>
   </li>
+  <li>
+    <a href="../Technical Documantaion/2-firewalls"><span>Firewalls</span></a>
+  </li>
+  <li>
+    <a href="../Technical Documantaion/3-frontdoor"><span>Azure Frontdoor</span></a>
+  </li>
+  <li>
+    <a href="../Technical Documantaion/5-dns"><span>DNS</span></a>
+  </li>
+</ul>
+</li>
 </ul>
 
 
@@ -138,7 +159,7 @@ Select <code>yes</code> to build resource as terraform will prompt you to approv
 Log into the Azure portal and navigate to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription, you should now have a similar resources created
 <details>
 <summary>Terraform resources</summary>
-<img alt="Address object" src="./Images/labs-resources.png" width="auto">
+<img alt="Address object" src="./images/labs-resources.png" width="auto">
 </details>
 <br>
 Verify the following exist
@@ -212,7 +233,7 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 
 <summary>Git reviewers</summary>
 
-<img alt="Git reviewers" src="./Images/git-reviewers.png" width="auto">
+<img alt="Git reviewers" src="./images/git-reviewers.png" width="auto">
 
 </details>
 <p><br></p>
@@ -230,7 +251,7 @@ in your vnet. Without this rule your applications or services would be unreachab
 
 <summary>Address Object Entry</summary>
 
-<img alt="Address object" src="./Images/goldenpath-address.png" width="auto">
+<img alt="Address object" src="./images/goldenpath-address.png" width="auto">
 
 </details>
 
@@ -238,7 +259,7 @@ in your vnet. Without this rule your applications or services would be unreachab
 
 <summary>Address Group Entry</summary>
 
-<img alt="Address group" src="./Images/goldenpath-addres-group.png" width="auto">
+<img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
 
 </details>
 
@@ -246,7 +267,7 @@ in your vnet. Without this rule your applications or services would be unreachab
 
 <summary>Security Policy Entry</summary>
 
-<img alt="Security policy" src="./Images/goldenpath-policy.png" width="auto">
+<img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
 
 </details>
 <p><br></p>
@@ -273,7 +294,7 @@ the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int
 
 <summary>IP Configuration</summary>
 
-<img alt="IPs" src="./Images/ip-configuration.png" width="auto">
+<img alt="IPs" src="./images/ip-configuration.png" width="auto">
 
 </details>
 
@@ -281,7 +302,7 @@ the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int
 
 <summary>Azure Firewall rules</summary>
 
-<img alt="DNAT rule" src="./Images/az-fw-rule.png" width="auto">
+<img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
 
 </details>
 <p><br></p>
@@ -313,7 +334,7 @@ be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cl
 
 <summary>Public DNS entries</summary>
 
-<img alt="DNAT rule" src="./Images/dns-entries.png" width="auto">
+<img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
 
 </details>
 <p><br></p>
@@ -337,15 +358,15 @@ the public ip created above and attached to the Azure firewall and a routing rul
 your requests.</p>
 <p><details></p>
 <p><summary>Custom Domain</summary></p>
-<p><img alt="Custom domain" src="./Images/fd-custom-domain.png" width="auto"></p>
+<p><img alt="Custom domain" src="./images/fd-custom-domain.png" width="auto"></p>
 <p></details></p>
 <p><details></p>
 <p><summary>Backend pool</summary></p>
-<p><img alt="Backend pool" src="./Images/fd-backend-pool.png" width="auto"></p>
+<p><img alt="Backend pool" src="./images/fd-backend-pool.png" width="auto"></p>
 <p></details></p>
 <p><details></p>
 <p><summary>Routing rule</summary></p>
-<p><img alt="Routing rule" src="./Images/fd-routing-rule.png" width="auto"></p>
+<p><img alt="Routing rule" src="./images/fd-routing-rule.png" width="auto"></p>
 <p></details>
   <br></p>
 <h4 id="step-10">Step 10</h4>
@@ -356,7 +377,7 @@ your requests.</p>
 </ul>
 <p><details>img</p>
 <p><summary>Final result</summary></p>
-<p><img alt="Web Server page" src="./Images/web-page.png" width="auto"></p>
+<p><img alt="Web Server page" src="./images/web-page.png" width="auto"></p>
 <p></details></p>
 
 <ul>
@@ -367,7 +388,7 @@ your requests.</p>
 </code></pre></div><p>Where <code>&lt;your-vm-private-ip&gt;</code> is the same as the IP on your virtual machine</p>
 <p><details></p>
 <p><summary>Final result - logs</summary></p>
-<p><img alt="Panorama logs" src=./Images/palo-logs.png" width="auto"></p>
+<p><img alt="Panorama logs" src=./images/palo-logs.png" width="auto"></p>
 <p></details></p>
 <p><br></p>
 <p>To learn more about Palo Alto firewall logs watch the <a href="https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare%2FHUB%2FNavigating%20Palo%20Alto%20firewall%20logs%2Emp4">Navigating Palo Alto firewall logs</a> KT session</p>
@@ -387,8 +408,8 @@ your requests.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/01-virtual-networks.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2F01-virtual-networks.html%29&amp;labels=bug&amp;title=Re%3A+%27%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/01-virtual-networks.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Virtual+Networks%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2F01-virtual-networks.html%29&amp;labels=bug&amp;title=Re%3A+%27Virtual+Networks%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
@@ -448,6 +469,6 @@ your requests.</p>
   ga('send', 'pageview');
   </script>
 
-    <script src="javascripts/application.js"></script>
+    <script src="../javascripts/application.js"></script>
   </body>
 </html>

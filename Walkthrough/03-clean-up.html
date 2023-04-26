@@ -5,22 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>HMCTS</title>
+    <title>Clean Up - HMCTS</title>
 
-    <link href="stylesheets/manifest.css" rel="stylesheet" />
+    <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//02-aks-cluster.html">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/03-clean-up.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
-      <meta name="twitter:title" content="HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//02-aks-cluster.html" />
+      <meta name="twitter:title" content="Clean Up - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/03-clean-up.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
+      <meta property="og:title" content="Clean Up" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//02-aks-cluster.html" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/03-clean-up.html" />
 
     
   </head>
@@ -72,7 +73,7 @@
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
             <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
-              <div class="search" data-module="search" data-path-to-site-root="./">
+              <div class="search" data-module="search" data-path-to-site-root="../">
   <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://hmcts-platops-goldenpath.github.io/"/>
     <label class="govuk-label search__label" for="search" aria-hidden="true">
@@ -91,21 +92,41 @@
               <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
+<li><a href="../Walkthrough/index.html"><span>Goldenpath PlatOps</span></a>
+<ul>
   <li>
-    <a href="./index.html"><span>Goldenpath PlatOps</span></a>
+    <a href="../Walkthrough/01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
   </li>
   <li>
-    <a href="./02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
+    <a href="../Walkthrough/02-aks-cluster.html"><span>Section 2 - AKS Cluster</span></a>
   </li>
   <li>
-    <a href="./04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+    <a href="../Walkthrough/03-clean-up.html"><span>Section 3 - Clean Up</span></a>
   </li>
   <li>
-    <a href="./03-clean-up.html"><span>Section 3 - Clean Up</span></a>
+    <a href="../Walkthrough/04-futher-steps.html"><span>Section 4 - Further Steps</span></a>
+  </li>
+</ul>
+</li>
+<li><a href="../Technical Documantaion/index.html"><span>Platform Operations</span></a>
+<ul>
+  <li>
+    <a href="../Technical Documantaion/1-clusters"><span>The AKS Cluster</span></a>
   </li>
   <li>
-    <a href="./01-virtual-networks.html"><span>Section 1 - Virtual Networks</span></a>
+    <a href="../Technical Documantaion/4-logs"><span>Logs</span></a>
   </li>
+  <li>
+    <a href="../Technical Documantaion/2-firewalls"><span>Firewalls</span></a>
+  </li>
+  <li>
+    <a href="../Technical Documantaion/3-frontdoor"><span>Azure Frontdoor</span></a>
+  </li>
+  <li>
+    <a href="../Technical Documantaion/5-dns"><span>DNS</span></a>
+  </li>
+</ul>
+</li>
 </ul>
 
 
@@ -115,38 +136,37 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="section-2-aks-cluster">Section 2 - AKS Cluster</h1>
-<p>There is a <a href="https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all">Backstage GoldenPath documentation</a> for the AKS cluster which would walk you through the steps required in creating
-applications in the AKS cluster.</p>
-<p>Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
-entries as described above.</p>
-<h4 id="what-did-i-just-create">What did i just create? <br></h4>
+            <h1 id="section-3-clean-up">Section 3 - Clean Up</h1>
+<p>After completing the above steps you should tear down all the resources created. This
+saves the business money and helps prevent floating resources.</p>
+<p><p>To roll back, do the following.</p></p>
 
 <ul>
-<li>An image of your application in the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/cnp-acr-rg/providers/Microsoft.ContainerRegistry/registries/hmctssandbox/repository">Azure Container registries</a> (ACR)</li>
-<li>A nodejs or java application running on the AKS cluster</li>
-<li>DNS record records as described above</li>
-<li>Azure frontdoor entries as described above</li>
+<li>You need to disassociate the PIP Azure Firewall created from the firewall</li>
 </ul>
 <p><details></p>
-<p><summary>Final result - Application default page</summary></p>
-<p><img alt="Application default page" src="./Images/default-page.png" width="auto"></p>
+<p><summary>Azure Firewall disassociate PIP</summary></p>
+<p><img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto"></p>
 <p></details></p>
-<h4 id="points-to-note-when-going-through-the-aks-steps">Points to note when going through the AKS steps</h4>
 
 <ul>
-<li>Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application</li>
-<li>There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating.</li>
+<li>If you ran the <a href="/lab-azure-resource">labs-azure-resource</a> from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group</li>
 </ul>
-<p>📣 <strong>NOTE:</strong> You need to be on the <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&amp;__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum">VPN</a> to access the Backstage documentation</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    terraform destroy
+</code></pre></div><p>❗️Make sure your account is still set to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription as described in <code>Step 1</code> above</p>
+
+<ul>
+<li>For all the other PR&rsquo;s created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge</li>
+<li>Verify that all the resources no longer exist.</li>
+</ul>
 
             
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/02-aks-cluster.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2F02-aks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/03-clean-up.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Clean+Up%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2F03-clean-up.html%29&amp;labels=bug&amp;title=Re%3A+%27Clean+Up%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
@@ -206,6 +226,6 @@ entries as described above.</p>
   ga('send', 'pageview');
   </script>
 
-    <script src="javascripts/application.js"></script>
+    <script src="../javascripts/application.js"></script>
   </body>
 </html>
