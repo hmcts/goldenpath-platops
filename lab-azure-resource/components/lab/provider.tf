@@ -9,7 +9,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = var.labs_subscription_id
+  subscription_id            = var.subscription_id
   skip_provider_registration = "true"
   features {}
   alias = "labs"
