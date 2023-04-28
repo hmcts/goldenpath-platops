@@ -1,7 +1,11 @@
 terraform {
-  required_version = ">= 1.5.0"
-  backend "azurerm" {} // When using remote
-  #backend "local" {} // When using local
+  backend "local" {} // Remove if using GitHub and Azure DevOps
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.54.0"
+    }
+  }
 }
 
 provider "azurerm" {
@@ -9,7 +13,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = var.subscription_id
+  subscription_id            = var.labs_subscription_id
   skip_provider_registration = "true"
   features {}
   alias = "labs"
