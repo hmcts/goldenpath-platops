@@ -254,22 +254,19 @@ Please note, you need to be on the VPN to access this resource. <p> To find out 
 <p>From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
 in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default</p>
 <p>You should now have resources similar to the following:</p>
-
-<details>
-  <summary>Address Object Entry</summary>
-  <img alt="Address object" src="./images/goldenpath-address.png" width="auto">
-</details>
-
-<details>
-  <summary>Address Group Entry</summary>
-  <img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
-</details>
-
-<details>
-  <summary>Security Policy Entry</summary>
-  <img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
-</details>
-<p><br></p>
+<p><details>
+    <summary>Address Object Entry</summary>
+    <img alt="Address object" src="./images/goldenpath-address.png" width="auto">
+  </details></p>
+<p><details>
+    <summary>Address Group Entry</summary>
+    <img alt="Address group" src="./images/goldenpath-addres-group.png" width="auto">
+  </details></p>
+<p><details>
+    <summary>Security Policy Entry</summary>
+    <img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
+  </details>
+<br></p>
 <h3 id="step-7">Step 7</h3>
 <p>Create an Azure Firewall <a href="https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat">DNAT</a> rule and checkout the <a href="https://github.com/hmcts/rdo-terraform-hub-dmz">rdo-terraform-hub-dmz</a> repo</p>
 <p>To add a new DNAT rule, navigate to the file <a href="https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars">path</a> and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).</p>
@@ -288,17 +285,15 @@ in your vnet. Without this rule your applications or services would be unreachab
 this will create a new public IP address. You can verify your new IP by looking at the IP configuration (in the <code>IP Configuration</code> menu). On the right of
 the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int-palo-labsgoldenpathfelix-pip</code>.</p>
 <p>Resources would be similar to the following:</p>
-
-<details>
-  <summary>IP Configuration</summary>
-  <img alt="IPs" src="./images/ip-configuration.png" width="auto">
-</details>
-
-<details>
-  <summary>Azure Firewall rules</summary>
-  <img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
-</details>
-<p><br></p>
+<p><details>
+    <summary>IP Configuration</summary>
+    <img alt="IPs" src="./images/ip-configuration.png" width="auto">
+  </details></p>
+<p><details>
+    <summary>Azure Firewall rules</summary>
+    <img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
+  </details>
+<br></p>
 <p>📣 Keep a note of the public IP address</p>
 <p>At this point you should be able to access your apache server from your browser by using the default
 DNS record created, which is associated with the Azure Firewall. The DNS record should
@@ -322,12 +317,11 @@ be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cl
 </code></pre></div><p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge</p>
 <p>📣 <strong>NOTE:</strong> You will need to add all 3 entries to enable Azure Front Door verify your DNS record.</p>
 <p>You should now see the similar entries as below</p>
-
-<details>
-  <summary>Public DNS entries</summary>
-  <img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
-</details>
-<p><br></p>
+<p><details>
+    <summary>Public DNS entries</summary>
+    <img alt="DNAT rule" src="./images/dns-entries.png" width="auto">
+  </details>
+<br></p>
 <h3 id="step-9">Step 9</h3>
 <p>Create a corresponding Frontdoor entries.</p>
 <p>Checkout the <a href="https://github.com/hmcts/azure-platform-terraform">azure-platform-terraform</a> repo</p>
