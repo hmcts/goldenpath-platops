@@ -1,11 +1,7 @@
 terraform {
-  backend "local" {} // Remove if using GitHub and Azure DevOps
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.57.0"
-    }
-  }
+  required_version = ">= 1.5.0"
+  backend "azurerm" {} // When using remote
+  #backend "local" {} // When using local
 }
 
 provider "azurerm" {
