@@ -144,8 +144,8 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="prereq-ci-cd-and-svc">Prereq - CI/CD and SVC</h1>
 <p>If these terms are alien to you, this would be a good time to take a pause, grab your favourite beverage and have a read of the follow documentation
- - <a href="https://docs.github.com/en/get-started/using-git/about-git">SVC</a>
- - <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/apps/cd/azure/cicd-data-overview?view=azure-devops">CI/CD</a></p>
+- <a href="https://docs.github.com/en/get-started/using-git/about-git">SVC</a>
+- <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/apps/cd/azure/cicd-data-overview?view=azure-devops">CI/CD</a></p>
 <p>With that out of the way, the first thing we&rsquo;ll need to get setup for the labs is a pipeline as all your code would need to
 run somewhere.
 While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
@@ -159,12 +159,13 @@ might as well get started with that.</p>
 <li>Navigate to the <a href="https://github.com/hmcts">HMCTS</a> git organisations page. If you dont already have access you can
 double check the <a href="https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html">Onboarding Checklist</a> to make sure you have the right access.
 You can also speak to a team member to assist if needed.</li>
-<li>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections if this exercise.</li>
+<li><p>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections if this exercise.</p>
+
+<details>
+  <summary>Create new Git repo</summary>
+  <img alt="Createnew Git repo" src="./images/new-git-repo.png" width="auto">
+</details></li>
 </ul>
-<p><details>
-    <summary>Create new Git repo</summary>
-    <img alt="Createnew Git repo" src="./images/new-git-repo.png" width="auto">
-  </details></p>
 <p><em><em>Note</em>: In a production environment you will need to update a repository&rsquo;s settings to allow merging to <code>master</code> | <code>main</code> only from a branch PR and also to require at least 1 reviewer. You can
   learn more about this in the <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">Managing your repository’s settings and features</a> documentation.</em>
 - <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</p>
@@ -172,24 +173,19 @@ You can also speak to a team member to assist if needed.</li>
 <p>You will also need a devops pipeline to run your code. To create a pipeline follow the steps below</p>
 
 <ul>
-<li>Create a pipeline in Azure Devops. In Azure DevOps, navigate to the HMCTS <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> organisation. On the <code>Pipelines</code> menu, click on <code>Pipelines</code></li>
-</ul>
-<p><details>
-    <summary>Create new DevOps project</summary>
-    <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
-  </details></p>
+<li><p>Create a pipeline in Azure Devops. In Azure DevOps, navigate to the HMCTS <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> organisation. On the <code>Pipelines</code> menu, click on <code>Pipelines</code></p>
 
-<ul>
-<li>Specify where you code repository is, in our case this would be Git</li>
-</ul>
+<details>
+  <summary>Create new DevOps project</summary>
+  <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
+</details></li>
+<li><p>Specify where you code repository is, in our case this would be Git</p>
 <p><details>
-     <summary>Specify Git repository</summary>
-     <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
-   </details></p>
-
-<ul>
-<li>Follow the relevant screens and prompts, select your lab repository in Git which would be an item listed after authentication
-is complete.</li>
+   <summary>Specify Git repository</summary>
+   <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
+ </details></p></li>
+<li><p>Follow the relevant screens and prompts, select your lab repository in Git which would be an item listed after authentication
+is complete.</p></li>
 </ul>
 <h2 id="build-your-resources">Build your resources</h2>
 <p>To get your resources provisioned,  follow the steps below</p>
