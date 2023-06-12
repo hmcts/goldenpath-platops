@@ -2,13 +2,22 @@
 title: Virtual Networks
 weight: 11
 ---
-# Section 1 - Virtual Networks
+## Section 1 - Virtual Networks
 
-<br>
-Checkout [goldenpath-platops](https://github.com/hmcts/goldenpath-platops) repo, change directory into the `labs-azure-resource` folder and follow the below steps in order
-<br>
+### Using Pipeline automation
+If not already done so, navigate to your lab repository created in the setup step.
+> Please follow the steps in the Setup section if not already done so
 
-#### Step 1
+Copy the sample code in the [labs-azure-resource](https://github.com/hmcts/goldenpath-platops) repo, into your root folder. Once you check in your pipeline will trigger
+and terraform will `init` and `plan` your code. You should now be able to review your plan from the Azure Devops pipeline.
+
+### Using Manual automation
+You can execute the terraform command below from your local PC if you opt out of of not following the setup steps.
+
+_*Note* You many run into permission issues using and would need to resolve it with your team members. Strongly advice to take the automation route above as it
+introduces you to the Git repo and Azure DevOps pipelines._
+
+### Step 1
 
 Run the following commands to confirm you are in the right repository
 
@@ -19,8 +28,7 @@ az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
 ```
 
-#### Step 2
-
+### Step 2
 Run the following command terraform commands
 
 ```
@@ -28,18 +36,22 @@ terraform init
 terraform plan
 terraform apply
 ```
+
 Select `yes` to build resource as terraform will prompt you to approve you action
 Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created
+
 <details>
-<summary>Terraform resources</summary>
-<img alt="Address object" src="./images/labs-resources.png" width="auto">
+  <summary>Terraform resources</summary>
+  <img alt="Address object" src="./images/labs-resources.png" width="auto">
 </details>
+
 <br>
 Verify the following exist
 - A Vnet exist
 - VNet has two peerings, one to the Hub and the other to the Core Management Vnet
 - A route table to one default route to `10.10.200.36`
-##### What did i just create?
+
+#### What did i just create?
 - A virtual network that's peered to 2 other vnets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
   VNet peering is essential for communication between the various virtual networks.
   Most importantly, for network traffic to flow from the [Hub](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) vnet where the [Palo Alto](https://www.paloaltonetworks.com/) firewall lives to your vnet they need to be peered
@@ -52,7 +64,7 @@ Verify the following exist
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 <br>
 
-#### Step 3
+### Step 3
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
 Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new address object called `labs-goldenpath-<yourname>` (example below)
@@ -89,7 +101,7 @@ The ordering of security rules doesn't matter, however we recommend you add this
 to allow traffic coming from the untrusted zone, internet traffic and to your Vnet in the trusted zone
 <br>
 
-#### Step 4
+### Step 4
 
 Add your new address object to the `G_trusted` group and this allows your Vnet to communicate with other Vnets. For example, when you're logged in via the VPN you can ssh via the bastions to your virtual machine as both the bastions vnet and your new vnet are part of the `G_trusted` group comminication is allow via the `trusted-allow` security policy on the Palo Alto firewall.
 
@@ -111,7 +123,7 @@ Example below
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 
-#### Step 5
+### Step 5
 
 Get a [team member](https://tools.hmcts.net/confluence/display/DTSPO/Team+Structure) to review your PR, merge after you also have review the terraform plan after approvals have been received.
 You can either request a specific team member to review or request everyone in a squad or every in platform operations.
@@ -128,7 +140,7 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 <br>
 
 
-#### Step 6
+### Step 6
 
 Log into the [sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and verify your changes are in place.
 Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation.</p>
@@ -136,7 +148,7 @@ Please note, you need to be on the VPN to access this resource. <p> To find out 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br>
 
-##### What did i just create?
+#### What did i just create?
 From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
 in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
 
@@ -168,7 +180,7 @@ You should now have resources similar to the following:
 </details>
 <br>
 
-#### Step 7
+### Step 7
 Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
 
 To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
@@ -218,7 +230,7 @@ At this point you should be able to access your apache server from your browser 
 DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
 
-#### Step 8
+### Step 8
 
 Create a Public DNS record.
 
@@ -256,7 +268,7 @@ You should now see the similar entries as below
 </details>
 <br>
 
-#### Step 9
+### Step 9
 
 Create a corresponding Frontdoor entries.
 
@@ -279,7 +291,7 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
 
 📣 **Note:** This resource takes a few minutes to complete, you can go grab a cup of coffee or tea
 
-##### What did i just create?
+#### What did i just create?
 A custom domain that matches to your DNS entry created above, a backend pool that frontdoor sends request to which matches
 the public ip created above and attached to the Azure firewall and a routing rule that Azure frontdoor needs to process
 your requests.
@@ -309,7 +321,7 @@ your requests.
   </details>
   <br>
 
-#### Step 10
+### Step 10
 
 Verify that you can
 

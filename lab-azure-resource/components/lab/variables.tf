@@ -39,10 +39,14 @@ variable "builtFrom" {
   default = "labs"
 }
 
+variable "env" {
+  default = "sbox"
+}
+
 variable "hub_sbox_subscription_id" {
   default = "ea3a8c1e-af9d-4108-bc86-a7e2d267f49c"
 }
 
-variable "labs_subscription_id" {
+variable "subscription_id" {
   default = "a8140a9e-f1b0-481f-a4de-09e2ee23f7ab"
 }
