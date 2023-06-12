@@ -150,13 +150,13 @@
 <li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/apps/cd/azure/cicd-data-overview?view=azure-devops">CI/CD</a></li>
 </ul>
 <p>With that out of the way, the first thing we&rsquo;ll need to get setup for the labs is a pipeline as all your code would need to
-run somewhere.
-While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
+run somewhere.</p>
+<p>While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
 advice that you always stick to having your code in a git repo.</p>
-<p>This section will introduce you to out Git repo and Azure DevOps pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
+<p>This section will introduce you to our <a href="https://github.com/hmcts">Git</a> repo and <a href="https://dev.azure.com/hmcts">Azure DevOps</a> pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
 might as well get started with that.</p>
 <h2 id="lab-git-repo">Lab Git Repo</h2>
-<p>Platform Operations used Git for it&rsquo;s source control. To create a lab repo follow the steps below</p>
+<p>Platform Operations uses Git for it&rsquo;s source control. To create a lab repo follow the steps below</p>
 
 <ul>
 <li>Navigate to the <a href="https://github.com/hmcts">HMCTS</a> git organisations page. If you dont already have access you can
@@ -170,8 +170,11 @@ You can also speak to a team member to assist if needed.</li>
 </details></li>
 </ul>
 <p><em><em>Note</em>: In a production environment you will need to update a repository&rsquo;s settings to allow merging to <code>master</code> | <code>main</code> only from a branch PR and also to require at least 1 reviewer. You can
-  learn more about this in the <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">Managing your repository’s settings and features</a> documentation.</em>
-- <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</p>
+  learn more about this in the <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">Managing your repository’s settings and features</a> documentation.</em></p>
+
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</li>
+</ul>
 <h2 id="lab-pipeline">Lab Pipeline</h2>
 <p>You will also need a devops pipeline to run your code. To create a pipeline follow the steps below</p>
 
@@ -211,7 +214,7 @@ is complete.</p></li>
 <p>Alot has happened and is a good place to walk your through what&rsquo;s taken place&hellip; (TBC)</p>
 <h2 id="clean-up">Clean Up</h2>
 <p>At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
-in <a href="./Walkthrough/cleam-up.html">Section 3 - Clean Up</a></p>
+in <a href="clean-up.html">Section 3 - Clean Up</a></p>
 
             
           </main>

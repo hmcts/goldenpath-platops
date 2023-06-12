@@ -152,17 +152,17 @@
 <p>Copy the sample code in the <a href="https://github.com/hmcts/goldenpath-platops">labs-azure-resource</a> repo, into your root folder. Once you check in your pipeline will trigger
 and terraform will <code>init</code> and <code>plan</code> your code. You should now be able to review your plan from the Azure Devops pipeline.</p>
 <h3 id="using-manual-automation">Using Manual automation</h3>
-<p>You can execute the terraform command below from your local PC if you opt out of of not following the setup steps.</p>
-<p><em><em>Note</em> You many run into permission issues using and would need to resolve it with your team members. Strongly advice to take the automation route above as it
-introduces you to the Git repo and Azure DevOps pipelines.</em></p>
+<p>You can execute the terraform command below from your local PC if you opt out of not following the setup steps.</p>
+<p><em><em>Note</em> You many run into permission issues using the manual process and would need to resolve it with your team members. Strongly advice to take the automation route above as it
+introduces you to the Git repo and Azure DevOps pipelines and some other important concepts.</em></p>
 <h3 id="step-1">Step 1</h3>
-<p>Run the following commands to confirm you are in the right repository</p>
+<p>Run the following commands to confirm you are in the right repository (if running from your local machine)</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>az login
 az account show
 az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
-</code></pre></div><h3 id="step-2">Step 2</h3>
-<p>Run the following command terraform commands</p>
+</code></pre></div><h3 id="step-2a">Step 2a</h3>
+<p>Run the following command terraform commands (if running from your local machine)</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform plan
 terraform apply
@@ -173,11 +173,16 @@ Log into the Azure portal and navigate to the <code>DTS-SHAREDSERVICES-SBOX</cod
   <summary>Terraform resources</summary>
   <img alt="Address object" src="./images/labs-resources.png" width="auto">
 </details>
-<p><br>
-Verify the following exist
-- A Vnet exist
-- VNet has two peerings, one to the Hub and the other to the Core Management Vnet
-- A route table to one default route to <code>10.10.200.36</code></p>
+<h3 id="step-2b">Step 2b</h3>
+<p>If using the pipeline a commit will init and plan your project. You can also optionally manually trigger a <code>plan</code> or <code>apply</code> from the devops UI
+In a production environment, its advised not to manually <code>apply</code> on master. <code>apply</code> should happen on merge of your PR.</p>
+<p>Verify the following exist</p>
+
+<ul>
+<li>A Vnet exist</li>
+<li>VNet has two peerings, one to the Hub and the other to the Core Management Vnet</li>
+<li>A route table to one default route to <code>10.10.200.36</code></li>
+</ul>
 <h4 id="what-did-i-just-create">What did i just create?</h4>
 
 <ul>
