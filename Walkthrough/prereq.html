@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>AKS Cluster - HMCTS</title>
+    <title>Lab Repository and Pipeline - HMCTS</title>
 
     <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/aks-cluster.html">
+    <link rel="canonical" href="https://hmcts-platops-goldenpath.github.io//Walkthrough/prereq.html">
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="hmcts-platops-goldenpath.github.io" />
       <meta name="twitter:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
-      <meta name="twitter:title" content="AKS Cluster - HMCTS" />
-      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/aks-cluster.html" />
+      <meta name="twitter:title" content="Lab Repository and Pipeline - HMCTS" />
+      <meta name="twitter:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/prereq.html" />
 
       <meta property="og:image" content="https://hmcts-platops-goldenpath.github.io//images/govuk-large.png" />
       <meta property="og:site_name" content="HMCTS" />
-      <meta property="og:title" content="AKS Cluster" />
+      <meta property="og:title" content="Lab Repository and Pipeline" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/aks-cluster.html" />
+      <meta property="og:url" content="https://hmcts-platops-goldenpath.github.io//Walkthrough/prereq.html" />
 
     
   </head>
@@ -142,38 +142,84 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="section-2-aks-cluster">Section 2 - AKS Cluster</h1>
-<p>There is a <a href="https://backstage.platform.hmcts.net/docs?filters%5Buser%5D=all">Backstage GoldenPath documentation</a> for the AKS cluster which would walk you through the steps required in creating
-applications in the AKS cluster.</p>
-<p>Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
-entries as described above.</p>
-<h3 id="what-did-i-just-create">What did i just create? <br></h3>
+            <h1 id="prereq-ci-cd-and-svc">Prereq - CI/CD and SVC</h1>
+<p>If these terms are alien to you, this would be a good time to take a pause, grab your favourite beverage and have a read of the follow documentation
+ - <a href="https://docs.github.com/en/get-started/using-git/about-git">SVC</a>
+ - <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/apps/cd/azure/cicd-data-overview?view=azure-devops">CI/CD</a></p>
+<p>With that out of the way, the first thing we&rsquo;ll need to get setup for the labs is a pipeline as all your code would need to
+run somewhere.
+While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
+advice that you always stick to having your code in a git repo.</p>
+<p>This section will introduce you to out Git repo and Azure DevOps pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
+might as well get started with that.</p>
+<h2 id="lab-git-repo">Lab Git Repo</h2>
+<p>Platform Operations used Git for it&rsquo;s source control. To create a lab repo follow the steps below</p>
 
 <ul>
-<li>An image of your application in the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/cnp-acr-rg/providers/Microsoft.ContainerRegistry/registries/hmctssandbox/repository">Azure Container registries</a> (ACR)</li>
-<li>A nodejs or java application running on the AKS cluster</li>
-<li>DNS record records as described above</li>
-<li>Azure frontdoor entries as described above</li>
+<li>Navigate to the <a href="https://github.com/hmcts">HMCTS</a> git organisations page. If you dont already have access you can
+double check the <a href="https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html">Onboarding Checklist</a> to make sure you have the right access.
+You can also speak to a team member to assist if needed.</li>
+<li>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections if this exercise.</li>
 </ul>
 <p><details>
-    <summary>Final result - Application default page</summary>
-    <img alt="Application default page" src="./images/default-page.png" width="auto">
+    <summary>Create new Git repo</summary>
+    <img alt="Createnew Git repo" src="./images/new-git-repo.png" width="auto">
   </details></p>
-<h4 id="points-to-note-when-going-through-the-aks-steps">Points to note when going through the AKS steps</h4>
+<p><em><em>Note</em>: In a production environment you will need to update a repository&rsquo;s settings to allow merging to <code>master</code> | <code>main</code> only from a branch PR and also to require at least 1 reviewer. You can
+  learn more about this in the <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">Managing your repository’s settings and features</a> documentation.</em>
+- <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</p>
+<h2 id="lab-pipeline">Lab Pipeline</h2>
+<p>You will also need a devops pipeline to run your code. To create a pipeline follow the steps below</p>
 
 <ul>
-<li>Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application</li>
-<li>There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating.</li>
+<li>Create a pipeline in Azure Devops. In Azure DevOps, navigate to the HMCTS <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> organisation. On the <code>Pipelines</code> menu, click on <code>Pipelines</code></li>
 </ul>
-<p>📣 <strong>NOTE:</strong> You need to be on the <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&amp;__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum">VPN</a> to access the Backstage documentation</p>
+<p><details>
+    <summary>Create new DevOps project</summary>
+    <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
+  </details></p>
+
+<ul>
+<li>Specify where you code repository is, in our case this would be Git</li>
+</ul>
+<p><details>
+     <summary>Specify Git repository</summary>
+     <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
+   </details></p>
+
+<ul>
+<li>Follow the relevant screens and prompts, select your lab repository in Git which would be an item listed after authentication
+is complete.</li>
+</ul>
+<h2 id="build-your-resources">Build your resources</h2>
+<p>To get your resources provisioned,  follow the steps below</p>
+
+<ul>
+<li>In the <code>lab-azure-resource folder</code> copy all the files into your repo root folder. Your folder should now look like this</li>
+</ul>
+<div class="highlight"><pre class="highlight markdown" tabindex="0"><code>  .
+  ├── azure-pipelines.yaml
+  └── components
+    └── lab
+        ├── main.tf
+        ├── provider.tf
+        └── variables.tf
+</code></pre></div>
+<ul>
+<li>Commit and push to your repo. This will trigger a devops pipeline run.</li>
+</ul>
+<h4 id="what-did-i-just-create">What did i just create?</h4>
+<p>Alot has happened and is a good place to walk your through whats taken place</p>
+<h2 id="clean-up">Clean Up</h2>
+<p>At the end of the exercise you are required to delete these repository and pipeline as good practice 🤗.</p>
 
             
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/aks-cluster.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27AKS+Cluster%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2Faks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27AKS+Cluster%27">Report problem</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/blob/master/source/Walkthrough/prereq.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/hmcts/goldenpath-platops/issues/new?body=Problem+with+%27Lab+Repository+and+Pipeline%27+%28https%3A%2F%2Fhmcts-platops-goldenpath.github.io%2F%2FWalkthrough%2Fprereq.html%29&amp;labels=bug&amp;title=Re%3A+%27Lab+Repository+and+Pipeline%27">Report problem</a></li>
                 <li><a href="https://github.com/hmcts/goldenpath-platops">GitHub Repo</a></li>
               </ul>
           </aside>
