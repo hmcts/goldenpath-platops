@@ -12,14 +12,14 @@ Copy the sample code in the [labs-azure-resource](https://github.com/hmcts/golde
 and terraform will `init` and `plan` your code. You should now be able to review your plan from the Azure Devops pipeline.
 
 ### Using Manual automation
-You can execute the terraform command below from your local PC if you opt out of of not following the setup steps.
+You can execute the terraform command below from your local PC if you opt out of not following the setup steps.
 
-_*Note* You many run into permission issues using and would need to resolve it with your team members. Strongly advice to take the automation route above as it
-introduces you to the Git repo and Azure DevOps pipelines._
+_*Note* You many run into permission issues using the manual process and would need to resolve it with your team members. Strongly advice to take the automation route above as it
+introduces you to the Git repo and Azure DevOps pipelines and some other important concepts._
 
 ### Step 1
 
-Run the following commands to confirm you are in the right repository
+Run the following commands to confirm you are in the right repository (if running from your local machine)
 
 ```
 az login
@@ -28,8 +28,8 @@ az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
 ```
 
-### Step 2
-Run the following command terraform commands
+### Step 2a
+Run the following command terraform commands (if running from your local machine)
 
 ```
 terraform init
@@ -45,8 +45,12 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
   <img alt="Address object" src="./images/labs-resources.png" width="auto">
 </details>
 
-<br>
+### Step 2b
+If using the pipeline a commit will init and plan your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI
+In a production environment, its advised not to manually `apply` on master. `apply` should happen on merge of your PR.
+
 Verify the following exist
+
 - A Vnet exist
 - VNet has two peerings, one to the Hub and the other to the Core Management Vnet
 - A route table to one default route to `10.10.200.36`

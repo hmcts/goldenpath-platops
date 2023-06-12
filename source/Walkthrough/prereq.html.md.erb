@@ -11,14 +11,15 @@ If these terms are alien to you, this would be a good time to take a pause, grab
 
 With that out of the way, the first thing we'll need to get setup for the labs is a pipeline as all your code would need to
 run somewhere.
+
 While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
 advice that you always stick to having your code in a git repo.
 
-This section will introduce you to out Git repo and Azure DevOps pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
+This section will introduce you to our [Git](https://github.com/hmcts) repo and [Azure DevOps](https://dev.azure.com/hmcts) pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
 might as well get started with that.
 
 ## Lab Git Repo
-Platform Operations used Git for it's source control. To create a lab repo follow the steps below
+Platform Operations uses Git for it's source control. To create a lab repo follow the steps below
 
 - Navigate to the [HMCTS](https://github.com/hmcts) git organisations page. If you dont already have access you can
   double check the [Onboarding Checklist](https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html) to make sure you have the right access.
@@ -32,6 +33,7 @@ Platform Operations used Git for it's source control. To create a lab repo follo
 
   _*Note*: In a production environment you will need to update a repository's settings to allow merging to `master` | `main` only from a branch PR and also to require at least 1 reviewer. You can
   learn more about this in the [Managing your repository’s settings and features](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository) documentation._
+
 - [Clone](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) your new repo to your local machine as you will need this later.
 
 
@@ -77,4 +79,4 @@ Alot has happened and is a good place to walk your through what's taken place...
 
 ## Clean Up
 At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
-in [Section 3 - Clean Up](./Walkthrough/cleam-up.html)
+in [Section 3 - Clean Up](./clean-up.html)
