@@ -123,10 +123,10 @@
     <a href="../Technical Documantaion/3-frontdoor"><span>Azure Frontdoor</span></a>
   </li>
   <li>
-    <a href="../Technical Documantaion/4-logs"><span>Logs</span></a>
+    <a href="../Technical Documantaion/2-firewalls"><span>Firewalls</span></a>
   </li>
   <li>
-    <a href="../Technical Documantaion/2-firewalls"><span>Firewalls</span></a>
+    <a href="../Technical Documantaion/4-logs"><span>Logs</span></a>
   </li>
   <li>
     <a href="../Technical Documantaion/5-dns"><span>DNS</span></a>
@@ -233,9 +233,9 @@ Your repo folder on your local machine should now look like this</li>
 <h4 id="what-did-i-just-create">What did i just create?</h4>
 <p>A lot has happened and is a good place to walk you through what&rsquo;s taken place so far</p>
 
-<ol>
+<ul>
 <li>If you have a look into the pipeline <code>yaml</code> file you will notice the following piece of config</li>
-</ol>
+</ul>
 <div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">resources</span><span class="pi">:</span>
   <span class="na">repositories</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">repository</span><span class="pi">:</span> <span class="s">cnp-azuredevops-libraries</span>
@@ -245,11 +245,11 @@ Your repo folder on your local machine should now look like this</li>
       <span class="na">endpoint</span><span class="pi">:</span> <span class="s1">'</span><span class="s">hmcts'</span>
 </code></pre></div><p>This loads a central template resource that used in all our repos to provide base or required functionality that most pipelines need, you don&rsquo;t have to configure certain functionality from scratch, you simply reuse.<br>Have a look at the <a href="https://github.com/hmcts/cnp-azuredevops-libraries">cnp-azuredevops-libraries</a> repo to findout what capabilities this can give you in your other projects.</p>
 
-<ol>
+<ul>
 <li><p>You have all the terraform resource configuration that will spin up your lab resources</p></li>
 <li><p>You dont need to manually run or define <code>plan</code> or <code>apply</code> stages why?&hellip; yes, you guessed right, because it&rsquo;s already configured in the <code>cnp-azuredevops-libraries</code>&lsquo;s <a href="https://github.com/hmcts/cnp-azuredevops-libraries/blob/master/steps/terraform.yaml">terraform</a> step.
 This is done by using the functionality as below</p></li>
-</ol>
+</ul>
 <div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="pi">-</span> <span class="na">stage</span><span class="pi">:</span> <span class="s">deploy</span>
   <span class="na">jobs</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">PlanAndApply</span>
@@ -259,9 +259,9 @@ This is done by using the functionality as below</p></li>
           <span class="s">...</span>
 </code></pre></div><p>and pass in the required parameters</p>
 
-<ol>
+<ul>
 <li>Thank us later, you now have a default template that you can always use as a starting point on most repo&rsquo;s you will create in the real world 😎.</li>
-</ol>
+</ul>
 <h2 id="clean-up">Clean Up</h2>
 <p>At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
 in <a href="clean-up.html">Section 3 - Clean Up</a></p>
