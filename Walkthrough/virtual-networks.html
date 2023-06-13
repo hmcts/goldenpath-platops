@@ -201,8 +201,10 @@ Most importantly, for network traffic to flow from the <a href="https://tools.hm
 Select the virtual network and copy the vnet address cidr e.g. <code>10.10.7.0/25</code> yours would be different if you used a different CIDR
 <br></li>
 </ul>
-<p><em>Assignment</em> 📕 If you want a bit of a stretch, notice that the vm&rsquo;s credentials are hard coded and checked into the git repo? That&rsquo;s a big no no in the real world. You could try adding a <a href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault">key vault</a> resource that holds the vm&rsquo;s username and password and also use the <a href="https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password">random_password</a> provider to generate your vm&rsquo;s password.
-Take note of <a href="https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies">dependencies</a>, make sure your key vault and values are created first. Happy Hunting!!!.</p>
+<p><strong>Assignment</strong> 📕 If you want a bit of a stretch, notice that the vm&rsquo;s credentials are hard coded and checked into the git repo? That&rsquo;s a big no no in the real world.</p>
+<p>You could try adding a <a href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault">key vault</a> resource that holds the vm&rsquo;s username and password and also use the <a href="https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password">random password</a> provider to generate your vm&rsquo;s password.
+Take note of <a href="https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies">dependencies</a>, make sure your key vault and values are created first.</p>
+<p>Happy Hunting!!!.</p>
 <h3 id="step-3">Step 3</h3>
 <p>Checkout the <a href="https://github.com/hmcts/hub-panorama-terraform">hub-panorama-terraform</a> repo and create a new branch.
 Navigate to <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf">02-addresses-sbox.tf</a> file and add a new <a href="https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-address-object-to-represent-ip-addresses/address-objects">address object</a> called <code>labs-goldenpath-&lt;yourname&gt;</code> (example below)
