@@ -102,37 +102,41 @@ A lot has happened and is a good place to walk you through what's taken place so
 
 - If you have a look into the pipeline `yaml` file you will notice the following piece of config
 
-```yaml
-resources:
-  repositories:
-    - repository: cnp-azuredevops-libraries
-      type: github
-      ref: refs/heads/master
-      name: hmcts/cnp-azuredevops-libraries
-      endpoint: 'hmcts'
-```
+  ```yaml
+  resources:
+    repositories:
+      - repository: cnp-azuredevops-libraries
+        type: github
+        ref: refs/heads/master
+        name: hmcts/cnp-azuredevops-libraries
+        endpoint: 'hmcts'
+  ```
 
-This loads a central template resource that used in all our repos to provide base or required functionality that most pipelines need, you don't have to configure certain functionality from scratch, you simply reuse.<br>Have a look at the [cnp-azuredevops-libraries](https://github.com/hmcts/cnp-azuredevops-libraries) repo to findout what capabilities this can give you in your other projects.
+  This loads a central template resource that used in all our repos to provide base or required functionality that most pipelines need, you don't have to configure certain functionality from scratch, you simply reuse.
+
+  Have a look at the [cnp-azuredevops-libraries](https://github.com/hmcts/cnp-azuredevops-libraries) repo to findout what capabilities this can give you in your other projects.
 
 - You have all the terraform resource configuration that will spin up your lab resources
 
 - You dont need to manually run or define `plan` or `apply` stages why?... yes, you guessed right, because it's already configured in the `cnp-azuredevops-libraries`'s [terraform](https://github.com/hmcts/cnp-azuredevops-libraries/blob/master/steps/terraform.yaml) step.
-   This is done by using the functionality as below
 
-```yaml
-- stage: deploy
-  jobs:
-    - job: PlanAndApply
-      steps:
-        - template: steps/terraform.yaml@cnp-azuredevops-libraries
-          parameters:
-          ...
-```
+  This is done by using the functionality as below
 
-and pass in the required parameters
+  ```yaml
+  - stage: deploy
+    jobs:
+      - job: PlanAndApply
+        steps:
+          - template: steps/terraform.yaml@cnp-azuredevops-libraries
+            parameters:
+            ...
+  ```
 
-- Thank us later, you now have a default template that you can always use as a starting point on most repo's you will create in the real world 😎.
+  and pass in the required parameters
+
+- Thank us later 😉, you now have a default template that you can always use as a starting point on most repo's you will create in the real world 😎.
 
 ## Clean Up
-At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
-in [Section 3 - Clean Up](./clean-up.html)
+At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗.
+
+More details in [Section 3 - Clean Up](./clean-up.html)
