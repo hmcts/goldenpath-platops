@@ -100,7 +100,7 @@ To get your resources provisioned,  follow the steps below
 #### What did i just create?
 A lot has happened and is a good place to walk you through what's taken place so far
 
-1. If you have a look into the pipeline `yaml` file you will notice the following piece of config
+- If you have a look into the pipeline `yaml` file you will notice the following piece of config
 
 ```yaml
 resources:
@@ -114,9 +114,9 @@ resources:
 
 This loads a central template resource that used in all our repos to provide base or required functionality that most pipelines need, you don't have to configure certain functionality from scratch, you simply reuse.<br>Have a look at the [cnp-azuredevops-libraries](https://github.com/hmcts/cnp-azuredevops-libraries) repo to findout what capabilities this can give you in your other projects.
 
-2. You have all the terraform resource configuration that will spin up your lab resources
+- You have all the terraform resource configuration that will spin up your lab resources
 
-3. You dont need to manually run or define `plan` or `apply` stages why?... yes, you guessed right, because it's already configured in the `cnp-azuredevops-libraries`'s [terraform](https://github.com/hmcts/cnp-azuredevops-libraries/blob/master/steps/terraform.yaml) step.
+- You dont need to manually run or define `plan` or `apply` stages why?... yes, you guessed right, because it's already configured in the `cnp-azuredevops-libraries`'s [terraform](https://github.com/hmcts/cnp-azuredevops-libraries/blob/master/steps/terraform.yaml) step.
    This is done by using the functionality as below
 
 ```yaml
@@ -131,7 +131,7 @@ This loads a central template resource that used in all our repos to provide bas
 
 and pass in the required parameters
 
-4. Thank us later, you now have a default template that you can always use as a starting point on most repo's you will create in the real world 😎.
+- Thank us later, you now have a default template that you can always use as a starting point on most repo's you will create in the real world 😎.
 
 ## Clean Up
 At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
