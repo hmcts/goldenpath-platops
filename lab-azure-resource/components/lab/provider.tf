@@ -23,7 +23,7 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  subscription_id            = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
+  subscription_id            = "ed302caf-ec27-4c64-a05e-85731c3ce90e" # Update current VPN subscription id if this no longer exists
   skip_provider_registration = "true"
   features {}
   alias = "vpn"

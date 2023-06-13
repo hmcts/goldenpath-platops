@@ -5,17 +5,16 @@ weight: 11
 # Section 1 - Virtual Networks
 
 ### Using Pipeline automation
-If not already done so, navigate to your lab repository created in the setup step.
-> Please follow the steps in the Setup section if not already done so
+If not already done so, navigate to your lab repository created in the [Prereq](./prereq.html) section.
+> 📣 Please follow the steps in that section if not already done so
 
-Copy the sample code in the [labs-azure-resource](https://github.com/hmcts/goldenpath-platops) repo, into your root folder. Once you check in your pipeline will trigger
-and terraform will `init` and `plan` your code. You should now be able to review your plan from the Azure Devops pipeline.
+Once you check in, following the Prereq steps, your pipeline will trigger and terraform will `init` and `plan` your code. You should now be able to review your plan from the Azure Devops pipeline.
+> ❗️ Make it a habit to always review your terraform plan. Even if you think you know what's in it already
 
 ### Using Manual automation
-You can execute the terraform command below from your local PC if you opt out of not following the setup steps.
+You can execute the terraform command below from your local PC if you opted out of not following the setup steps. I strongly advice to take the automation route though as it introduces you to the Git repo and Azure DevOps pipelines and some other important concepts in Platform Operations.
 
-_*Note* You many run into permission issues using the manual process and would need to resolve it with your team members. Strongly advice to take the automation route above as it
-introduces you to the Git repo and Azure DevOps pipelines and some other important concepts._
+*Note* You many run into permission issues using the manual process and would need to resolve it with your team members.
 
 ### Step 1
 
@@ -34,11 +33,11 @@ Run the following command terraform commands (if running from your local machine
 ```
 terraform init
 terraform plan
-terraform apply
+terraform apply or terraform apply -auto-approve
 ```
 
-Select `yes` to build resource as terraform will prompt you to approve you action
-Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created
+Select `yes` to build resource as terraform will prompt you to approve you action if the `-auto-approve` is not provided
+Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created. Search for your resource group name
 
 <details>
   <summary>Terraform resources</summary>
@@ -48,17 +47,17 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 <br>
 
 ### Step 2b
-If using the pipeline a commit will init and plan your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI
+If using the pipeline, a commit will `init` and `plan` your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI.
 In a production environment, its advised not to manually `apply` on master. `apply` should happen on merge of your PR.
 
 Verify the following exist
 
-- A Vnet exist
-- VNet has two peerings, one to the Hub and the other to the Core Management Vnet
+- A virtual network (VNet) exist
+- VNet has two peerings, one to the HMCTS Hub VNet and the other to the Core Management VNet
 - A route table to one default route to `10.10.200.36`
 
 #### What did i just create?
-- A virtual network that's peered to 2 other vnets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
+- A virtual network that's peered to 2 other VNets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
   VNet peering is essential for communication between the various virtual networks.
   Most importantly, for network traffic to flow from the [Hub](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) vnet where the [Palo Alto](https://www.paloaltonetworks.com/) firewall lives to your vnet they need to be peered
 - [Tagged](https://tools.hmcts.net/confluence/display/DTSPO/Tagging+v1) resources using the [tagging module](https://github.com/hmcts/terraform-module-common-tags). Tagging is an important part of the way we manage resources and is essential for managing running infrastructure and cost. This is enforced via Azure Policy and is defined in the [azure-policy](https://github.com/hmcts/azure-policy) repo
@@ -70,10 +69,13 @@ Verify the following exist
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 <br>
 
+*Assignment* 📕 If you want a bit of a stretch, notice that the vm's credentials are hard coded and checked into the git repo? That's a big no no in the real world. You could try adding a [key vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) resource that holds the vm's username and password and also use the [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) provider to generate your vm's password.
+Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies), make sure your key vault and values are created first. Happy Hunting!!!.
+
 ### Step 3
 
-Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch
-Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new address object called `labs-goldenpath-<yourname>` (example below)
+Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch.
+Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new [address object](https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-address-object-to-represent-ip-addresses/address-objects) called `labs-goldenpath-<yourname>` (example below)
 <br>
 
 ```json
@@ -86,6 +88,7 @@ Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terrafo
 ```
 
 The value should be the cidr address space of your vnet
+
 Next navigate to the [sandbox policy rules](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/02-security-profiles.tf) file and
 create a new security policy with the following details
 
@@ -105,15 +108,15 @@ create a new security policy with the following details
   }
 ```
 
-The ordering of security rules doesn't matter, however we recommend you add this just after the "trusted-default" policy. This is telling the firewall
-to allow traffic coming from the untrusted zone, internet traffic and to your Vnet in the trusted zone
+The ordering of security rules *doesn't matter*, however we recommend you add this just after the `trusted-default` policy. This is telling the firewall
+to allow traffic coming from the "untrusted" zone, internet traffic to your lab VNet in the "trusted" zone
 <br>
 
 ### Step 4
 
-Add your new address object to the `G_trusted` group and this allows your Vnet to communicate with other Vnets. For example, when you're logged in via the VPN you can ssh via the bastions to your virtual machine as both the bastions vnet and your new vnet are part of the `G_trusted` group comminication is allow via the `trusted-allow` security policy on the Palo Alto firewall.
+Adding your new address object to the `G_trusted` group will allow your VNet to communicate with other VNets i.e. East/West network flows. For example, when you're logged in via the VPN you can ssh via the bastions to your virtual machine as both the bastion vnet and your new lab vnet are part of the `G_trusted` group communication is allowed via the `trusted-allow` security policy on the Palo Alto firewall.
 
-To do this, navigate to the Address Group folder to [02-address-groups-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-groups/02-address-groups-sbox.tf) . Add your new address object to the existing `G_trusted` group's `static_addresses` list e.g. add `labs-goldenpath-<yourname>`.
+To do this, navigate to the Address Group folder to [02-address-groups-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-groups/02-address-groups-sbox.tf), add your new address object to the existing `G_trusted` group's `static_addresses` list e.g. add `labs-goldenpath-<yourname>`.
 
 Example below
 
@@ -133,8 +136,8 @@ Example below
 
 ### Step 5
 
-Get a [team member](https://tools.hmcts.net/confluence/display/DTSPO/Team+Structure) to review your PR, merge after you also have review the terraform plan after approvals have been received.
-You can either request a specific team member to review or request everyone in a squad or every in platform operations.
+Get a [team member](https://tools.hmcts.net/confluence/display/DTSPO/Team+Structure) to review your PR, merge after you have reviewed the terraform plan and approvals have been received.
+You can either request a specific team member to review or request everyone in a Squad or every in platform operations.
 By default, 3 members would be selected randomly for you in most repos, you can set up Git [notify](https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FNotifications%2C%20pull%20requests%2C%20how%20can%20we%20do%20it%20better%2Emp4) to keep you informed.
 
 <details>
@@ -142,18 +145,18 @@ By default, 3 members would be selected randomly for you in most repos, you can 
   <img alt="Git reviewers" src="./images/git-reviewers.png" width="auto">
 </details>
 
-<br>
-
 ### Step 6
 
 Log into the [sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and verify your changes are in place.
-Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation.</p>
+Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation.
+If having issues logging into Panorama UI have a look at this [Panorama Walkthrough](https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions) session.
+</p>
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br>
 
 #### What did i just create?
-From the above entries you have created a security policy that allows network request flow through the firewall to yourvirtual machince
+From the above entries you have created a security policy that allows network request flow through the firewall to your virtual machine
 in your vnet. Without this rule your applications or services would be unreachable as they are not accessible from the internet by default
 
 
@@ -173,7 +176,7 @@ You should now have resources similar to the following:
     <summary>Security Policy Entry</summary>
     <img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
   </details>
-<br>
+
 
 ### Step 7
 Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
@@ -321,7 +324,7 @@ Verify that you can
 
   <details>
     <summary>Final result - logs</summary>
-    <img alt="Panorama logs" src=./images/palo-logs.png" width="auto">
+    <img alt="Panorama logs" src="./images/palo-logs.png" width="auto">
   </details>
 
   <br>
