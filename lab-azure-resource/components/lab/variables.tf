@@ -1,6 +1,6 @@
 /*
-VNet Cidr address space ranges that can be used
-In the case some else is running the labs as well
+ * VNet Cidr address space ranges that can be used
+ * In the case some else is running the labs as well
 -----
 1	10.10.0.0/25
 2	10.10.0.128/25

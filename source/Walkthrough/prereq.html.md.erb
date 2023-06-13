@@ -12,35 +12,40 @@ If these terms are alien to you, this would be a good time to take a pause, grab
 With that out of the way, the first thing we'll need to get setup for the labs is a pipeline as all your code would need to
 run somewhere.
 
-While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or cloud accounts, we
-advice that you always stick to having your code in a git repo.
+While we can execute our terraform code manually, as explained in the next section and mainly in lab environments or personal cloud accounts, we
+advice that you stick to having your code in a git repo in your live environments.
 
 This section will introduce you to our [Git](https://github.com/hmcts) repo and [Azure DevOps](https://dev.azure.com/hmcts) pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
 might as well get started with that.
 
 ## Lab Git Repo
-Platform Operations uses Git for it's source control. To create a lab repo follow the steps below
+Platform Operations uses Git for it's source control. To create a repo for your lab, follow the steps below
 
 - Navigate to the [HMCTS](https://github.com/hmcts) git organisations page. If you dont already have access you can
   double check the [Onboarding Checklist](https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html) to make sure you have the right access.
-  You can also speak to a team member to assist if needed.
-- Create a new git repo. Call this repo `lab-yourname-goldenpath`. You can follow this convention in other sections if this exercise.
+  You can also speak to a team member to assist if needed. [#platform-operations](https://hmcts-reform.slack.com/archives/C01APTJAM7D)
+- Create a new git repo. Call this repo `lab-yourname-goldenpath`. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs.
 
     <details>
       <summary>Create new Git repo</summary>
       <img alt="Createnew Git repo" src="./images/new-git-repo.png" width="auto">
     </details>
 
-  _*Note*: In a production environment you will need to update a repository's settings to allow merging to `master` | `main` only from a branch PR and also to require at least 1 reviewer. You can
-  learn more about this in the [Managing your repository’s settings and features](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository) documentation._
+  🔔 In a production environment you will need to update your new repository's settings to allow merging to `master` | `main` only from a branch PR and also to require at least 1 reviewer for PR's created. You can
+  learn more about this in the [Managing your repository’s settings and features](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository) documentation.
 
 - [Clone](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) your new repo to your local machine as you will need this later.
 
 
 ## Lab Pipeline
-You will also need a devops pipeline to run your code. To create a pipeline follow the steps below
+You will also need a devops pipeline to run your code. To create a pipeline, follow the steps below
 
 - Create a pipeline in Azure Devops. In Azure DevOps, navigate to the HMCTS [Platform Operations](https://dev.azure.com/hmcts/PlatformOperations) organisation. On the `Pipelines` menu, click on `Pipelines`
+
+    <details>
+      <summary>HMCTS DevOps Organisation</summary>
+      <img alt="HMCTS DevOps Organisation" src="./images/hmcts-devops-org.png" width="auto">
+    </details>
 
     <details>
       <summary>Create new DevOps project</summary>
@@ -54,28 +59,75 @@ You will also need a devops pipeline to run your code. To create a pipeline foll
        <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
      </details>
 
-- Follow the relevant screens and prompts, select your lab repository in Git which would be an item listed after authentication
-  is complete.
+- Follow the relevant screens and prompts, select your lab repository in Git which would be an item in the repos listed after authentication
+  is complete. You may see screens similar to the once below
+
+     <details>
+       <summary>Create new pipeline</summary>
+       <img alt="Create new pipeline" src="./images/new-devops-pipeline-3.png" width="auto">
+     </details>
+
+     <details>
+       <summary>Select new pipeline repo</summary>
+       <img alt="Select new pipeline repo" src="./images/new-devops-pipeline-4.png" width="auto">
+     </details>
+
+     <details>
+       <summary>Authorise Azure DevOps</summary>
+       <img alt="Authorise Azure DevOps" src="./images/new-devops-pipeline-5.png" width="auto">
+     </details>
 
 ## Build your resources
 To get your resources provisioned,  follow the steps below
 
-- In the `lab-azure-resource folder` copy all the files into your repo root folder. Your folder should now look like this
+- In the [lab-azure-resource folder](https://github.com/hmcts/goldenpath-platops/tree/master/lab-azure-resource) copy all the files into your repo root folder.<br>
+  Your repo folder on your local machine should now look like this
 
   ```markdown
   .
+  ├── .gitignore
   ├── azure-pipelines.yaml
   └── components
-    └── lab
-        ├── main.tf
-        ├── provider.tf
-        └── variables.tf
+      ├── README.md
+      └── lab
+          ├── main.tf
+          ├── provider.tf
+          └── variables.tf
   ```
 
 - Commit and push to your repo. This will trigger a devops pipeline run.
 
 #### What did i just create?
-Alot has happened and is a good place to walk your through what's taken place... (TBC)
+A lot has happened and is a good place to walk you through what's taken place so far
+
+1. If you have a look into the pipeline `yaml` file you will notice the following piece of config
+
+  ```yaml
+  resources:
+    repositories:
+      - repository: cnp-azuredevops-libraries
+        type: github
+        ref: refs/heads/master
+        name: hmcts/cnp-azuredevops-libraries
+        endpoint: 'hmcts'
+  ```
+
+   This loads a central template resource that used in all our repos to provide base or required functionality that most pipelines need, you don't have to configure certain functionality from scratch, you simply reuse.<br>Have a look at the [cnp-azuredevops-libraries](https://github.com/hmcts/cnp-azuredevops-libraries) repo to findout what capabilities this can give you in your other projects.
+2. You have all the terraform resource configuration that will spin up your lab resources
+3. You dont need to manually run or define `plan` or `apply` stages why?... yes, you guessed right, because it's already configured in the `cnp-azuredevops-libraries`'s [terraform](https://github.com/hmcts/cnp-azuredevops-libraries/blob/master/steps/terraform.yaml) step.
+   This is done by using the functionality as below
+
+   ```yaml
+    - stage: deploy
+      jobs:
+        - job: PlanAndApply
+          steps:
+            - template: steps/terraform.yaml@cnp-azuredevops-libraries
+              parameters:
+              ...
+   ```
+   and pass in the required parameters
+4. Thank us later, you now have a default template that you can always use as a starting point on most repo's you will create in the real world 😎.
 
 ## Clean Up
 At the end of the exercise walk through you are required to delete these repository and pipeline as good practice 🤗. More details
