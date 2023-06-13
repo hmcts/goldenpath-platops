@@ -69,8 +69,12 @@ Verify the following exist
 Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
 <br>
 
-*Assignment* 📕 If you want a bit of a stretch, notice that the vm's credentials are hard coded and checked into the git repo? That's a big no no in the real world. You could try adding a [key vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) resource that holds the vm's username and password and also use the [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) provider to generate your vm's password.
-Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies), make sure your key vault and values are created first. Happy Hunting!!!.
+**Assignment** 📕 If you want a bit of a stretch, notice that the vm's credentials are hard coded and checked into the git repo? That's a big no no in the real world.
+
+You could try adding a [key vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) resource that holds the vm's username and password and also use the [random password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) provider to generate your vm's password.
+Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies), make sure your key vault and values are created first.
+
+Happy Hunting!!!.
 
 ### Step 3
 
