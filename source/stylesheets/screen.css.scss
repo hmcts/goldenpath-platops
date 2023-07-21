@@ -189,3 +189,20 @@ $govuk-font-family: nta, Helvetica, sans-serif;
 .platform-selector {
   margin-bottom: 1rem;
 }
+
+.nav {
+  display: flex;
+  text-align: center!important;
+  justify-content:  space-between;
+  clear: both;
+  margin: 3% 0;
+}
+
+.prev, .next {
+  background-color: #1d70b8;!important;
+  border-radius:5px;
+  font-size: 17px;
+  font-family: 'Source Sans Pro', sans-serif;
+  padding:6px 18px;
+  color: #fff
+}

@@ -1,7 +1,7 @@
 ---
 title: Virtual Networks
 weight: 11
-last_reviewed_on: 2023-07-14
+last_reviewed_on: 2023-07-21
 review_in: 2 months
 ---
 # Section 1 - Virtual Networks
@@ -195,8 +195,7 @@ Use the next available index in your case, you can find this resource in [sbox-i
 {
    name : "labsgoldenpath<yourname>",
    palo_ips : {
-   "uksouth" : "10.10.7.4",
-   "ukwest" : "10.10.7.4"
+   "uksouth" : "10.10.7.4"
    },
    port : [80,]
    index : 6
@@ -269,7 +268,7 @@ Create a corresponding Frontdoor entries.
 
 Checkout the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
 
-Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/sbox/sbox.tfvars) file and add the below entry to the `frontends` property list
+Navigate to the [sbox.tfvar](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/04-policy-rules-sbox.tf) file and add the below entry to the `frontends` property list
 
 ```json
   {
@@ -351,3 +350,9 @@ Verify that you can
   ```
   <p> With the first `curl` command you should see the raw html output in the terminal to prove that you can reach your VM from the bastion VM.</p>
   <p> For the second command, accept the fingerprint prompt and provide the VM password, you should now be on your VM.</p>
+
+<div class="nav">
+  <a class="prev" href="./prereq.html" title="Previous">❮ Previous</a>
+  <a class="home" href="../index.html" title="Go to start">Home</a>
+  <a class="next" href="./aks-cluster.html" title="Next">Next ❯</a>
+</div>
