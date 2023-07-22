@@ -198,9 +198,6 @@ $govuk-font-family: nta, Helvetica, sans-serif;
   margin: 3% 0;
 }
 
-.prev, .next {
-  border-radius:5px;
-  font-size: 17px;
-  font-family: 'Source Sans Pro', sans-serif;
-  padding:6px 18px;
+.prev, .next, .home {
+  padding:3px 0;
 }
