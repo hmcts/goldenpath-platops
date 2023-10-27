@@ -292,6 +292,9 @@ the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int
 DNS record created, which is associated with the Azure Firewall. The DNS record should
 be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/</code> depending on your lab name.</p>
 <h3 id="step-8">Step 8</h3>
+<p>When you add an endpoint to v2 Front Door, you will need to validate the domain using a TXT record.</p>
+<p>In the portal, if you navigate to the frontdoor and go to <code>Domains</code>, it will say <code>Pending</code> beside your endpoint.</p>
+<p>Click on <code>Pending</code> and you will see a record value. Copy this for when you add the DNS records below.</p>
 <p>Create a Public DNS record.</p>
 <p>Checkout the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a></p>
 <p>Navigate to <a href="https://github.com/hmcts/azure-public-dns/blob/master/environments/sandbox.yml">sandbox.yml</a> file add a new CNAME record using Azure Frontdoor url <code>hmcts-sbox.azurefd.net</code></p>
@@ -307,6 +310,12 @@ be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cl
   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">cdnverify.labs-goldenpath-felix"</span>
     <span class="na">ttl</span><span class="pi">:</span> <span class="m">300</span>
     <span class="na">record</span><span class="pi">:</span> <span class="s2">"</span><span class="s">cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"</span>
+
+  <span class="na">txt</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">_dnsauth.labs-goldenpath-felix"</span>
+    <span class="na">ttl</span><span class="pi">:</span> <span class="m">300</span>
+    <span class="na">record</span><span class="pi">:</span> 
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">&lt;RECORD</span><span class="nv"> </span><span class="s">VALUE</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">ABOVE&gt;"</span>
 </code></pre></div><p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge</p>
 <p>📣 <strong>NOTE:</strong> You will need to add all 3 entries to enable Azure Front Door verify your DNS record.</p>
 <p>You should now see the similar entries as below</p>
