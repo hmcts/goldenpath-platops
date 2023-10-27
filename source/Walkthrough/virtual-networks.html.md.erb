@@ -244,10 +244,6 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
 ```yaml
   cname:
   ...
-  - name: "_dnsauth.labs-goldenpath-felix"
-    ttl: 300
-    record: 
-      - "<RECORD VALUE FROM ABOVE>"
   - name: "afdverify.labs-goldenpath-felix"
     ttl: 300
     record: "afdverify.hmcts-sbox.azurefd.net"
@@ -258,6 +254,12 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
   - name: "cdnverify.labs-goldenpath-felix"
     ttl: 300
     record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
+  
+  txt:
+  - name: "_dnsauth.labs-goldenpath-felix"
+    ttl: 300
+    record: 
+      - "<RECORD VALUE FROM ABOVE>"
 ```
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
