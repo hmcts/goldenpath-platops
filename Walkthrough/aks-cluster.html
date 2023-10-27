@@ -124,10 +124,16 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="section-2-aks-cluster">Section 2 - AKS Cluster</h1>
-<p>There is a <a href="https://hmcts.github.io/cloud-native-platform/standards/index.html">HMCTS Way documentation</a> for the AKS cluster which would walk you through the steps required in creating
-applications in the AKS cluster.</p>
-<p>Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
-entries as described above.</p>
+<p>📣 <strong>NOTE:</strong> You need to be on the [VPN] to access the documentation.</p>
+<p>AKS is a core service for the HMCTS platform. 
+As part of the Platform Operations team you will need to understand:</p>
+
+<ul>
+<li>How AKS is deployed/updated/maintained: <a href="https://hmcts.github.io/ops-runbooks/aks/index.html">Guide</a></li>
+<li>How applications are built and deployed to AKS <a href="https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs">Guide</a></li>
+</ul>
+<p>For this guide we will not being creating a new AKS cluster but we will deploy an application to an existing AKS cluster.
+Use the application build/deploy guide to carry out the necessary steps.</p>
 <h3 id="what-did-i-just-create">What did i just create? <br></h3>
 
 <ul>
@@ -147,7 +153,6 @@ entries as described above.</p>
 <li>Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application</li>
 <li>There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating.</li>
 </ul>
-<p>📣 <strong>NOTE:</strong> You need to be on the <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&amp;__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum">VPN</a> to access the Backstage documentation</p>
 
 <div class="nav">
   <a class="prev" href="./virtual-networks.html" title="Previous">❮ Previous</a>
