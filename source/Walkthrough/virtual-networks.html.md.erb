@@ -52,11 +52,21 @@ Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscrip
 If using the pipeline, a commit will `init` and `plan` your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI.
 In a production environment, its advised not to manually `apply` on master. `apply` should happen on merge of your PR.
 
+
 Verify the following exist
 
 - A virtual network (VNet) exist
 - VNet has two peerings, one to the HMCTS Hub VNet and the other to the Core Management VNet
 - A route table to one default route to `10.10.200.36`
+
+<details>
+  <summary> ❗️WARNING </summary>
+  <p> 
+    If your Terraform fails with peering errors it is likely that a previous lab exercise has not been cleared down correctly. <br>
+    Log into Azure and search for the the `core-infra-vnet-mgmt` virtual network then look at the existing Peering for the vnet. <br>
+    Search the peers for `labs` and any existing lab peering should appear, if any show as disconnected then these should be removed.
+    <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
+</details> 
 
 #### What did i just create?
 - A virtual network that's peered to 2 other VNets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
@@ -240,14 +250,11 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
   ...
   - name: "afdverify.labs-goldenpath-felix"
     ttl: 300
-    record: "afdverify.hmcts-sbox.azurefd.net"
-  - name: "labs-goldenpath-felix"
+    record: "afdverify.hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net"
+  - name: "labs-goldenpath-mfox"
     ttl: 300
-    record: "hmcts-sbox.azurefd.net"
-    shutter: false
-  - name: "cdnverify.labs-goldenpath-felix"
-    ttl: 300
-    record: "cdnverify.hmcts-labs-goldenpath-felix-shutter-sbox.azureedge.net"
+    record: "hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net"
+    shutter: false   
 ```
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
@@ -268,7 +275,7 @@ Create a corresponding Frontdoor entries.
 
 Checkout the [azure-platform-terraform](https://github.com/hmcts/azure-platform-terraform) repo
 
-Navigate to the [sbox.tfvar](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/04-policy-rules-sbox.tf) file and add the below entry to the `frontends` property list
+Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/blob/master/environments/sbox/sbox.tfvars) file and add the below entry to the `frontends` property list
 
 ```json
   {
