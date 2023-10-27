@@ -239,6 +239,12 @@ be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudap
 
 ### Step 8
 
+When you add an endpoint to v2 Front Door, you will need to validate the domain using a TXT record.
+
+In the portal, if you navigate to the frontdoor and go to `Domains`, it will say `Pending` beside your endpoint.
+
+Click on `Pending` and you will see a record value. Copy this for when you add the DNS records below.
+
 Create a Public DNS record.
 
 Checkout the [azure-public-dns](https://github.com/hmcts/azure-public-dns)
@@ -254,7 +260,13 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
   - name: "labs-goldenpath-mfox"
     ttl: 300
     record: "hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net"
-    shutter: false   
+    shutter: false 
+      
+  txt:
+  - name: "_dnsauth.labs-goldenpath-felix"
+    ttl: 300
+    record: 
+      - "<RECORD VALUE FROM ABOVE>"
 ```
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
