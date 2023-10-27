@@ -6,11 +6,16 @@ review_in: 2 months
 ---
 # Section 2 - AKS Cluster
 
-There is a [HMCTS Way documentation](https://hmcts.github.io/cloud-native-platform/standards/index.html) for the AKS cluster which would walk you through the steps required in creating
-applications in the AKS cluster.
+📣 **NOTE:** You need to be on the [VPN] to access the documentation.
 
-Follow the steps outlined in there and this would build your application in the AKS cluster and also the DNS and Frontdoor
-entries as described above.
+AKS is a core service for the HMCTS platform. 
+As part of the Platform Operations team you will need to understand:
+
+- How AKS is deployed/updated/maintained: [Guide](https://hmcts.github.io/ops-runbooks/aks/index.html)
+- How applications are built and deployed to AKS [Guide](https://backstage.platform.hmcts.net/docs/default/component/golden-path-nodejs)
+
+For this guide we will not being creating a new AKS cluster but we will deploy an application to an existing AKS cluster.
+Use the application build/deploy guide to carry out the necessary steps.
 
 ### What did i just create? <br>
 - An image of your application in the [Azure Container registries](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/cnp-acr-rg/providers/Microsoft.ContainerRegistry/registries/hmctssandbox/repository) (ACR)
@@ -27,8 +32,6 @@ entries as described above.
 
 - Make sure using <labs-YourGitHubUsername-nodejs> when configuring both Public DNS/Private DNS for Application
 - There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating.
-
-📣 **NOTE:** You need to be on the [VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) to access the Backstage documentation
 
 <div class="nav">
   <a class="prev" href="./virtual-networks.html" title="Previous">❮ Previous</a>
