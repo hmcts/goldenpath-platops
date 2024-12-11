@@ -207,7 +207,7 @@ Navigate to <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master
    </span><span class="err">value</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="s2">"10.10.7.0/25"</span><span class="w">
  </span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>The value should be the cidr address space of your vnet</p>
-<p>Next navigate to the <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/02-security-profiles.tf">sandbox policy rules</a> file and
+<p>Next navigate to the <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/policies/security-policy-rules/04-policy-rules-sbox.tf">04-policy-rules-sbox.tf</a> file and
 create a new security policy with the following details</p>
 <div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="w">  </span><span class="p">{</span><span class="w">
     </span><span class="err">environments</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"sbox"</span><span class="p">]</span><span class="w">
