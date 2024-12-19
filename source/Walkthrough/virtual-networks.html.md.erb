@@ -1,7 +1,7 @@
 ---
 title: Virtual Networks
 weight: 11
-last_reviewed_on: 2023-07-23
+last_reviewed_on: 2024-12-19
 review_in: 2 months
 ---
 # Section 1 - Virtual Networks
@@ -16,7 +16,7 @@ Once you check in, following the Prereq steps, your pipeline will trigger and te
 ### Using Manual automation
 You can execute the terraform command below from your local PC if you opted out of not following the setup steps. I strongly advice to take the automation route though as it introduces you to the Git repo and Azure DevOps pipelines and some other important concepts in Platform Operations.
 
-*Note* You many run into permission issues using the manual process and would need to resolve it with your team members.
+📣 **NOTE:** You many run into permission issues using the manual process and would need to resolve it with your team members.
 
 ### Step 1
 
@@ -68,7 +68,7 @@ Verify the following exist
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
 <br>
-#### What did i just create?
+#### What did I just create?
 - A virtual network that's peered to 2 other VNets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
   VNet peering is essential for communication between the various virtual networks.
   Most importantly, for network traffic to flow from the [Hub](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) vnet where the [Palo Alto](https://www.paloaltonetworks.com/) firewall lives to your vnet they need to be peered
@@ -76,17 +76,19 @@ Verify the following exist
 - A custom route table that routes all traffic to the hub. We operate a [hub and spoke](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) model. All network traffic should pass through the [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) for inspection before being forwarded to it's destination. In our [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) we have
   2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop which is usually another virtual network.
 - A virtual machine without a public IP. We normally dont allow direct access from the internet to the backend resources. This has to ingress via a route which passes the hub and firewalls. This pattern is followed for most if not all resources or applications.
-- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the [core-infra-vnet-mgmt](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings) vnet, it can be accessed via the HMCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). You will needto be on the [VPN access](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum).
-<br>
-Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
-<br>
+- A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the [core-infra-vnet-mgmt](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings) vnet, it can be accessed via the HMCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). 
+ <br>
+   Select the virtual network and copy the vnet address cidr e.g. `10.10.7.0/25` yours would be different if you used a different CIDR
+ <br>
+ 
+📣 **NOTE:** You will need to be connected to the VPN to access the bastions, this will be explained in more detail later on in this tutorial.
 
 **Assignment** 📕 If you want a bit of a stretch, notice that the vm's credentials are hard coded and checked into the git repo? That's a big no no in the real world.
 
 You could try adding a [key vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) resource that holds the vm's username and password and also use the [random password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) provider to generate your vm's password.
 Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies), make sure your key vault and values are created first.
 
-Happy Hunting!!!.
+Happy Hunting!!!
 
 ### Step 3
 
@@ -164,8 +166,11 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 ### Step 6
 
 Log into the [sbox Panorama Management](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) UI and verify your changes are in place.
-Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the [GitHub & VPN](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum) confluence documentation.
-If having issues logging into Panorama UI have a look at this [Panorama Walkthrough](https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions) session.
+Please note, you need to be have appropriate **AD groups** and **F5 VPN** running to access this resource.
+
+  - To find out which groups are needed for the VPN read the [Microsoft Entra ID section of the onboarding](https://hmcts.github.io/cloud-native-platform/onboarding/person/#person)  
+  - To find out how to get the F5 VPN working read the [following guide](https://tools.hmcts.net/confluence/display/DIV/VPN+Access)  
+  - If you are having issues logging into Panorama UI have a look at this [Panorama Walkthrough](https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions) session.
 </p>
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
@@ -195,11 +200,11 @@ You should now have resources similar to the following:
 
 
 ### Step 7
-Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [rdo-terraform-hub-dmz](https://github.com/hmcts/rdo-terraform-hub-dmz) repo
+Create an Azure Firewall [DNAT](https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat) rule and checkout the [hub-terraform-infra](https://github.com/hmcts/hub-terraform-infra) repo
 
-To add a new DNAT rule, navigate to the file [path](https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
+To add a new DNAT rule, navigate to the [hub_infra-sbox-int.tfvars](https://github.com/hmcts/hub-terraform-infra/blob/master/environments/hub_infra-sbox-int.tfvars) and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).
 
-Use the next available index in your case, you can find this resource in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
+Use the next available index in your case. Once this resource is created, you can find it in [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules)
 
 ```json
 {
@@ -234,8 +239,9 @@ Resources would be similar to the following:
 📣 Keep a note of the public IP address
 
 At this point you should be able to access your apache server from your browser by using the default
-DNS record created, which is associated with the Azure Firewall. The DNS record should
-be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.
+DNS record created, which is associated with the Azure Firewall.
+The DNS record should be similar to `http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/` depending on your lab name.  
+You can find exact value of this default DNS record by searching for the Public IP resource with the same name as your entry in the Public IP configuration on [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview). 
 
 ### Step 8
 
@@ -253,6 +259,8 @@ Navigate to [sandbox.yml](https://github.com/hmcts/azure-public-dns/blob/master/
     record: "hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net"
     shutter: false 
 ```
+
+The above record corresponds to an endpoint on the [hmcts-sbox Front Door and CDN resource](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview).
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 
@@ -286,7 +294,21 @@ Navigate to the [sbox.tfvar](https://github.com/hmcts/azure-platform-terraform/b
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge.
 
-📣 **Note:** This resource takes a few minutes to complete, you can go grab a cup of coffee or tea
+📣 **Note:** There is an [ongoing issue](https://tools.hmcts.net/jira/browse/DTSPO-21977) where the pipeline for the above code might try to create two identically named DNS TXT
+records at the same time. In such case you might see following Terraform failure:
+
+```
+Error: A resource with the ID <XYZ> already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_dns_txt_record" for more information.
+```
+Until this is fixed, the work around is to manually delete the TXT record from the DNS Zone in Azure portal and re-run the Terraform.  
+Once everything is complete you should be able to see "Validation State" as "Approved" for your Custom Domain in [hmcts-sbox](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview).
+This may take a while so you can go grab a cup of coffee or tea.
+
+<details>
+    <summary>Custom Domain validated</summary>
+    <img alt="Custom Domain Validation" src="./images/custom-domain-validated.png" width="auto">
+  </details>
+<br>
 
 #### What did i just create?
 A custom domain that matches to your DNS entry created above, a backend pool that frontdoor sends request to which matches
@@ -335,9 +357,13 @@ Verify that you can
     <img alt="Panorama logs" src="./images/palo-logs.png" width="auto">
   </details>
 
+  To learn more about Palo Alto firewall logs watch the [Navigating Palo Alto firewall logs](https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare%2FHUB%2FNavigating%20Palo%20Alto%20firewall%20logs%2Emp4) KT session
+  
   <br>
 
-  To learn more about Palo Alto firewall logs watch the [Navigating Palo Alto firewall logs](https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare%2FHUB%2FNavigating%20Palo%20Alto%20firewall%20logs%2Emp4) KT session
+  📣 **NOTE:** You will need to have F5 VPN connection and non-production Access Package granted before you can SSH into the sandbox bastion.
+  Follow [this guide](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) to obtain this.
+
 
 - `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
 
