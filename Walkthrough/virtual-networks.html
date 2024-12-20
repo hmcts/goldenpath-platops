@@ -137,7 +137,7 @@
 </blockquote>
 <h3 id="using-manual-automation">Using Manual automation</h3>
 <p>You can execute the terraform command below from your local PC if you opted out of not following the setup steps. I strongly advice to take the automation route though as it introduces you to the Git repo and Azure DevOps pipelines and some other important concepts in Platform Operations.</p>
-<p><em>Note</em> You many run into permission issues using the manual process and would need to resolve it with your team members.</p>
+<p>📣 <strong>NOTE:</strong> You many run into permission issues using the manual process and would need to resolve it with your team members.</p>
 <h3 id="step-1">Step 1</h3>
 <p>Run the following commands to confirm you are in the right repository (if running from your local machine)</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>az login
@@ -177,7 +177,7 @@ In a production environment, its advised not to manually <code>apply</code> on m
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
 <p><br></p>
-<h4 id="what-did-i-just-create">What did i just create?</h4>
+<h4 id="what-did-i-just-create">What did I just create?</h4>
 
 <ul>
 <li>A virtual network that&rsquo;s peered to 2 other VNets using the <a href="https://github.com/hmcts/terraform-module-vnet-peering">vnet peering module</a>
@@ -187,15 +187,16 @@ Most importantly, for network traffic to flow from the <a href="https://tools.hm
 <li>A custom route table that routes all traffic to the hub. We operate a <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&amp;__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD">hub and spoke</a> model. All network traffic should pass through the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview">hub</a> for inspection before being forwarded to it&rsquo;s destination. In our <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview">hub</a> we have
 2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop which is usually another virtual network.</li>
 <li>A virtual machine without a public IP. We normally dont allow direct access from the internet to the backend resources. This has to ingress via a route which passes the hub and firewalls. This pattern is followed for most if not all resources or applications.</li>
-<li>A virtual machine that can be <a href="https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions">accessed</a> via the bastions, as it does not have a public IP, because its been peered with the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings">core-infra-vnet-mgmt</a> vnet, it can be accessed via the HMCTS <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview">bastions</a>. You will needto be on the <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&amp;__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum">VPN access</a>.
+<li>A virtual machine that can be <a href="https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions">accessed</a> via the bastions, as it does not have a public IP, because its been peered with the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings">core-infra-vnet-mgmt</a> vnet, it can be accessed via the HMCTS <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview">bastions</a>. 
 <br>
 Select the virtual network and copy the vnet address cidr e.g. <code>10.10.7.0/25</code> yours would be different if you used a different CIDR
 <br></li>
 </ul>
+<p>📣 <strong>NOTE:</strong> You will need to be connected to the VPN to access the bastions, this will be explained in more detail later on in this tutorial.</p>
 <p><strong>Assignment</strong> 📕 If you want a bit of a stretch, notice that the vm&rsquo;s credentials are hard coded and checked into the git repo? That&rsquo;s a big no no in the real world.</p>
 <p>You could try adding a <a href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault">key vault</a> resource that holds the vm&rsquo;s username and password and also use the <a href="https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password">random password</a> provider to generate your vm&rsquo;s password.
 Take note of <a href="https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies">dependencies</a>, make sure your key vault and values are created first.</p>
-<p>Happy Hunting!!!.</p>
+<p>Happy Hunting!!!</p>
 <h3 id="step-3">Step 3</h3>
 <p>Checkout the <a href="https://github.com/hmcts/hub-panorama-terraform">hub-panorama-terraform</a> repo and create a new branch.
 Navigate to <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf">02-addresses-sbox.tf</a> file and add a new <a href="https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-address-object-to-represent-ip-addresses/address-objects">address object</a> called <code>labs-goldenpath-&lt;yourname&gt;</code> (example below)
@@ -250,9 +251,14 @@ By default, 3 members would be selected randomly for you in most repos, you can 
 </details>
 <h3 id="step-6">Step 6</h3>
 <p>Log into the <a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">sbox Panorama Management</a> UI and verify your changes are in place.
-Please note, you need to be on the VPN to access this resource. <p> To find out how to access the VPN read the <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1473556716&amp;__ncforminfo=KrJ3_ABh6jWfksWuXyV3P0AVgDdrdldO1RMJDzjYyO2Y_8le-aWjrz_SqURx_CEKdqcwKxg6d_xZAN5A1vZizn230itnkRum">GitHub &amp; VPN</a> confluence documentation.
-If having issues logging into Panorama UI have a look at this <a href="https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&amp;viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&amp;parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions">Panorama Walkthrough</a> session.
-</p></p>
+Please note, you need to be have appropriate <strong>AD groups</strong> and <strong>F5 VPN</strong> running to access this resource.</p>
+
+<ul>
+<li>To find out which groups are needed for the VPN read the <a href="https://hmcts.github.io/cloud-native-platform/onboarding/person/#person">Microsoft Entra ID section of the onboarding</a><br></li>
+<li>To find out how to get the F5 VPN working read the <a href="https://tools.hmcts.net/confluence/display/DIV/VPN+Access">following guide</a><br></li>
+<li>If you are having issues logging into Panorama UI have a look at this <a href="https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&amp;viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&amp;parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions">Panorama Walkthrough</a> session.
+</p></li>
+</ul>
 <p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br></p>
 <h4 id="step-6-what-did-i-just-create">What did i just create?</h4>
@@ -272,9 +278,9 @@ in your vnet. Without this rule your applications or services would be unreachab
     <img alt="Security policy" src="./images/goldenpath-policy.png" width="auto">
   </details></p>
 <h3 id="step-7">Step 7</h3>
-<p>Create an Azure Firewall <a href="https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat">DNAT</a> rule and checkout the <a href="https://github.com/hmcts/rdo-terraform-hub-dmz">rdo-terraform-hub-dmz</a> repo</p>
-<p>To add a new DNAT rule, navigate to the file <a href="https://github.com/hmcts/rdo-terraform-hub-dmz/blob/master/env_tfvars/hub-sbox-int.tfvars">path</a> and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).</p>
-<p>Use the next available index in your case, you can find this resource in <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules">sbox-int-uksouth-fw</a></p>
+<p>Create an Azure Firewall <a href="https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-dnat">DNAT</a> rule and checkout the <a href="https://github.com/hmcts/hub-terraform-infra">hub-terraform-infra</a> repo</p>
+<p>To add a new DNAT rule, navigate to the <a href="https://github.com/hmcts/hub-terraform-infra/blob/master/environments/hub_infra-sbox-int.tfvars">hub_infra-sbox-int.tfvars</a> and add the following snippet. The name of this should be same name of your lab and IP of your apache server (in the virtual machine created in step 2).</p>
+<p>Use the next available index in your case. Once this resource is created, you can find it in <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/rules">sbox-int-uksouth-fw</a></p>
 <div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
    </span><span class="err">name</span><span class="w"> </span><span class="err">:</span><span class="w"> </span><span class="s2">"labsgoldenpath&lt;yourname&gt;"</span><span class="p">,</span><span class="w">
    </span><span class="err">palo_ips</span><span class="w"> </span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -299,8 +305,9 @@ the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int
 <br></p>
 <p>📣 Keep a note of the public IP address</p>
 <p>At this point you should be able to access your apache server from your browser by using the default
-DNS record created, which is associated with the Azure Firewall. The DNS record should
-be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/</code> depending on your lab name.</p>
+DNS record created, which is associated with the Azure Firewall.
+The DNS record should be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/</code> depending on your lab name.<br>
+You can find exact value of this default DNS record by searching for the Public IP resource with the same name as your entry in the Public IP configuration on <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview">sbox-int-uksouth-fw</a>.</p>
 <h3 id="step-8">Step 8</h3>
 <p>Create a Public DNS record.</p>
 <p>Checkout the <a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a></p>
@@ -311,7 +318,8 @@ be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cl
     <span class="na">ttl</span><span class="pi">:</span> <span class="m">300</span>
     <span class="na">record</span><span class="pi">:</span> <span class="s2">"</span><span class="s">hmcts-sbox-gufqadefbjgbhkhv.z01.azurefd.net"</span>
     <span class="na">shutter</span><span class="pi">:</span> <span class="no">false</span> 
-</code></pre></div><p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge</p>
+</code></pre></div><p>The above record corresponds to an endpoint on the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview">hmcts-sbox Front Door and CDN resource</a>.</p>
+<p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge</p>
 <p>You should now see the similar entries as below</p>
 <p><details>
     <summary>Public DNS entries</summary>
@@ -332,7 +340,18 @@ be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cl
     </span><span class="err">disabled_rules</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="p">{}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge.</p>
-<p>📣 <strong>Note:</strong> This resource takes a few minutes to complete, you can go grab a cup of coffee or tea</p>
+<p>📣 <strong>Note:</strong> There is an <a href="https://tools.hmcts.net/jira/browse/DTSPO-21977">ongoing issue</a> where the pipeline for the above code might try to create two identically named DNS TXT
+records at the same time. In such case you might see following Terraform failure:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Error: A resource with the ID &lt;XYZ&gt; already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_dns_txt_record" for more information.
+</code></pre></div><p>Until this is fixed, the work around is to manually delete the TXT record from the DNS Zone in Azure portal and re-run the Terraform.<br>
+Once everything is complete you should be able to see &ldquo;Validation State&rdquo; as &ldquo;Approved&rdquo; for your Custom Domain in <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview">hmcts-sbox</a>.
+This may take a while so you can go grab a cup of coffee or tea.</p>
+
+<details>
+    <summary>Custom Domain validated</summary>
+    <img alt="Custom Domain Validation" src="./images/custom-domain-validated.png" width="auto">
+  </details>
+<p><br></p>
 <h4 id="step-9-what-did-i-just-create">What did i just create?</h4>
 <p>A custom domain that matches to your DNS entry created above, a backend pool that frontdoor sends request to which matches
 the public ip created above and attached to the Azure firewall and a routing rule that Azure frontdoor needs to process
@@ -371,8 +390,10 @@ your requests.</p>
     <summary>Final result - logs</summary>
     <img alt="Panorama logs" src="./images/palo-logs.png" width="auto">
   </details></p>
-<p><br></p>
 <p>To learn more about Palo Alto firewall logs watch the <a href="https://cjscommonplatform.sharepoint.com/sites/DTSPlatformOperationsTeam/_layouts/15/stream.aspx?id=%2Fsites%2FDTSPlatformOperationsTeam%2FShared%20Documents%2FKnowledgeShare%2FHUB%2FNavigating%20Palo%20Alto%20firewall%20logs%2Emp4">Navigating Palo Alto firewall logs</a> KT session</p>
+<p><br></p>
+<p>📣 <strong>NOTE:</strong> You will need to have F5 VPN connection and non-production Access Package granted before you can SSH into the sandbox bastion.
+  Follow <a href="https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions">this guide</a> to obtain this.</p>
 
 <ul>
 <li><code>ssh</code> onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below</li>
@@ -390,17 +411,17 @@ your requests.</p>
   <a class="next" href="./aks-cluster.html" title="Next">Next ❯</a>
 </div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-09-23">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 23 July 2023.
+      This page was last reviewed on 19 December 2024.
 
-        It needs to be reviewed again on 23 September 2023
+        It needs to be reviewed again on 19 February 2025
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 23 September 2023
+      This page was set to be reviewed before 19 February 2025
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>

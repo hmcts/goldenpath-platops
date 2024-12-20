@@ -207,6 +207,9 @@ Your repo folder on your local machine should now look like this</li>
           ├── main.tf
           ├── provider.tf
           └── variables.tf
+</code></pre></div><p>📣 <strong>NOTE:</strong> You may want to modify prefix in your resource names defined in <a href="https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3">main.tf</a>.
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed Azure limits, example:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code>  <span class="s">prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"</span>
 </code></pre></div>
 <ul>
 <li>Commit and push to your repo. This will trigger a devops pipeline run.</li>
@@ -251,17 +254,17 @@ Your repo folder on your local machine should now look like this</li>
   <a class="next" href="./virtual-networks.html" title="Next">Next ❯</a>
 </div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-07-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 May 2023.
+      This page was last reviewed on 19 December 2024.
 
-        It needs to be reviewed again on 1 July 2023
+        It needs to be reviewed again on 19 February 2025
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 July 2023
+      This page was set to be reviewed before 19 February 2025
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
