@@ -1,7 +1,7 @@
 ---
 title: Lab Repository and Pipeline
 weight: 10
-last_reviewed_on: 2023-05-01
+last_reviewed_on: 2024-12-19
 review_in: 2 months
 ---
 # Prereq - CI/CD and SVC
@@ -96,6 +96,14 @@ To get your resources provisioned,  follow the steps below
           ├── provider.tf
           └── variables.tf
   ```
+
+📣 **NOTE:** You may want to modify prefix in your resource names defined in [main.tf](https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3).
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed Azure limits, example:
+
+```yaml
+  prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"
+```
+
 
 - Commit and push to your repo. This will trigger a devops pipeline run.
 
