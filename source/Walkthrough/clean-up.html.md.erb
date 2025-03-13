@@ -11,13 +11,11 @@ saves the business money and helps prevent floating resources.
 
  <p>To roll back, do the following.</p>
 
-- You need to disassociate the PIP Azure Firewall created from the firewall
 
-   <details>
-    <summary>Azure Firewall disassociate PIP</summary>
-    <img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto">
-   </details>
+- To find your resources in the azure portal, look at the 'plan' step of your first successful terraform apply run. Your resources for the first part of the golden path are located here
+```lab_rg_name   = "labs-rg-YOURNAME-DATE"```
 
+### Removing Part 1 resources (local terraform run):
 - If you ran the [labs-azure-resource](/lab-azure-resource) from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group
 
 ```cmd
@@ -26,9 +24,42 @@ saves the business money and helps prevent floating resources.
 
 ❗️Make sure your account is still set to the `DTS-SHAREDSERVICES-SBOX` subscription as described in `Step 1` above
 
-- If you used the CI/CD pipeline then you can `destroy` via the devops pipeline or simply remove the terraform resource and commit.
+### Removing Part 1 resources (AZDO Pipeline terraform run):
+- If you used the CI/CD pipeline then you can `destroy` via the devops pipeline or simply remove the terraform resources in the TF files and commit, then running 'Apply' will align the infrastructure to the new desired state (empty).
+
+❗️Check the items being destroyed are the ones you intend to remove.
+
 
 - For all the other PR's created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge
+    <details>
+      <summary>filter by author, closed PRs</summary>
+      <img alt="filter by author, closed PRs" src="./images/prfilter.png" width="auto">
+    </details>
+
+  - https://github.com/hmcts/hub-panorama-terraform/pulls
+  - https://github.com/hmcts/hub-terraform-infra/ (undo both your changes for Part 1, and for the AKS part)
+  - https://github.com/hmcts/azure-public-dns/pulls (undo both your changes for Part 1, and for the AKS part)
+  - https://github.com/hmcts/azure-platform-terraform/ (undo both your changes for Part 1, and for the AKS part)
+  - https://github.com/hmcts/azure-private-dns/pulls (aks part)
+  - https://github.com/hmcts/cnp-flux-config/pulls (utilise the clean up script)
+  - archive your unneeded repos (this should deactivate your Jenkins pipeline)
+  - Delete your AzDO pipeline from here: https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders
+
+- Kubectl commands to get rid of your K8s pod
+
+```
+az login
+kubectl get pods -n labs #shows pods in labs namespace
+kubectl delete pod <NAME OF YOUR POD> -n labs
+```
+
+- You need to disassociate the PIP Azure Firewall created from the firewall
+
+   <details>
+    <summary>Azure Firewall disassociate PIP</summary>
+    <img alt="AzFw disassociate pip" src="./images/az-pip-remove.png" width="auto">
+   </details>
+
 - Verify that all the resources no longer exist.
 
 <div class="nav">
