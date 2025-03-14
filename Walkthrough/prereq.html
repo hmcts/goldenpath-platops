@@ -137,13 +137,13 @@ advice that you stick to having your code in a git repo in your live environment
 <p>This section will introduce you to our <a href="https://github.com/hmcts">Git</a> repo and <a href="https://dev.azure.com/hmcts">Azure DevOps</a> pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
 might as well get started with that.</p>
 <h2 id="lab-git-repo">Lab Git Repo</h2>
-<p>Platform Operations uses Git for it&rsquo;s source control. To create a repo for your lab, follow the steps below</p>
+<p>Platform Operations uses Git for its source control. To create a repo for your lab, follow the steps below</p>
 
 <ul>
 <li>Navigate to the <a href="https://github.com/hmcts">HMCTS</a> git organisations page. If you dont already have access you can
 double check the <a href="https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html">Onboarding Checklist</a> to make sure you have the right access.
 You can also speak to a team member to assist if needed. <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a></li>
-<li><p>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs.</p>
+<li><p>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs. Deviating from this naming through the tutorial will naturally cause issues as the name of the respository will may need to be referenced later on.</p>
 
 <details>
   <summary>Create new Git repo</summary>
@@ -157,7 +157,7 @@ You can also speak to a team member to assist if needed. <a href="https://hmcts-
 <li><a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</li>
 </ul>
 <h2 id="lab-pipeline">Lab Pipeline</h2>
-<p>You will also need a devops pipeline to run your code. To create a pipeline, follow the steps below</p>
+<p>You will also need a Azure DevOps pipeline to run your code. To create a pipeline, follow the steps below</p>
 
 <ul>
 <li><p>Create a pipeline in Azure Devops. In Azure DevOps, navigate to the HMCTS <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> organisation. On the <code>Pipelines</code> menu, click on <code>Pipelines</code></p>
@@ -168,7 +168,7 @@ You can also speak to a team member to assist if needed. <a href="https://hmcts-
 </details>
 
 <details>
-  <summary>Create new DevOps project</summary>
+  <summary>Create new DevOps pipeline</summary>
   <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
 </details></li>
 <li><p>Specify where you code repository is, in our case this would be Git</p>
@@ -177,7 +177,7 @@ You can also speak to a team member to assist if needed. <a href="https://hmcts-
    <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
  </details></p></li>
 <li><p>Follow the relevant screens and prompts, select your lab repository in Git which would be an item in the repos listed after authentication
-is complete. You may see screens similar to the once below</p>
+is complete. To keep things tidy, place your pipeline in the &lsquo;golden paths&rsquo; folder. You may see screens similar to the once below</p>
 <p><details>
    <summary>Create new pipeline</summary>
    <img alt="Create new pipeline" src="./images/new-devops-pipeline-3.png" width="auto">
@@ -245,7 +245,7 @@ This will make them easier to identify, especially when there are multiple peopl
 </code></pre></div><p>and pass in the required parameters</p>
 
 <ul>
-<li>Thank us later 😉, you now have a default template that you can always use as a starting point on most repo&rsquo;s you will create in the real world 😎.</li>
+<li>Thank us later 😉, you now have a default template that you can always use as a starting point on most repos you will create in the real world 😎.</li>
 </ul>
 
 <div class="nav">

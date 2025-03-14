@@ -129,6 +129,47 @@ saves the business money and helps prevent floating resources.</p>
 <p><p>To roll back, do the following.</p></p>
 
 <ul>
+<li>To find your resources in the azure portal, look at the &lsquo;plan&rsquo; step of your first successful terraform apply run. Your resources for the first part of the golden path are located here
+<code>lab_rg_name   = &quot;labs-rg-YOURNAME-DATE&quot;</code></li>
+</ul>
+<h3 id="removing-part-1-resources-local-terraform-run">Removing Part 1 resources (local terraform run):</h3>
+
+<ul>
+<li>If you ran the <a href="/lab-azure-resource">labs-azure-resource</a> from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> terraform destroy
+</code></pre></div><p>❗️Make sure your account is still set to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription as described in <code>Step 1</code> above</p>
+<h3 id="removing-part-1-resources-azdo-pipeline-terraform-run">Removing Part 1 resources (AZDO Pipeline terraform run):</h3>
+
+<ul>
+<li>If you used the CI/CD pipeline then you can <code>destroy</code> via the devops pipeline or simply remove the terraform resources in the TF files and commit, then running &lsquo;Apply&rsquo; will align the infrastructure to the new desired state (empty).</li>
+</ul>
+<p>❗️Check the items being destroyed are the ones you intend to remove.</p>
+
+<ul>
+<li><p>For all the other PR&rsquo;s created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge
+<details>
+  <summary>filter by author, closed PRs</summary>
+  <img alt="filter by author, closed PRs" src="./images/prfilter.png" width="auto">
+</details></p>
+
+<ul>
+<li><a href="https://github.com/hmcts/hub-panorama-terraform/pulls">https://github.com/hmcts/hub-panorama-terraform/pulls</a></li>
+<li><a href="https://github.com/hmcts/hub-terraform-infra/">https://github.com/hmcts/hub-terraform-infra/</a> (undo both your changes for Part 1, and for the AKS part)</li>
+<li><a href="https://github.com/hmcts/azure-public-dns/pulls">https://github.com/hmcts/azure-public-dns/pulls</a> (undo both your changes for Part 1, and for the AKS part)</li>
+<li><a href="https://github.com/hmcts/azure-platform-terraform/">https://github.com/hmcts/azure-platform-terraform/</a> (undo both your changes for Part 1, and for the AKS part)</li>
+<li><a href="https://github.com/hmcts/azure-private-dns/pulls">https://github.com/hmcts/azure-private-dns/pulls</a> (aks part)</li>
+<li><a href="https://github.com/hmcts/cnp-flux-config/pulls">https://github.com/hmcts/cnp-flux-config/pulls</a> (utilise the clean up script)</li>
+<li>archive your unneeded repos (this Disables your Jenkins pipeline)</li>
+<li>Delete your AzDO pipeline from here: <a href="https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders">https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders</a></li>
+</ul></li>
+<li><p>Kubectl commands to get rid of your K8s pod</p></li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>az login
+kubectl get pods -n labs #shows pods in labs namespace
+kubectl delete pod &lt;NAME OF YOUR POD&gt; -n labs
+</code></pre></div>
+<ul>
 <li>You need to disassociate the PIP Azure Firewall created from the firewall</li>
 </ul>
 <p><details>
@@ -137,15 +178,7 @@ saves the business money and helps prevent floating resources.</p>
    </details></p>
 
 <ul>
-<li>If you ran the <a href="/lab-azure-resource">labs-azure-resource</a> from your local machine, you have a local statefile. Execute the command below to tear the resources in your resource group</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> terraform destroy
-</code></pre></div><p>❗️Make sure your account is still set to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription as described in <code>Step 1</code> above</p>
-
-<ul>
-<li><p>If you used the CI/CD pipeline then you can <code>destroy</code> via the devops pipeline or simply remove the terraform resource and commit.</p></li>
-<li><p>For all the other PR&rsquo;s created, create a new one removing only the parts you modified as part of this exercise, commit, review plans and then merge</p></li>
-<li><p>Verify that all the resources no longer exist.</p></li>
+<li>Verify that all the resources no longer exist.</li>
 </ul>
 
 <div class="nav">
