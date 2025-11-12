@@ -8,6 +8,7 @@ locals {
   nic_name    = "labs-nic-${local.prefix}"
   rt_name     = "labs-rt-${local.prefix}"
   vm_name     = "labs-vm-${local.prefix}"
+  kv_name     = "labs-kv-${local.prefix}"
   common_tags = module.ctags.common_tags
 }
 
@@ -119,7 +120,7 @@ resource "azurerm_route" "res-7" {
 
 resource "azurerm_linux_virtual_machine" "res-2" {
   admin_username                  = "labsAdmin2023"
-  admin_password                  = "Wednesday!"
+  admin_password                  = random_password.res-20.result
   location                        = azurerm_resource_group.res-0.location
   name                            = local.vnet_name
   network_interface_ids           = [azurerm_network_interface.res-3.id]
