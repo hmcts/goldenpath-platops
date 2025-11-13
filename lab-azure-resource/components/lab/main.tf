@@ -1,6 +1,6 @@
 
 locals {
-  prefix      = "jm-${formatdate("YYMMDDhhmm", timestamp())}"
+  prefix      = "${formatdate("YYMMDDhhmm", timestamp())}"
   rg_name     = "labs-rg-${local.prefix}"
   vnet_name   = "labs-vnet-${local.prefix}"
   pip_name    = "labs-ip-${local.prefix}"
@@ -8,7 +8,6 @@ locals {
   nic_name    = "labs-nic-${local.prefix}"
   rt_name     = "labs-rt-${local.prefix}"
   vm_name     = "labs-vm-${local.prefix}"
-  kv_name     = "labs-kv-${local.prefix}"
   common_tags = module.ctags.common_tags
 }
 
