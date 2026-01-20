@@ -1,0 +1,11 @@
+terraform
+tfstate
+tfvars
+excludesfile
+iml
+dotnet
+monkeyc
+HMCTS
+hmcts
+Staticfile
+CODEOWNERS

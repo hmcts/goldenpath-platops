@@ -44,6 +44,28 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    name: 'Build and Test'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.4'
+          bundler-cache: true
+
+      - name: Build
+        run: bundle exec middleman build
+
+      - name: 'Check for broken links'
+        run: bundle exec rake check_urls
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
     name: Deploy
     steps:
       - uses: actions/checkout@v4
