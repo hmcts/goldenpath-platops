@@ -33,10 +33,9 @@ task :check_urls do
       # to check the repo exists
       if base_url_parts.length == 5 && !request.base_url.include?('#')
         request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
-        request.base_url == "/master/README.md"
-      end
+        request.base_url = "/master/README.md"
       # Checking for blob is to convert URLs pointing to files
-      elsif request.base_url.include?("/blob/*")
+      elsif request.base_url.include?("/blob/")
         request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
         request.base_url = request.base_url.gsub("/blob/", "")
       end
