@@ -54,9 +54,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3.4'
-
-      - name: Install dependencies
-        run: bundle install
+          bundler-cache: true
 
       - name: Build
         run: bundle exec middleman build
@@ -76,8 +74,7 @@ jobs:
         with:
           ruby-version: 3.1.1
           architecture: 'x64'
-      - name: Install dependencies
-        run: bundle install
+          bundler-cache: true
       - name: Build
         run: bundle exec middleman build
       - name: Publish
