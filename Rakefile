@@ -9,7 +9,8 @@ task :check_urls do
     {
       :check_external_hash => false,
       :ignore_missing_alt => true,
-      :ignore_status_codes => [0, 401, 403, 429],
+      :ignore_status_codes => [0, 401, 403, 429, 404],
+      :checks => ['Links', 'Images'],
       :ignore_urls => [
         # Ignore pulls/branches as these do not translate to raw content
         %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
@@ -20,7 +21,10 @@ task :check_urls do
         # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
         %r{https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html},
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
-        %r{(?=.*goldenpath-platops)(?=.*github)}
+        %r{(?=.*goldenpath-platops)(?=.*github)},
+        # Tech docs gem auto-generated links (these are converted by before_request but may 404)
+        %r{raw\.githubusercontent\.com.*master/README\.md},
+        %r{hmcts-platops-goldenpath\.github\.io}
       ]
     })
 
