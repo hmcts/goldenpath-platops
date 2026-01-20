@@ -73,8 +73,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.1
-          bundler-cache: true
-          cache-version: 1
+      - name: Install dependencies
+        run: bundle install
       - name: Build
         run: bundle exec middleman build
       - name: Publish
