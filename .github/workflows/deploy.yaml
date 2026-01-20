@@ -73,8 +73,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.1
-          architecture: 'x64'
           bundler-cache: true
+          cache-version: 1
       - name: Build
         run: bundle exec middleman build
       - name: Publish
