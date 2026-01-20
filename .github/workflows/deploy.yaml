@@ -28,7 +28,6 @@ jobs:
             cspell:dotnet/dict/dotnet.txt
             cspell:mnemonics/src/mnemonics.txt
             cspell:rust/dict/rust.txt
-            cspell:clojure/dict/clojure.txt
             cspell:monkeyc/src/monkeyc_keywords.txt
             cspell:cryptocurrencies/cryptocurrencies.txt
             cspell:scala/dict/scala.txt
@@ -41,7 +40,6 @@ jobs:
             cspell:software-terms/dict/softwareTerms.txt
             cspell:python/src/python/python-lib.txt
             cspell:node/dict/node.txt
-            cspell:latex/dict.txt
             cspell:python/src/common/extra.txt
 
   build:
