@@ -11,6 +11,10 @@ task :check_urls do
       :ignore_missing_alt => true,
       :ignore_status_codes => [0, 401, 403, 429],
       :checks => ['Links', 'Images'],
+      :typhoeus => {
+        :connecttimeout => 10,
+        :timeout => 30
+      },
       :ignore_urls => [
         # Ignore pulls/branches as these do not translate to raw content
         %r{github\.com/hmcts/(?=.*(?:pull|tree|commit))},
@@ -23,7 +27,7 @@ task :check_urls do
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
         %r{(?=.*goldenpath-platops)(?=.*github)},
         # Tech docs gem auto-generated links to raw.githubusercontent.com (converted by before_request, may 404)
-        %r{raw\.githubusercontent\.com/hmcts},
+        %r{https://raw\.githubusercontent\.com/hmcts/},
         # Turbo-fiesta is a temporary onboarding link that's outdated
         %r{turbo-fiesta-ov7yye3\.pages\.github\.io},
         %r{hmcts-platops-goldenpath\.github\.io}
