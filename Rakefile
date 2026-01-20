@@ -36,6 +36,17 @@ task :check_urls do
   proofer.before_request do |request|
     if request.base_url.include?("https://github.com/hmcts/")
       request.options[:headers]["Authorization"] = "Bearer #{token}"
+      base_url_parts = request.base_url.split('/')
+      # 5 parts is if we're just querying a repo itself - which needs a generic file added to the URI
+      # to check the repo exists
+      if base_url_parts.length == 5 && !request.base_url.include?('#')
+        request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
+        request.base_url += "/master/README.md"
+      # Checking for blob is to convert URLs pointing to files
+      elsif request.base_url.include?("/blob/")
+        request.base_url = request.base_url.gsub("/blob", "")
+        request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
+      end
     end
   end
   # Run HTML Proofer against built HTML files
