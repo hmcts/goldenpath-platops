@@ -24,7 +24,7 @@ task :check_urls do
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
         %r{(?=.*goldenpath-platops)(?=.*.github)},
         # Tech docs gem auto-generated "Edit this page" links with malformed URLs (missing / between repo and branch)
-        %r{raw\.githubusercontent\.com/hmcts/[\w-]+master/},
+        %r{raw\.githubusercontent\.com/hmcts/[\w-]+master},
         # Tech docs gem generated preview URLs
         %r{hmcts-platops-goldenpath\.github\.io}
       ],
