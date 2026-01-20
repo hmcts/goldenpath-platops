@@ -112,7 +112,6 @@ nodelocaldns
 nodepool
 NONLINE
 noout
-nsg
 NSGs
 NVA
 oidc
@@ -173,7 +172,6 @@ utilisation
 Verma
 Virtualbox
 virtualwan
-vnets
 VNETs
 vpn
 wafcc
