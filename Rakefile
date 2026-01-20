@@ -34,20 +34,23 @@ task :check_urls do
 
   token = ENV.fetch('GH_TOKEN', nil)
   proofer.before_request do |request|
-    if request.base_url.include?("https://github.com/hmcts/")
+    if request.base_url.include?("https://github.com/hmcts/") || request.base_url.include?("https://raw.githubusercontent.com/hmcts/")
       request.options[:headers]["Authorization"] = "Bearer #{token}"
       # Remove trailing slash before processing
       request.base_url = request.base_url.chomp('/')
       base_url_parts = request.base_url.split('/')
-      # 5 parts is if we're just querying a repo itself - which needs a generic file added to the URI
-      # to check the repo exists
-      if base_url_parts.length == 5 && !request.base_url.include?('#')
-        request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
-        request.base_url += "/master/README.md"
-      # Checking for blob is to convert URLs pointing to files
-      elsif request.base_url.include?("/blob/")
-        request.base_url = request.base_url.gsub("/blob", "")
-        request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
+      # Only convert github.com URLs, not already-converted raw URLs
+      if request.base_url.include?("github.com") && !request.base_url.include?("raw.githubusercontent.com")
+        # 5 parts is if we're just querying a repo itself - which needs a generic file added to the URI
+        # to check the repo exists
+        if base_url_parts.length == 5 && !request.base_url.include?('#')
+          request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
+          request.base_url += "/master/README.md"
+        # Checking for blob is to convert URLs pointing to files
+        elsif request.base_url.include?("/blob/")
+          request.base_url = request.base_url.gsub("/blob", "")
+          request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
+        end
       end
     end
   end
