@@ -23,18 +23,12 @@ task :check_urls do
         %r{https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html},
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
         %r{(?=.*goldenpath-platops)(?=.*.github)},
-        # Tech docs gem auto-generated "Edit this page" links with malformed URLs (missing /)
-        %r{raw\.githubusercontent\.com/hmcts/goldenpath-platopsmaster},
-        %r{raw\.githubusercontent\.com/hmcts/cnp-azuredevops-librariesmaster},
-        %r{raw\.githubusercontent\.com/hmcts/hub-panorama-terraformmaster},
-        %r{raw\.githubusercontent\.com/hmcts/hub-terraform-inframaster},
-        %r{raw\.githubusercontent\.com/hmcts/azure-public-dnsmaster},
-        %r{raw\.githubusercontent\.com/hmcts/azure-platform-terraformmaster},
+        # Tech docs gem auto-generated "Edit this page" links with malformed URLs (missing / between repo and branch)
+        %r{raw\.githubusercontent\.com/hmcts/[\w-]+master/},
         # Tech docs gem generated preview URLs
         %r{hmcts-platops-goldenpath\.github\.io}
       ],
       :ignore_files => [/search\/index.html/],
-      :ignore_missing_alt => true,
       :check_internal_hash => true,
       :check_img_http => true,
       :enforce_https => false,
