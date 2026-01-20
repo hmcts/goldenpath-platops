@@ -2,7 +2,7 @@
 
 If you are reading this, give yourself a thumbs up 👍🏽
 
-As part of the Platform Operations team, you will need to get comfortable with codumenting
+As part of the Platform Operations team, you will need to get comfortable with documenting
 your future projects.
 
 This helps the entire team and your future self with understanding the what and whys in your project.
