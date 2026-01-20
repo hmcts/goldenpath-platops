@@ -7,6 +7,8 @@ ENV["BRANCH_NAME"] = "ghpages"
 task :check_urls do
   proofer = HTMLProofer.check_directory("./build",
     {
+      :disable_external => false,
+      :checks => ['Links', 'Images'],
       :check_external_hash => false,
       :ignore_missing_alt => true,
       :ignore_status_codes => [0, 401, 403, 429],
@@ -25,7 +27,17 @@ task :check_urls do
         %r{raw\.githubusercontent\.com/hmcts/goldenpath-platops},
         %r{hmcts-platops-goldenpath\.github\.io}
       ],
-      :ignore_files => [/search\/index.html/]
+      :ignore_files => [/search\/index.html/],
+      :ignore_missing_alt => true,
+      :check_internal_hash => true,
+      :check_img_http => true,
+      :enforce_https => false,
+      :check_sri => false,
+      :only_4xx => false,
+      :typhoeus => {
+        :connecttimeout => 10,
+        :timeout => 30
+      }
     })
 
   token = ENV.fetch('GH_TOKEN', nil)
