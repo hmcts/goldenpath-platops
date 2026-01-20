@@ -22,8 +22,10 @@ task :check_urls do
         %r{https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html},
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
         %r{(?=.*goldenpath-platops)(?=.*github)},
-        # Tech docs gem auto-generated links (these are converted by before_request but may 404)
-        %r{raw\.githubusercontent\.com.*master/README\.md},
+        # Tech docs gem auto-generated links to raw.githubusercontent.com (converted by before_request, may 404)
+        %r{raw\.githubusercontent\.com/hmcts},
+        # Turbo-fiesta is a temporary onboarding link that's outdated
+        %r{turbo-fiesta-ov7yye3\.pages\.github\.io},
         %r{hmcts-platops-goldenpath\.github\.io}
       ]
     })
