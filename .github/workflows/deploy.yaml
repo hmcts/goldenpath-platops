@@ -67,6 +67,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   deploy:
+    needs: [spellcheck, build]
     runs-on: ubuntu-latest
     name: Deploy
     steps:
