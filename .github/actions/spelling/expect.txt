@@ -3,7 +3,6 @@ HMCTS
 Staticfile
 dotnet
 excludesfile
-hmcts
 iml
 monkeyc
 terraform
