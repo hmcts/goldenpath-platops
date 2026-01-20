@@ -17,6 +17,8 @@ jobs:
         uses: check-spelling/check-spelling@v0.0.24
         with:
           checkout: true
+          only_check_changed_files: true
+          suppress_push_for_open_pull_request: 1
           extra_dictionaries:
             cspell:npm/dict/npm.txt
             cspell:fullstack/dict/fullstack.txt
@@ -41,6 +43,8 @@ jobs:
             cspell:python/src/python/python-lib.txt
             cspell:node/dict/node.txt
             cspell:python/src/common/extra.txt
+            cspell:public-licenses/src/generated/public-licenses.txt
+            cspell:aws/aws.txt
 
   build:
     runs-on: ubuntu-latest
