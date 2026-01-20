@@ -7,8 +7,6 @@ ENV["BRANCH_NAME"] = "ghpages"
 task :check_urls do
   proofer = HTMLProofer.check_directory("./build",
     {
-      :disable_external => false,
-      :checks => ['Links', 'Images'],
       :check_external_hash => false,
       :ignore_missing_alt => true,
       :ignore_status_codes => [0, 401, 403, 429],
@@ -22,22 +20,8 @@ task :check_urls do
         # This is a url that's generated each time we build the html by tech-docs-gem but does not exist
         %r{https://github.com/hmcts/goldenpath-platops/blob/master/source/search/index.html},
         # This handles new files that haven't been merged to master branch yet for this repo in a PR
-        %r{(?=.*goldenpath-platops)(?=.*.github)},
-        # Tech docs gem auto-generated "Edit this page" links with malformed URLs (missing / between repo and branch)
-        %r{https://raw\.githubusercontent\.com/hmcts/[a-z0-9-]+master/},
-        # Tech docs gem generated preview URLs
-        %r{hmcts-platops-goldenpath\.github\.io}
-      ],
-      :ignore_files => [/search\/index.html/],
-      :check_internal_hash => true,
-      :check_img_http => true,
-      :enforce_https => false,
-      :check_sri => false,
-      :only_4xx => false,
-      :typhoeus => {
-        :connecttimeout => 10,
-        :timeout => 30
-      }
+        %r{(?=.*goldenpath-platops)(?=.*github)}
+      ]
     })
 
   token = ENV.fetch('GH_TOKEN', nil)
@@ -49,11 +33,11 @@ task :check_urls do
       # to check the repo exists
       if base_url_parts.length == 5 && !request.base_url.include?('#')
         request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
-        request.base_url = "/master/README.md"
+        request.base_url += "/master/README.md"
       # Checking for blob is to convert URLs pointing to files
       elsif request.base_url.include?("/blob/")
+        request.base_url = request.base_url.gsub("/blob", "")
         request.base_url = request.base_url.gsub("github.com", "raw.githubusercontent.com")
-        request.base_url = request.base_url.gsub("/blob/", "")
       end
     end
   end
