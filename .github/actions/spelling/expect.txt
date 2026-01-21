@@ -47,7 +47,9 @@ deevanapalli
 devjumpl
 devrot
 dgwzf
+Dhhmm
 dhhmm
+DNAT
 dnat
 dockerfiles
 dotnet
@@ -112,6 +114,7 @@ noout
 nsgs
 nslookup
 nva
+NVA
 oidc
 onlineplea
 openvpn
@@ -125,6 +128,7 @@ prd
 prdatl
 prepatch
 prereq
+Prereq
 privatednszonename
 privatekeyfilename
 prx
@@ -182,7 +186,8 @@ wsdl
 xpack
 xxxx
 yourname
-yye
+yymmd
+YYMMD
 yymmd
 zshrc
 
