@@ -759,7 +759,7 @@ DARPCs
 optimisation
 servicenowprodukssa
 DLQ
-XGET 
+XGET
 sqladmin
 mklabel
 gpt
@@ -781,4 +781,4 @@ acdf
 faa
 PUBLICLAW
 serviceaccounts
-hashivault 
+hashivault
