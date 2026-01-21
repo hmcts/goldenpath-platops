@@ -47,10 +47,7 @@ deevanapalli
 devjumpl
 devrot
 dgwzf
-Dhhmm
-dhhmm
 DNAT
-dnat
 dockerfiles
 dotnet
 dsl
@@ -113,7 +110,6 @@ nonline
 noout
 nsgs
 nslookup
-nva
 NVA
 oidc
 onlineplea
@@ -127,10 +123,9 @@ postgress
 prd
 prdatl
 prepatch
-prereq
+prepatch
 Prereq
 privatednszonename
-privatekeyfilename
 prx
 pvc
 qube
@@ -185,9 +180,7 @@ wrkagentpool
 wsdl
 xpack
 xxxx
+xxxx
+YYMMDDhhmm
 yourname
-yymmd
-YYMMD
-yymmd
 zshrc
-
