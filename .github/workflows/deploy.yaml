@@ -19,6 +19,7 @@ jobs:
           checkout: true
           only_check_changed_files: true
           suppress_push_for_open_pull_request: 1
+          warnings: no-files-to-check
           extra_dictionaries:
             cspell:npm/dict/npm.txt
             cspell:fullstack/dict/fullstack.txt
