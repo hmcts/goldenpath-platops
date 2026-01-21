@@ -71,6 +71,7 @@ hashicorp
 hashivault
 hcp
 hmcts
+hmctssandbox
 iml
 imz
 intellij
@@ -80,6 +81,7 @@ jfmd
 jfrou
 jfrt
 jira
+johnb
 journalctl
 kalyan
 keyfile
@@ -108,6 +110,7 @@ nodepool
 nonline
 noout
 nsgs
+nslookup
 nva
 oidc
 onlineplea
