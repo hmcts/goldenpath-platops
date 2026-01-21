@@ -19,6 +19,7 @@ jobs:
           checkout: true
           only_check_changed_files: true
           suppress_push_for_open_pull_request: 1
+          warnings: no-files-to-check
           extra_dictionaries:
             cspell:npm/dict/npm.txt
             cspell:fullstack/dict/fullstack.txt
@@ -89,11 +90,11 @@ jobs:
       - name: Publish
         run: |
           rm -rf build
-          git status
-          git diff
           git config --global user.email "PlatformTeam@HMCTS.NET"
           git config --global user.name "Platform Team"
           git remote set-url origin https://nobody:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add Gemfile.lock
+          git diff --cached --quiet || git commit -m "Update Gemfile.lock [skip ci]"
           bundle exec rake publish
         if: github.ref == 'refs/heads/master'
 
