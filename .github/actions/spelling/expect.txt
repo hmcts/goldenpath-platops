@@ -180,7 +180,5 @@ wrkagentpool
 wsdl
 xpack
 xxxx
-xxxx
-YYMMDDhhmm
 yourname
 zshrc
