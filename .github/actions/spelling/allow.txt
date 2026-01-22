@@ -19,6 +19,7 @@ admins
 adoptopenjdk
 aee
 AFAFDC
+Dhhmm
 afds
 afdverify
 afe
@@ -782,3 +783,6 @@ faa
 PUBLICLAW
 serviceaccounts
 hashivault
+Dhhmm
+YYMMD
+YYMMDDhhmm

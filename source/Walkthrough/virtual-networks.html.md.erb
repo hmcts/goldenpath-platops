@@ -68,6 +68,23 @@ Verify the following exist
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
 <br>
+
+**✅ Success Criteria - Step 2**
+
+**You'll know Step 2 worked when:**
+
+1. **Terraform apply completed successfully** without errors
+2. **Resource group exists** in Azure Portal under DTS-SHAREDSERVICES-SBOX subscription
+   - Search for: `labs-rg-<yourname>-<timestamp>`
+3. **Virtual Network created** with your specified CIDR (e.g., `10.10.7.0/25`)
+4. **Two VNet peerings exist** and show status "Connected":
+   - Peering to hmcts-hub-sbox-int
+   - Peering to core-infra-vnet-mgmt
+5. **Route table exists** with default route to `10.10.200.36`
+6. **Virtual machine created** and shows "Running" status in Azure Portal
+7. **VM has no public IP** (security best practice)
+8. **Required tags present** on all resources (check any resource's Tags section)
+
 #### What did I just create?
 - A virtual network that's peered to 2 other VNets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
   VNet peering is essential for communication between the various virtual networks.
@@ -91,6 +108,26 @@ Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/
 Happy Hunting!!!
 
 ### Step 3
+
+#### About Panorama Management
+
+[Panorama](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) is Palo Alto's centralized firewall management platform. In Platform Operations, we use it to:
+
+- **Manage firewall policies**: Control what traffic is allowed between networks
+- **Configure address objects**: Define IP ranges for applications and services
+- **Monitor network traffic**: View logs and troubleshoot connectivity issues
+- **Audit security rules**: Track changes to firewall configurations
+
+📣 **NOTE:** Engineers can also access Panorama via the AppProxy URL: [https://panorama-sandbox.hmcts.net](https://panorama-sandbox.hmcts.net)
+
+On most tickets you'll work on, you'll use Panorama to:
+
+1. Add address objects for new applications or VNets
+2. Create security policies to allow traffic to your services
+3. Debug network connectivity issues by checking traffic logs
+4. Verify that firewall rules are correctly applied after merging PRs
+
+Now let's configure Panorama for your lab environment.
 
 Checkout the [hub-panorama-terraform](https://github.com/hmcts/hub-panorama-terraform) repo and create a new branch.
 Navigate to [02-addresses-sbox.tf](https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf) file and add a new [address object](https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-address-object-to-represent-ip-addresses/address-objects) called `labs-goldenpath-<yourname>` (example below)
@@ -152,6 +189,29 @@ Example below
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 
+**✅ Success Criteria - Steps 3-4**
+
+**You'll know Panorama configuration worked when:**
+
+1. **PR merged successfully** in hub-panorama-terraform repo
+2. **Terraform pipeline completed** without errors
+3. **In Panorama UI** (requires VPN):
+   - Navigate to Objects > Addresses
+   - Your address object `labs-goldenpath-<yourname>` exists with correct CIDR
+   - Navigate to Objects > Address Groups
+   - `G_trusted` group contains your address object
+   - Navigate to Policies > Security
+   - Your security policy `labs-goldenpath-<yourname>` exists
+   - Policy shows: Source Zone = untrusted, Dest Zone = trusted, Action = allow
+
+**Verification in Panorama:**
+
+1. Connect to F5 VPN
+2. Open the Panorama Management UI: [https://panorama-sbox-uks-0.sandbox.platform.hmcts.net](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) or [https://panorama-sandbox.hmcts.net](https://panorama-sandbox.hmcts.net)
+3. Select device group: "sbox" (dropdown at top)
+4. Check Objects > Addresses > search for your name
+5. Check Policies > Security > filter by your policy name
+
 ### Step 5
 
 Get a [team member](https://tools.hmcts.net/confluence/display/DTSPO/Team+Structure) to review your PR, merge after you have reviewed the terraform plan and approvals have been received.
@@ -172,7 +232,6 @@ Please note, you need to be have appropriate **AD groups** and **F5 VPN** runnin
   - To find out how to get the F5 VPN working read the [following guide](https://tools.hmcts.net/confluence/display/DIV/VPN+Access)  
   - If you are having issues logging into Panorama UI have a look at this [Panorama Walkthrough](https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions) session.
   - Ensure your Global Connect VPN is disconnected, as your be unable to connect or resolve certain services
-</p>
 
 🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br>
@@ -237,7 +296,31 @@ Resources would be similar to the following:
   </details>
 <br>
 
-📣 Keep a note of the public IP address
+**✅ Success Criteria - Step 7**
+
+You'll know Azure Firewall DNAT rule worked when:
+
+1. **PR merged** in hub-terraform-infra repo
+2. **Terraform pipeline completed** successfully
+3. **Public IP created** in Azure Firewall
+   - Portal: [sbox-int-uksouth-fw](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview)
+   - Navigate to: IP Configuration
+   - Look for: `fw-uksouth-sbox-int-palo-labsgoldenpath<yourname>-pip`
+4. **DNAT rule exists** 
+   - Portal: sbox-int-uksouth-fw > Rules (classic) > NAT rule collection
+   - Your rule maps public IP port 80 → your VM private IP port 80
+5. **Default DNS record created** automatically for the public IP
+   - Format: `firewall-sbox-int-palo-labsgoldenpath<yourname>.uksouth.cloudapp.azure.com`
+6. **Can access VM via default DNS**:
+
+```bash
+# Test access to your VM through Azure Firewall
+curl -I http://firewall-sbox-int-palo-labsgoldenpath<yourname>.uksouth.cloudapp.azure.com
+
+# Should return HTTP 200 and Apache default page
+```
+
+📣 **Keep a note of the public IP address** - you'll need it for Front Door configuration.
 
 At this point you should be able to access your apache server from your browser by using the default
 DNS record created, which is associated with the Azure Firewall.
@@ -365,21 +448,78 @@ Verify that you can
   📣 **NOTE:** You will need to have F5 VPN connection and non-production Access Package granted before you can SSH into the sandbox bastion.
   Follow [this guide](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) to obtain this.
 
+**✅ Success Criteria - Complete Virtual Networks Section**
 
-- `ssh` onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below
+**You've successfully completed the Virtual Networks section when ALL of these work:**
 
-  ```cmd
-  az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
-  ```
+**1. Public URL Access**
 
-  Once one the bastion `ssh` onto the VM using the below command
+```bash
+curl -I https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net
+```
 
-  ```cmd
-    curl <your-private-ip>
-    ssh labsAdmin2023@<your-vm-private-ip>
-  ```
-  <p> With the first `curl` command you should see the raw html output in the terminal to prove that you can reach your VM from the bastion VM.</p>
-  <p> For the second command, accept the fingerprint prompt and provide the VM password, you should now be on your VM.</p>
+Should return HTTP/2 200 and your web server (Apache)
+
+**2. DNS Resolution**
+
+```bash
+nslookup labs-goldenpath-<yourname>.sandbox.platform.hmcts.net
+```
+
+Should return Front Door IP
+
+**3. Front Door Configuration**
+
+- Navigate to [hmcts-sbox Front Door](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview)
+- Your custom domain shows **"Validation State: Approved"**
+- Backend pool shows **"Healthy"** status
+- Can access via Front Door direct URL
+
+**4. Panorama Traffic Logs**
+
+- Connected to F5 VPN
+- Logged into [Panorama](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net)
+- Monitor > Logs shows traffic to your VM IP
+- Traffic shows "Action: allow" (not deny)
+
+**5. SSH Access to VM**
+
+Connected to VPN, SSH to bastion:
+```bash
+az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
+```
+
+From bastion, curl your VM:
+```bash
+curl <your-vm-private-ip>
+```
+Returns Apache HTML
+
+SSH to your VM:
+```bash
+ssh labsAdmin2023@<your-vm-private-ip>
+```
+Successfully logs in
+
+**6. Browser Access**
+
+- Open browser (not on VPN if testing public access)
+- Navigate to: `https://labs-goldenpath-<yourname>.sandbox.platform.hmcts.net`
+- See Apache default page or your custom content
+- SSL certificate valid (no browser warnings)
+- Page loads within a few seconds (Front Door caching works)
+
+
+**Congratulations!** 
+
+You've successfully:
+
+- Created VNet infrastructure with proper peering and routing
+- Configured firewall rules for network security
+- Set up DNS and Front Door for public access
+- Gained hands-on experience with the full HMCTS network stack
+
+You're now ready to move on to the [AKS Cluster](./aks-cluster.html) section!
 
 <div class="nav">
   <a class="prev" href="./prereq.html" title="Previous">❮ Previous</a>

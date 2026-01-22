@@ -47,8 +47,7 @@ deevanapalli
 devjumpl
 devrot
 dgwzf
-dhhmm
-dnat
+DNAT
 dockerfiles
 dotnet
 dsl
@@ -71,6 +70,7 @@ hashicorp
 hashivault
 hcp
 hmcts
+hmctssandbox
 iml
 imz
 intellij
@@ -80,6 +80,7 @@ jfmd
 jfrou
 jfrt
 jira
+johnb
 journalctl
 kalyan
 keyfile
@@ -108,7 +109,8 @@ nodepool
 nonline
 noout
 nsgs
-nva
+nslookup
+NVA
 oidc
 onlineplea
 openvpn
@@ -121,9 +123,9 @@ postgress
 prd
 prdatl
 prepatch
-prereq
+prepatch
+Prereq
 privatednszonename
-privatekeyfilename
 prx
 pvc
 qube
@@ -179,7 +181,4 @@ wsdl
 xpack
 xxxx
 yourname
-yye
-yymmd
 zshrc
-

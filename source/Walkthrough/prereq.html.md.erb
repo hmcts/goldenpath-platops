@@ -20,13 +20,25 @@ advice that you stick to having your code in a git repo in your live environment
 This section will introduce you to our [Git](https://github.com/hmcts) repo and [Azure DevOps](https://dev.azure.com/hmcts) pipelines, we know you will need to visit Git and Azure pipelines like everyday so we
 might as well get started with that.
 
-## Lab Git Repo
+## Lab Git Repo 
 Platform Operations uses Git for its source control. To create a repo for your lab, follow the steps below
 
 - Navigate to the [HMCTS](https://github.com/hmcts) git organisations page. If you dont already have access you can
-  double check the [Onboarding Checklist](https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html) to make sure you have the right access.
-  You can also speak to a team member to assist if needed. [#platform-operations](https://hmcts-reform.slack.com/archives/C01APTJAM7D)
+  double check the [Onboarding Checklist](https://tools.hmcts.net/confluence/spaces/RRFM/pages/1838615919/New+starter+onboarding+checklist) to make sure you have the right access.
+  
+  💡 **TIP:** If you haven't been assigned a new starter onboarding ticket yet, message someone on the team in [#platform-operations](https://hmcts-reform.slack.com/archives/C01APTJAM7D) so they can create one for you (example: [DTSPO-23262](https://tools.hmcts.net/jira/browse/DTSPO-23262)). This ticket tracks all the access you need to complete the golden path.
+  
+  You can also speak to a team member to assist if needed in [#platform-operations](https://hmcts-reform.slack.com/archives/C01APTJAM7D).
+
 - Create a new git repo. Call this repo `lab-yourname-goldenpath`. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs. Deviating from this naming through the tutorial will naturally cause issues as the name of the repository will may need to be referenced later on.
+
+  📝 **IMPORTANT NOTES:**
+  
+  - **GitHub username**: When creating your GitHub account, keep it all lowercase with no hyphens (e.g., `johnb283` not `JohnB-283`). Later parts of the golden path have case-sensitive inputs in DNS, Front Door, and other Azure resources, so a consistent lowercase username will prevent issues.
+  
+  - **Repository location**: Ensure the repository is created in the HMCTS organization, not your personal GitHub account. Azure permissions and integrations will only work correctly with HMCTS organization repositories.
+  
+  - **Permissions**: Make sure your GitHub and Azure permissions are active before attempting any setup steps. If you encounter access issues, verify your permissions are in place first.
 
     <details>
       <summary>Create new Git repo</summary>
@@ -145,6 +157,23 @@ A lot has happened and is a good place to walk you through what's taken place so
   and pass in the required parameters
 
 - Thank us later 😉, you now have a default template that you can always use as a starting point on most repos you will create in the real world 😎.
+
+### Getting Help and Monitoring Your Work
+
+💬 **Need help?** You can raise tickets or ask questions in the [#platops-help](https://hmcts-reform.slack.com/archives/C8SR5CAMU) Slack channel. This is primarily for permission issues or complex problems that the general Platform Operations team can't resolve on their own. For standard questions or guidance during the golden path, reach out to your team members directly in [#platform-operations](https://hmcts-reform.slack.com/archives/C01APTJAM7D).
+
+🔍 **After merging your work**, always check:
+
+- **Azure Portal**: Navigate to your resource group in the [Azure Portal](https://portal.azure.com) to verify resources were created correctly
+- **Azure Pipelines**: Review the pipeline run in [Azure DevOps](https://dev.azure.com/hmcts/PlatformOperations/_build) to ensure the build and deployment completed successfully
+
+These tools are invaluable for:
+
+- Confirming your changes deployed as expected
+- Debugging issues when things don't work as planned  
+- Understanding the state of your infrastructure
+
+Make it a habit to check both after every merge to master. This helps catch issues early and builds your understanding of how infrastructure changes flow through our CI/CD pipeline.
 
 <div class="nav">
   <a class="prev" href="./index.html" title="Previous">❮ Previous</a>
