@@ -141,9 +141,20 @@ might as well get started with that.</p>
 
 <ul>
 <li>Navigate to the <a href="https://github.com/hmcts">HMCTS</a> git organisations page. If you dont already have access you can
-double check the <a href="https://turbo-fiesta-ov7yye3.pages.github.io/onboarding/index.html">Onboarding Checklist</a> to make sure you have the right access.
-You can also speak to a team member to assist if needed. <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a></li>
-<li><p>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs. Deviating from this naming through the tutorial will naturally cause issues as the name of the repository will may need to be referenced later on.</p>
+double check the <a href="https://tools.hmcts.net/confluence/spaces/RRFM/pages/1838615919/New+starter+onboarding+checklist">Onboarding Checklist</a> to make sure you have the right access.</li>
+</ul>
+<p>💡 <strong>TIP:</strong> If you haven&rsquo;t been assigned a new starter onboarding ticket yet, message someone on the team in <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a> so they can create one for you (example: <a href="https://tools.hmcts.net/jira/browse/DTSPO-23262">DTSPO-23262</a>). This ticket tracks all the access you need to complete the golden path.</p>
+<p>You can also speak to a team member to assist if needed in <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a>.</p>
+
+<ul>
+<li>Create a new git repo. Call this repo <code>lab-yourname-goldenpath</code>. You can follow this convention in other sections of this exercise as this makes it easier to when cleaning up resources after the labs. Deviating from this naming through the tutorial will naturally cause issues as the name of the repository will may need to be referenced later on.</li>
+</ul>
+<p>📝 <strong>IMPORTANT NOTES:</strong></p>
+
+<ul>
+<li><p><strong>GitHub username</strong>: When creating your GitHub account, keep it all lowercase with no hyphens (e.g., <code>johnb283</code> not <code>JohnB-283</code>). Later parts of the golden path have case-sensitive inputs in DNS, Front Door, and other Azure resources, so a consistent lowercase username will prevent issues.</p></li>
+<li><p><strong>Repository location</strong>: Ensure the repository is created in the HMCTS organization, not your personal GitHub account. Azure permissions and integrations will only work correctly with HMCTS organization repositories.</p></li>
+<li><p><strong>Permissions</strong>: Make sure your GitHub and Azure permissions are active before attempting any setup steps. If you encounter access issues, verify your permissions are in place first.</p>
 
 <details>
   <summary>Create new Git repo</summary>
@@ -247,6 +258,22 @@ This will make them easier to identify, especially when there are multiple peopl
 <ul>
 <li>Thank us later 😉, you now have a default template that you can always use as a starting point on most repos you will create in the real world 😎.</li>
 </ul>
+<h3 id="getting-help-and-monitoring-your-work">Getting Help and Monitoring Your Work</h3>
+<p>💬 <strong>Need help?</strong> You can raise tickets or ask questions in the <a href="https://hmcts-reform.slack.com/archives/C8SR5CAMU">#platops-help</a> Slack channel. This is primarily for permission issues or complex problems that the general Platform Operations team can&rsquo;t resolve on their own. For standard questions or guidance during the golden path, reach out to your team members directly in <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a>.</p>
+<p>🔍 <strong>After merging your work</strong>, always check:</p>
+
+<ul>
+<li><strong>Azure Portal</strong>: Navigate to your resource group in the <a href="https://portal.azure.com">Azure Portal</a> to verify resources were created correctly</li>
+<li><strong>Azure Pipelines</strong>: Review the pipeline run in <a href="https://dev.azure.com/hmcts/PlatformOperations/_build">Azure DevOps</a> to ensure the build and deployment completed successfully</li>
+</ul>
+<p>These tools are invaluable for:</p>
+
+<ul>
+<li>Confirming your changes deployed as expected</li>
+<li>Debugging issues when things don&rsquo;t work as planned<br></li>
+<li>Understanding the state of your infrastructure</li>
+</ul>
+<p>Make it a habit to check both after every merge to master. This helps catch issues early and builds your understanding of how infrastructure changes flow through our CI/CD pipeline.</p>
 
 <div class="nav">
   <a class="prev" href="./index.html" title="Previous">❮ Previous</a>

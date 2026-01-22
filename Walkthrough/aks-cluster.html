@@ -125,38 +125,288 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="section-2-aks-cluster">Section 2 - AKS Cluster</h1>
 <p>📣 <strong>NOTE:</strong> You need to be on the [VPN] to access the documentation.</p>
-<p>AKS is a core service for the HMCTS platform. 
-As part of the Platform Operations team you will need to understand:</p>
+<h2 id="overview">Overview</h2>
+<p>AKS (Azure Kubernetes Service) is a core service for the HMCTS platform and hosts the majority of our applications. As part of the Platform Operations team, you&rsquo;ll frequently interact with AKS for deployments, troubleshooting, and maintenance.</p>
+<p>Understanding AKS is crucial because:</p>
 
 <ul>
-<li>How AKS is deployed/updated/maintained: <a href="https://hmcts.github.io/ops-runbooks/aks/index.html">Guide</a></li>
-<li>How applications are built and deployed to AKS <a href="https://backstage.hmcts.net/docs/default/component/golden-path-nodejs">Guide</a></li>
+<li><strong>Most applications run here</strong>: Nearly all HMCTS services are containerized and deployed to AKS</li>
+<li><strong>You&rsquo;ll debug production issues</strong>: When services fail, you&rsquo;ll need to investigate pods, logs, and configurations</li>
+<li><strong>Infrastructure changes impact applications</strong>: Understanding how AKS integrates with networking, DNS, and other Azure services is essential</li>
+<li><strong>CI/CD flows through here</strong>: The deployment pipeline you&rsquo;ll work with daily deploys to AKS clusters</li>
 </ul>
-<p>For this guide we will not being creating a new AKS cluster but we will deploy an application to an existing AKS cluster.
-Use the application build/deploy guide to carry out the necessary steps.</p>
-<h3 id="what-did-i-just-create">What did i just create? <br></h3>
+<h3 id="what-you-need-to-know">What You Need to Know</h3>
+<p>As part of the Platform Operations team you will need to understand:</p>
 
 <ul>
-<li>An image of your application in the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/cnp-acr-rg/providers/Microsoft.ContainerRegistry/registries/hmctssandbox/repository">Azure Container registries</a> (ACR)</li>
-<li>A nodejs or java application running on the AKS cluster</li>
-<li>DNS record records as described above</li>
-<li><p>Azure frontdoor entries as described above</p>
+<li><p><strong>How AKS is deployed/updated/maintained</strong>: <a href="https://hmcts.github.io/ops-runbooks/aks/index.html">AKS Operations Guide</a></p>
+
+<ul>
+<li>Cluster upgrades and node pool management</li>
+<li>Monitoring cluster health and performance</li>
+<li>Scaling and capacity planning</li>
+</ul></li>
+<li><p><strong>How applications are built and deployed to AKS</strong>: <a href="https://backstage.hmcts.net/docs/default/component/golden-path-nodejs">Application Deployment Guide</a></p>
+
+<ul>
+<li>Container image build process</li>
+<li>Flux CD for GitOps-based deployment</li>
+<li>Helm charts and Kubernetes manifests</li>
+<li>Environment-specific configurations</li>
+</ul></li>
+</ul>
+<h3 id="what-this-section-covers">What This Section Covers</h3>
+<p>For this guide we will <strong>not</strong> be creating a new AKS cluster (that&rsquo;s complex infrastructure managed centrally). Instead, you&rsquo;ll deploy an application to an existing AKS cluster, which mirrors the day-to-day work you&rsquo;ll do.</p>
+<p>You&rsquo;ll gain hands-on experience with:</p>
+
+<ul>
+<li>Building container images and pushing to Azure Container Registry (ACR)</li>
+<li>Creating Kubernetes deployment manifests</li>
+<li>Configuring DNS records for your application (both public and private)</li>
+<li>Setting up Azure Front Door routing to your service</li>
+<li>Using Flux CD for GitOps-based deployment</li>
+<li>Troubleshooting common deployment issues</li>
+</ul>
+<h2 id="application-deployment">Application Deployment</h2>
+<p>Follow the <a href="https://backstage.hmcts.net/docs/default/component/golden-path-nodejs">Application Build/Deploy Guide</a> to deploy your application to AKS.</p>
+<h3 id="important-platform-operations-specific-guidance">Important Platform Operations-Specific Guidance</h3>
+<h4 id="naming-conventions">Naming Conventions</h4>
+<p>When following the guide, use these naming patterns to keep your resources organized:</p>
+
+<ul>
+<li><strong>Application name</strong>: <code>labs-&lt;YourGitHubUsername&gt;-nodejs</code> (e.g., <code>labs-johnb283-nodejs</code>)</li>
+<li><strong>Namespace</strong>: Use the <code>labs</code> namespace (already exists in sandbox clusters)</li>
+<li><strong>DNS records</strong>: 
+
+<ul>
+<li>Public: <code>labs-&lt;YourGitHubUsername&gt;-nodejs.sandbox.platform.hmcts.net</code></li>
+<li>Private: <code>labs-&lt;YourGitHubUsername&gt;-nodejs.service.core-compute-sbox.internal</code></li>
+</ul></li>
+</ul>
+<p>📝 <strong>Why lowercase matters</strong>: DNS, Front Door, and Kubernetes are case-sensitive. Use all lowercase in your names to avoid mysterious connectivity issues later.</p>
+<h4 id="repositories-you-39-ll-modify">Repositories You&rsquo;ll Modify</h4>
+<p>You&rsquo;ll be creating PRs in several repositories - here&rsquo;s what each one does:</p>
+
+<ol>
+<li><p><strong>Your application repo</strong> (e.g., <code>labs-yourname-nodejs</code>)</p>
+
+<ul>
+<li>Contains your application code</li>
+<li>Dockerfile for building container images</li>
+<li>Jenkins/Azure DevOps pipeline configuration</li>
+</ul></li>
+<li><p><strong><a href="https://github.com/hmcts/cnp-flux-config">cnp-flux-config</a></strong></p>
+
+<ul>
+<li>Flux CD configurations that deploy your app to AKS</li>
+<li>Defines which image version runs in which environment</li>
+<li>HelmRelease definitions for your application</li>
+</ul></li>
+<li><p><strong><a href="https://github.com/hmcts/azure-public-dns">azure-public-dns</a></strong></p>
+
+<ul>
+<li>Public DNS records (*.sandbox.platform.hmcts.net)</li>
+<li>CNAME records pointing to Front Door</li>
+</ul></li>
+<li><p><strong><a href="https://github.com/hmcts/azure-private-dns">azure-private-dns</a></strong></p>
+
+<ul>
+<li>Private DNS records (*.service.core-compute-sbox.internal)</li>
+<li>Used for internal service-to-service communication</li>
+</ul></li>
+<li><p><strong><a href="https://github.com/hmcts/azure-platform-terraform">azure-platform-terraform</a></strong></p>
+
+<ul>
+<li>Front Door configuration</li>
+<li>Routing rules, backend pools, and custom domains</li>
+</ul></li>
+</ol>
+<h4 id="common-pitfalls-amp-solutions">Common Pitfalls &amp; Solutions</h4>
+<p>⚠️ <strong>Image Build Failures</strong></p>
+
+<ul>
+<li><strong>Problem</strong>: Jenkins build fails with &ldquo;Cannot connect to Docker daemon&rdquo;</li>
+<li><strong>Solution</strong>: Check Jenkins agent status, may need to trigger rebuild</li>
+<li><strong>Problem</strong>: Build succeeds but image not in ACR</li>
+<li><strong>Solution</strong>: Verify Jenkins has permissions to push to <code>hmctssandbox</code> ACR</li>
+</ul>
+<p>⚠️ <strong>Flux Deployment Issues</strong></p>
+
+<ul>
+<li><strong>Problem</strong>: HelmRelease shows &ldquo;not ready&rdquo; status</li>
+<li><strong>Solution</strong>: Check Flux logs: <code>kubectl logs -n flux-system deploy/helm-controller</code></li>
+<li><strong>Problem</strong>: Image pull errors in pod</li>
+<li><strong>Solution</strong>: Verify ACR permissions and image tag in flux config matches built image</li>
+</ul>
+<p>⚠️ <strong>DNS Propagation Delays</strong></p>
+
+<ul>
+<li><strong>Problem</strong>: Can&rsquo;t access application via public DNS</li>
+<li><strong>Solution</strong>: DNS changes can take 5-30 minutes to propagate. Use <code>nslookup</code> or <code>dig</code> to verify</li>
+<li><strong>Workaround</strong>: Test with Front Door direct URL first before custom domain</li>
+</ul>
+<p>⚠️ <strong>Front Door Configuration</strong></p>
+
+<ul>
+<li><strong>Problem</strong>: &ldquo;Validation State&rdquo; stuck on &ldquo;Pending&rdquo; for custom domain</li>
+<li><strong>Solution</strong>: Ensure DNS TXT record exists for domain validation. Check <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview">hmcts-sbox Front Door</a></li>
+<li><strong>Problem</strong>: 404 errors when accessing application</li>
+<li><strong>Solution</strong>: Verify routing rule points to correct backend pool and backend pool points to correct service</li>
+</ul>
+<p>⚠️ <strong>Library Version Issues</strong></p>
+
+<ul>
+<li><strong>Problem</strong>: Build fails with deprecated dependencies</li>
+<li><strong>Solution</strong>: Check the <a href="https://hmcts.github.io/cloud-native-platform/troubleshooting/#golden-path">Troubleshooting Guide</a> for known version conflicts</li>
+<li><strong>Common fix</strong>: Update Node.js version in Dockerfile or package.json dependencies</li>
+</ul>
+<h3 id="verification-steps">Verification Steps</h3>
+<p>After deploying, verify everything works:</p>
+<h4 id="1-check-container-image">1. Check Container Image</h4>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># Verify your image exists in ACR</span>
+az acr repository show-tags <span class="nt">--name</span> hmctssandbox <span class="nt">--repository</span> labs-yourname-nodejs <span class="nt">--output</span> table
+</code></pre></div><h4 id="2-check-kubernetes-resources">2. Check Kubernetes Resources</h4>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># Connect to sandbox AKS cluster</span>
+az aks get-credentials <span class="nt">--resource-group</span> cft-sbox-00-rg <span class="nt">--name</span> cft-sbox-00-aks <span class="nt">--subscription</span> DCD-CFTAPPS-SBOX
+
+<span class="c"># Check your pod is running</span>
+kubectl get pods <span class="nt">-n</span> labs | <span class="nb">grep </span>labs-yourname-nodejs
+
+<span class="c"># Check pod logs for errors</span>
+kubectl logs <span class="nt">-n</span> labs &lt;pod-name&gt;
+
+<span class="c"># Check service endpoint</span>
+kubectl get svc <span class="nt">-n</span> labs | <span class="nb">grep </span>labs-yourname-nodejs
+</code></pre></div><h4 id="3-check-dns-records">3. Check DNS Records</h4>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># Public DNS</span>
+nslookup labs-yourname-nodejs.sandbox.platform.hmcts.net
+
+<span class="c"># Private DNS (requires VPN and connection to Azure network)</span>
+nslookup labs-yourname-nodejs.service.core-compute-sbox.internal
+</code></pre></div><h4 id="4-check-front-door">4. Check Front Door</h4>
+
+<ul>
+<li>Navigate to <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview">hmcts-sbox Front Door</a></li>
+<li>Verify your custom domain shows &ldquo;Validation State: Approved&rdquo;</li>
+<li>Check routing rules include your application</li>
+<li>Check backend pool health status</li>
+</ul>
+<h4 id="5-test-application-access">5. Test Application Access</h4>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># Test via public URL</span>
+curl <span class="nt">-I</span> https://labs-yourname-nodejs.sandbox.platform.hmcts.net
+
+<span class="c"># Should return HTTP 200 and your application response</span>
+</code></pre></div><h3 id="what-did-i-just-create">What did i just create? <br></h3>
+
+<ul>
+<li><p><strong>Container Image</strong>: A Docker image of your Node.js/Java application stored in the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/bf308a5c-0624-4334-8ff8-8dca9fd43783/resourceGroups/cnp-acr-rg/providers/Microsoft.ContainerRegistry/registries/hmctssandbox/repository">Azure Container Registry</a> (ACR)</p>
+
+<ul>
+<li>This is what gets deployed to AKS</li>
+<li>Tagged with version/commit hash for traceability</li>
+<li>Pulled by Kubernetes when creating pods</li>
+</ul></li>
+<li><p><strong>Kubernetes Resources</strong>:</p>
+
+<ul>
+<li><strong>Deployment</strong>: Defines desired state (number of replicas, container image, resource limits)</li>
+<li><strong>Pod(s)</strong>: Running instance(s) of your containerized application</li>
+<li><strong>Service</strong>: Internal load balancer providing stable endpoint for your pods</li>
+<li><strong>Ingress</strong> (if configured): Routes external traffic to your service</li>
+</ul></li>
+<li><p><strong>DNS Records</strong>:</p>
+
+<ul>
+<li><strong>Public DNS</strong>: <code>labs-yourname-nodejs.sandbox.platform.hmcts.net</code> → Points to Front Door</li>
+<li><strong>Private DNS</strong>: <code>labs-yourname-nodejs.service.core-compute-sbox.internal</code> → Points to internal service for service-to-service communication</li>
+</ul></li>
+<li><p><strong>Azure Front Door Entries</strong>:</p>
+
+<ul>
+<li><strong>Custom Domain</strong>: Your public DNS name with SSL/TLS certificate</li>
+<li><strong>Backend Pool</strong>: Defines where Front Door sends traffic (your AKS ingress)</li>
+<li><strong>Routing Rule</strong>: Maps incoming requests to the correct backend pool</li>
+<li><strong>WAF Policy</strong>: Web Application Firewall protecting your application</li>
+</ul></li>
+<li><p><strong>Flux CD Configuration</strong>:</p>
+
+<ul>
+<li><strong>HelmRelease</strong>: Declares what version of your app should run in sandbox</li>
+<li><strong>Automated sync</strong>: Flux continuously monitors Git and ensures cluster matches desired state</li>
+</ul>
 
 <details>
   <summary>Final result - Application default page</summary>
   <img alt="Application default page" src="./images/default-page.png" width="auto">
 </details></li>
 </ul>
+<h2 id="understanding-the-full-flow">Understanding the Full Flow</h2>
+<p>Here&rsquo;s what happens when a user accesses your application:</p>
+
+<ol>
+<li><strong>User requests</strong> <code>https://labs-yourname-nodejs.sandbox.platform.hmcts.net</code></li>
+<li><strong>Public DNS</strong> resolves to Front Door IP</li>
+<li><strong>Front Door</strong> (Azure CDN):
+
+<ul>
+<li>Terminates SSL/TLS</li>
+<li>Applies WAF rules</li>
+<li>Routes to backend pool (your AKS ingress)</li>
+</ul></li>
+<li><strong>AKS Ingress Controller</strong> receives request</li>
+<li><strong>Kubernetes Service</strong> load balances to healthy pods</li>
+<li><strong>Your application pod</strong> processes request and responds</li>
+</ol>
+<h2 id="key-learnings">Key Learnings</h2>
+<p>By completing this section, you&rsquo;ve gained hands-on experience with:</p>
+<p>✅ <strong>Container-based deployments</strong>: Building and managing Docker images<br>
+✅ <strong>Kubernetes fundamentals</strong>: Pods, services, deployments, and namespaces<br>
+✅ <strong>GitOps with Flux</strong>: Declarative infrastructure via Git<br>
+✅ <strong>DNS management</strong>: Both public and private DNS zones<br>
+✅ <strong>Azure Front Door</strong>: CDN, routing, and WAF configuration<br>
+✅ <strong>End-to-end application flow</strong>: From code commit to live service</p>
+<p>These are the core skills you&rsquo;ll use daily in Platform Operations when:</p>
+
+<ul>
+<li>Deploying new applications and services</li>
+<li>Troubleshooting production issues</li>
+<li>Performing infrastructure maintenance</li>
+<li>Supporting development teams with deployments</li>
+</ul>
 <h4 id="points-to-note-when-going-through-the-aks-steps">Points to note when going through the AKS steps</h4>
 
 <ul>
-<li>Make sure you use <code>labs-YourGitHubUsername-nodejs</code> when configuring both Public DNS/Private DNS for Application</li>
-<li>There maybe needed some troubleshooting e.g. library versions may be deprecated or need updating.
+<li><p><strong>Use consistent naming</strong>: <code>labs-YourGitHubUsername-nodejs</code> when configuring both Public DNS/Private DNS for Application. This keeps everything traceable and easier to clean up later.</p></li>
+<li><p><strong>Expect some troubleshooting</strong>: Library versions may be deprecated or need updating. This is normal and part of learning the ecosystem.</p>
 
 <ul>
-<li>Troubleshooting guide here: <a href="https://hmcts.github.io/cloud-native-platform/troubleshooting/#golden-path">Troubleshooting</a></li>
+<li>Check the <a href="https://hmcts.github.io/cloud-native-platform/troubleshooting/#golden-path">Troubleshooting Guide</a> for known issues</li>
+<li>Ask in <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a> if you get stuck</li>
 </ul></li>
+<li><p><strong>PR review timing</strong>: You&rsquo;ll need team members to review multiple PRs across different repos. Don&rsquo;t wait until the end - submit PRs as you complete each configuration step.</p></li>
+<li><p><strong>Pipeline dependencies</strong>: Your application build must complete before Flux can deploy it. If deployment fails, check that:</p>
+
+<ul>
+<li>Jenkins/Azure DevOps pipeline succeeded</li>
+<li>Image was pushed to ACR successfully</li>
+<li>Image tag in flux config matches the built image</li>
+</ul></li>
+<li><p><strong>VPN required</strong>: You&rsquo;ll need VPN access to view some monitoring and debugging tools. Make sure it&rsquo;s connected when troubleshooting.</p></li>
+<li><p><strong>Certificate provisioning</strong>: SSL certificate for your custom domain can take 10-20 minutes. Don&rsquo;t panic if HTTPS doesn&rsquo;t work immediately after DNS changes.</p></li>
 </ul>
+<h2 id="success-criteria">Success Criteria</h2>
+<p>✅ <strong>You&rsquo;ll know this section is complete when:</strong></p>
+
+<ol>
+<li>Your application&rsquo;s container image appears in ACR with correct tags</li>
+<li><code>kubectl get pods -n labs</code> shows your pod in &ldquo;Running&rdquo; state</li>
+<li><code>kubectl logs</code> for your pod shows successful application startup</li>
+<li>Public DNS resolves: <code>nslookup labs-yourname-nodejs.sandbox.platform.hmcts.net</code> returns Front Door IP</li>
+<li>Front Door custom domain shows &ldquo;Validation State: Approved&rdquo;</li>
+<li>Accessing <code>https://labs-yourname-nodejs.sandbox.platform.hmcts.net</code> shows your application&rsquo;s default page (not 404, not 502)</li>
+<li>Application responds with expected HTTP status codes (usually 200)</li>
+</ol>
+<p>If any of these checks fail, refer to the troubleshooting steps above or the verification commands to diagnose the issue.</p>
 
 <div class="nav">
   <a class="prev" href="./virtual-networks.html" title="Previous">❮ Previous</a>

@@ -125,9 +125,7 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="walkthrough">Walkthrough</h1>
 <h2 id="overview-core-architecture">Overview - Core Architecture</h2>
-<p>The architecture diagram below represents core areas within Platform Operations. This hands on would visit each one of them and provide you the basic knowledge to get comfortable with the technology stack.
-<br>
-<summary>PlatOps Core Architecture</summary></p>
+<p>The architecture diagram below represents core areas within Platform Operations. This hands on would visit each one of them and provide you the basic knowledge to get comfortable with the technology stack.</p>
 
 <details>
   <summary>PlatOps Core Architecture</summary>
@@ -135,6 +133,52 @@
 </details>
 <p>At the end of the hands-on exercises, you can read up on the <a href="https://tools.hmcts.net/confluence/display/DTSPO/Technical+Documentation">technical documents</a> for some more details on the core technologies
 to help solidify the knowledge gained.</p>
+<h2 id="prerequisites-amp-time-expectations">Prerequisites &amp; Time Expectations</h2>
+<h3 id="required-access-amp-tools">Required Access &amp; Tools</h3>
+<p>Before starting the golden path, ensure you have the following access and tools set up:</p>
+<h4 id="essential-access">Essential Access</h4>
+
+<ul>
+<li><strong>GitHub Account</strong>: HMCTS organization access (requested via onboarding ticket)</li>
+<li><strong>Azure DevOps</strong>: Access to <a href="https://dev.azure.com/hmcts/PlatformOperations">Platform Operations</a> project</li>
+<li><strong>Azure Portal</strong>: Access to relevant subscriptions (DTS-SHAREDSERVICES-SBOX, etc.)</li>
+<li><strong>VPN Access</strong>: F5 VPN configured and working - <strong>CRITICAL</strong>: You&rsquo;ll need this for:
+
+<ul>
+<li>Accessing Panorama firewall management UI</li>
+<li>SSH access to bastions and virtual machines</li>
+<li>Viewing internal documentation and tools</li>
+<li>Follow <a href="https://hmcts.github.io/cloud-native-platform/troubleshooting/#f5-vpn-not-connecting-or-services-not-available-over-vpn-that-should-be">this guide</a> to set up VPN</li>
+</ul></li>
+<li><strong>AD Groups</strong>: Appropriate Azure AD groups for non-production access
+
+<ul>
+<li>See <a href="https://hmcts.github.io/cloud-native-platform/onboarding/person/#person">Microsoft Entra ID section</a> for details</li>
+<li>Request via your onboarding ticket or team members</li>
+</ul></li>
+</ul>
+<h4 id="required-tools">Required Tools</h4>
+
+<ul>
+<li><strong>Git</strong>: For cloning repositories and version control</li>
+<li><strong>Azure CLI</strong>: For interacting with Azure resources (<code>az</code> commands)</li>
+<li><strong>Terraform</strong>: For infrastructure as code (optional for pipeline-only approach)</li>
+<li><strong>kubectl</strong>: For Kubernetes cluster interaction (Section 2)</li>
+<li><strong>SSH client</strong>: For connecting to virtual machines</li>
+</ul>
+<h4 id="important-notes">Important Notes</h4>
+<p>⏰ <strong>Start VPN setup early</strong> - VPN access can take time to provision and troubleshoot. Don&rsquo;t wait until you need it to request access.</p>
+<p>🔑 <strong>Verify permissions first</strong> - Check your GitHub, Azure, and VPN access before diving into the technical steps. This prevents frustrating blocks mid-exercise.</p>
+<p>📋 <strong>Onboarding ticket</strong> - If you don&rsquo;t have one yet, ask in <a href="https://hmcts-reform.slack.com/archives/C01APTJAM7D">#platform-operations</a> to get one created (example: <a href="https://tools.hmcts.net/jira/browse/DTSPO-23262">DTSPO-23262</a>).</p>
+<p>💡 <strong>Tips for success:</strong></p>
+
+<ul>
+<li>Don&rsquo;t rush - understanding each step is more valuable than speed</li>
+<li>Block out focused time rather than doing this between meetings</li>
+<li>Plan for PR review wait times - you&rsquo;ll need team members to approve changes</li>
+<li>DNS and certificate propagation can take 10-30 minutes - good time for breaks</li>
+<li>Keep notes of what you create so cleanup is easier later</li>
+</ul>
 
 <div class="nav">
   <a class="prev" href="../" title="Previous">❮ Previous</a>

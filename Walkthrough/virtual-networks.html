@@ -177,6 +177,28 @@ In a production environment, its advised not to manually <code>apply</code> on m
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
 <p><br></p>
+<p><strong>✅ Success Criteria - Step 2</strong></p>
+<p><strong>You&rsquo;ll know Step 2 worked when:</strong></p>
+
+<ol>
+<li><strong>Terraform apply completed successfully</strong> without errors</li>
+<li><strong>Resource group exists</strong> in Azure Portal under DTS-SHAREDSERVICES-SBOX subscription
+
+<ul>
+<li>Search for: <code>labs-rg-&lt;yourname&gt;-&lt;timestamp&gt;</code></li>
+</ul></li>
+<li><strong>Virtual Network created</strong> with your specified CIDR (e.g., <code>10.10.7.0/25</code>)</li>
+<li><strong>Two VNet peerings exist</strong> and show status &ldquo;Connected&rdquo;:
+
+<ul>
+<li>Peering to hmcts-hub-sbox-int</li>
+<li>Peering to core-infra-vnet-mgmt</li>
+</ul></li>
+<li><strong>Route table exists</strong> with default route to <code>10.10.200.36</code></li>
+<li><strong>Virtual machine created</strong> and shows &ldquo;Running&rdquo; status in Azure Portal</li>
+<li><strong>VM has no public IP</strong> (security best practice)</li>
+<li><strong>Required tags present</strong> on all resources (check any resource&rsquo;s Tags section)</li>
+</ol>
 <h4 id="what-did-i-just-create">What did I just create?</h4>
 
 <ul>
@@ -198,6 +220,25 @@ Select the virtual network and copy the vnet address cidr e.g. <code>10.10.7.0/2
 Take note of <a href="https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies">dependencies</a>, make sure your key vault and values are created first.</p>
 <p>Happy Hunting!!!</p>
 <h3 id="step-3">Step 3</h3>
+<h4 id="about-panorama-management">About Panorama Management</h4>
+<p><a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">Panorama</a> is Palo Alto&rsquo;s centralized firewall management platform. In Platform Operations, we use it to:</p>
+
+<ul>
+<li><strong>Manage firewall policies</strong>: Control what traffic is allowed between networks</li>
+<li><strong>Configure address objects</strong>: Define IP ranges for applications and services</li>
+<li><strong>Monitor network traffic</strong>: View logs and troubleshoot connectivity issues</li>
+<li><strong>Audit security rules</strong>: Track changes to firewall configurations</li>
+</ul>
+<p>📣 <strong>NOTE:</strong> Engineers can also access Panorama via the AppProxy URL: <a href="https://panorama-sandbox.hmcts.net">https://panorama-sandbox.hmcts.net</a></p>
+<p>On most tickets you&rsquo;ll work on, you&rsquo;ll use Panorama to:</p>
+
+<ol>
+<li>Add address objects for new applications or VNets</li>
+<li>Create security policies to allow traffic to your services</li>
+<li>Debug network connectivity issues by checking traffic logs</li>
+<li>Verify that firewall rules are correctly applied after merging PRs</li>
+</ol>
+<p>Now let&rsquo;s configure Panorama for your lab environment.</p>
 <p>Checkout the <a href="https://github.com/hmcts/hub-panorama-terraform">hub-panorama-terraform</a> repo and create a new branch.
 Navigate to <a href="https://github.com/hmcts/hub-panorama-terraform/blob/master/components/configuration/groups/objects/address-objects/02-addresses-sbox.tf">02-addresses-sbox.tf</a> file and add a new <a href="https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/policy/use-address-object-to-represent-ip-addresses/address-objects">address object</a> called <code>labs-goldenpath-&lt;yourname&gt;</code> (example below)
 <br></p>
@@ -240,6 +281,33 @@ to allow traffic coming from the &ldquo;untrusted&rdquo; zone, internet traffic 
    </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge</p>
+<p><strong>✅ Success Criteria - Steps 3-4</strong></p>
+<p><strong>You&rsquo;ll know Panorama configuration worked when:</strong></p>
+
+<ol>
+<li><strong>PR merged successfully</strong> in hub-panorama-terraform repo</li>
+<li><strong>Terraform pipeline completed</strong> without errors</li>
+<li><strong>In Panorama UI</strong> (requires VPN):
+
+<ul>
+<li>Navigate to Objects &gt; Addresses</li>
+<li>Your address object <code>labs-goldenpath-&lt;yourname&gt;</code> exists with correct CIDR</li>
+<li>Navigate to Objects &gt; Address Groups</li>
+<li><code>G_trusted</code> group contains your address object</li>
+<li>Navigate to Policies &gt; Security</li>
+<li>Your security policy <code>labs-goldenpath-&lt;yourname&gt;</code> exists</li>
+<li>Policy shows: Source Zone = untrusted, Dest Zone = trusted, Action = allow</li>
+</ul></li>
+</ol>
+<p><strong>Verification in Panorama:</strong></p>
+
+<ol>
+<li>Connect to F5 VPN</li>
+<li>Open the Panorama Management UI: <a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">https://panorama-sbox-uks-0.sandbox.platform.hmcts.net</a> or <a href="https://panorama-sandbox.hmcts.net">https://panorama-sandbox.hmcts.net</a></li>
+<li>Select device group: &ldquo;sbox&rdquo; (dropdown at top)</li>
+<li>Check Objects &gt; Addresses &gt; search for your name</li>
+<li>Check Policies &gt; Security &gt; filter by your policy name</li>
+</ol>
 <h3 id="step-5">Step 5</h3>
 <p>Get a <a href="https://tools.hmcts.net/confluence/display/DTSPO/Team+Structure">team member</a> to review your PR, merge after you have reviewed the terraform plan and approvals have been received.
 You can either request a specific team member to review or request everyone in a Squad or every in platform operations.
@@ -257,8 +325,7 @@ Please note, you need to be have appropriate <strong>AD groups</strong> and <str
 <li>To find out which groups are needed for the VPN read the <a href="https://hmcts.github.io/cloud-native-platform/onboarding/person/#person">Microsoft Entra ID section of the onboarding</a><br></li>
 <li>To find out how to get the F5 VPN working read the <a href="https://tools.hmcts.net/confluence/display/DIV/VPN+Access">following guide</a><br></li>
 <li>If you are having issues logging into Panorama UI have a look at this <a href="https://justiceuk.sharepoint.com/sites/DTSPlatformOperations/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions%2FPanaroma%20Walkthrough%2D20230302%5F100724%2DMeeting%20Recording%2Emp4&amp;viewid=727d44f5%2Dc4fc%2D4adf%2D85a4%2D7a8742c25a00&amp;parent=%2Fsites%2FDTSPlatformOperations%2FShared%20Documents%2FGeneral%2Fknowledge%2Dsharing%2FRedSquadKTSessions">Panorama Walkthrough</a> session.</li>
-<li>Ensure your Global Connect VPN is disconnected, as your be unable to connect or resolve certain services
-</p></li>
+<li>Ensure your Global Connect VPN is disconnected, as your be unable to connect or resolve certain services</li>
 </ul>
 <p>🛠️ Commit your changes, add the relevant details to your PR, review any terraform plan, get approvals then merge
 <br></p>
@@ -304,7 +371,37 @@ the firewall menu, you should see something similar to <code>fw-uksouth-sbox-int
     <img alt="DNAT rule" src="./images/az-fw-rule.png" width="auto">
   </details>
 <br></p>
-<p>📣 Keep a note of the public IP address</p>
+<p><strong>✅ Success Criteria - Step 7</strong></p>
+<p>You&rsquo;ll know Azure Firewall DNAT rule worked when:</p>
+
+<ol>
+<li><strong>PR merged</strong> in hub-terraform-infra repo</li>
+<li><strong>Terraform pipeline completed</strong> successfully</li>
+<li><strong>Public IP created</strong> in Azure Firewall
+
+<ul>
+<li>Portal: <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/providers/Microsoft.Network/azureFirewalls/sbox-int-uksouth-fw/overview">sbox-int-uksouth-fw</a></li>
+<li>Navigate to: IP Configuration</li>
+<li>Look for: <code>fw-uksouth-sbox-int-palo-labsgoldenpath&lt;yourname&gt;-pip</code></li>
+</ul></li>
+<li><strong>DNAT rule exists</strong> 
+
+<ul>
+<li>Portal: sbox-int-uksouth-fw &gt; Rules (classic) &gt; NAT rule collection</li>
+<li>Your rule maps public IP port 80 → your VM private IP port 80</li>
+</ul></li>
+<li><strong>Default DNS record created</strong> automatically for the public IP
+
+<ul>
+<li>Format: <code>firewall-sbox-int-palo-labsgoldenpath&lt;yourname&gt;.uksouth.cloudapp.azure.com</code></li>
+</ul></li>
+<li><strong>Can access VM via default DNS</strong>:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># Test access to your VM through Azure Firewall</span>
+curl <span class="nt">-I</span> http://firewall-sbox-int-palo-labsgoldenpath&lt;yourname&gt;.uksouth.cloudapp.azure.com
+
+<span class="c"># Should return HTTP 200 and Apache default page</span>
+</code></pre></div><p>📣 <strong>Keep a note of the public IP address</strong> - you&rsquo;ll need it for Front Door configuration.</p>
 <p>At this point you should be able to access your apache server from your browser by using the default
 DNS record created, which is associated with the Azure Firewall.
 The DNS record should be similar to <code>http://firewall-sbox-int-palo-labsgoldenpathfelix.uksouth.cloudapp.azure.com/</code> depending on your lab name.<br>
@@ -395,16 +492,64 @@ your requests.</p>
 <p><br></p>
 <p>📣 <strong>NOTE:</strong> You will need to have F5 VPN connection and non-production Access Package granted before you can SSH into the sandbox bastion.
   Follow <a href="https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions">this guide</a> to obtain this.</p>
+<p><strong>✅ Success Criteria - Complete Virtual Networks Section</strong></p>
+<p><strong>You&rsquo;ve successfully completed the Virtual Networks section when ALL of these work:</strong></p>
+<p><strong>1. Public URL Access</strong></p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>curl <span class="nt">-I</span> https://labs-goldenpath-&lt;yourname&gt;.sandbox.platform.hmcts.net
+</code></pre></div><p>Should return HTTP/2 200 and your web server (Apache)</p>
+<p><strong>2. DNS Resolution</strong></p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>nslookup labs-goldenpath-&lt;yourname&gt;.sandbox.platform.hmcts.net
+</code></pre></div><p>Should return Front Door IP</p>
+<p><strong>3. Front Door Configuration</strong></p>
 
 <ul>
-<li><code>ssh</code> onto you virtual machine by logging into the VPN and connecting to the sandbox bastion by running the command below</li>
+<li>Navigate to <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb/resourceGroups/lz-sbox-rg/providers/Microsoft.Cdn/profiles/hmcts-sbox/overview">hmcts-sbox Front Door</a></li>
+<li>Your custom domain shows <strong>&ldquo;Validation State: Approved&rdquo;</strong></li>
+<li>Backend pool shows <strong>&ldquo;Healthy&rdquo;</strong> status</li>
+<li>Can access via Front Door direct URL</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
-</code></pre></div><p>Once one the bastion <code>ssh</code> onto the VM using the below command</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    curl &lt;your-private-ip&gt;
-    ssh labsAdmin2023@&lt;your-vm-private-ip&gt;
-</code></pre></div><p><p> With the first <code>curl</code> command you should see the raw html output in the terminal to prove that you can reach your VM from the bastion VM.</p>
-  <p> For the second command, accept the fingerprint prompt and provide the VM password, you should now be on your VM.</p></p>
+<p><strong>4. Panorama Traffic Logs</strong></p>
+
+<ul>
+<li>Connected to F5 VPN</li>
+<li>Logged into <a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">Panorama</a></li>
+<li>Monitor &gt; Logs shows traffic to your VM IP</li>
+<li>Traffic shows &ldquo;Action: allow&rdquo; (not deny)</li>
+</ul>
+<p><strong>5. SSH Access to VM</strong></p>
+<p>Connected to VPN, SSH to bastion:
+<code>bash
+az ssh vm -n bastion-sbox -g bastion-sbox-rg --subscription DTS-MANAGEMENT-SBOX-INTSVC
+</code></p>
+<p>From bastion, curl your VM:
+<code>bash
+curl &lt;your-vm-private-ip&gt;
+</code>
+Returns Apache HTML</p>
+<p>SSH to your VM:
+<code>bash
+ssh labsAdmin2023@&lt;your-vm-private-ip&gt;
+</code>
+Successfully logs in</p>
+<p><strong>6. Browser Access</strong></p>
+
+<ul>
+<li>Open browser (not on VPN if testing public access)</li>
+<li>Navigate to: <code>https://labs-goldenpath-&lt;yourname&gt;.sandbox.platform.hmcts.net</code></li>
+<li>See Apache default page or your custom content</li>
+<li>SSL certificate valid (no browser warnings)</li>
+<li>Page loads within a few seconds (Front Door caching works)</li>
+</ul>
+<p><strong>Congratulations!</strong></p>
+<p>You&rsquo;ve successfully:</p>
+
+<ul>
+<li>Created VNet infrastructure with proper peering and routing</li>
+<li>Configured firewall rules for network security</li>
+<li>Set up DNS and Front Door for public access</li>
+<li>Gained hands-on experience with the full HMCTS network stack</li>
+</ul>
+<p>You&rsquo;re now ready to move on to the <a href="aks-cluster.html">AKS Cluster</a> section!</p>
 
 <div class="nav">
   <a class="prev" href="./prereq.html" title="Previous">❮ Previous</a>
