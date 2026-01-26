@@ -67,6 +67,20 @@ Verify the following exist
     Search the peers for `labs` and any existing lab peering should appear, if any show as disconnected then these should be removed.
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
+
+<br>
+
+### Step 2c
+Now that the pipeline has run and created your resources, we need to check that there is a web application running on the virtual machine. To do this we must log into the machine using a bastion.
+
+1. Navigate to https://myaccess.microsoft.com/, click the organisations button, then My Access > Access Packages. Self grant access to 'Non-Production Bastion Server Access'.
+2. Once granted (see the "Active" tab), log into Azure terminal using the command 'az login' and connect to the 'DTS-MANAGEMENT-SBOX-INTSVC' subscription.
+3. When logged into Azure CLI run 'az ssh vm -n bastion-sbox -g bastion-sbox-rg' to connect to the bastion host. Select yes to the certificate fingerprint prompt.
+4. Now you are logged onto the bastion host. Connect to your virtual machine using 'ssh <your_username>@<your_vm_private_ip>', for example 'ssh labsAdmin2023@10.10.4.4'. Select yes to the certificate fingerprint prompt.
+5. You are now logged into your freshly created virtual machine. Lets run 'sudo ss -ltn' to check if the VM is listening on any ports.
+6. Port 80 is not in the output, meaning nginx or apache are not currently running on our vm. Lets install nginx with 'sudo apt install nginx', confirm continue with 'Y'.
+7. Now that nginx is installed, lets run 'sudo ss -ltn' again to check if port 80 is now listening. Now it appears in the list of listening ports.
+
 <br>
 
 **✅ Success Criteria - Step 2**
@@ -82,8 +96,9 @@ Verify the following exist
    - Peering to core-infra-vnet-mgmt
 5. **Route table exists** with default route to `10.10.200.36`
 6. **Virtual machine created** and shows "Running" status in Azure Portal
-7. **VM has no public IP** (security best practice)
-8. **Required tags present** on all resources (check any resource's Tags section)
+7. **VM is listening on TCP port 80
+8. **VM has no public IP** (security best practice)
+9. **Required tags present** on all resources (check any resource's Tags section)
 
 #### What did I just create?
 - A virtual network that's peered to 2 other VNets using the [vnet peering module](https://github.com/hmcts/terraform-module-vnet-peering)
