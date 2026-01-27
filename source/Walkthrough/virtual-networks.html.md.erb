@@ -74,10 +74,10 @@ Verify the following exist
 Now that the pipeline has run and created your resources, we need to check that there is a web application running on the virtual machine. To do this we must log into the machine using a bastion.
 
 - Navigate to https://myaccess.microsoft.com/, click the organisations button, then My Access > Access Packages. Self grant access to 'Non-Production Bastion Server Access'.
-- Once granted (see the "Active" tab), log into Azure terminal using the command 'az login' and connect to the 'DTS-MANAGEMENT-SBOX-INTSVC' subscription.
-- When logged into Azure CLI run 'az ssh vm -n bastion-sbox -g bastion-sbox-rg' to connect to the bastion host. Select yes to the certificate fingerprint prompt.
-- Now you are logged onto the bastion host. Connect to your virtual machine using 'ssh <your_username>@<your_vm_private_ip>', for example 'ssh labsAdmin2023@10.10.4.4'. Select yes to the certificate fingerprint prompt.
-- You are now logged into your freshly created virtual machine. Lets run 'sudo ss -ltn' to check if the VM is listening on any ports.
+- Once granted (see the "Active" tab), log into Azure terminal using the command `az login` and connect to the `DTS-MANAGEMENT-SBOX-INTSVC` subscription.
+- When logged into Azure CLI run `az ssh vm -n bastion-sbox -g bastion-sbox-rg` to connect to the bastion host. Select yes to the certificate fingerprint prompt.
+- Now you are logged onto the bastion host. Connect to your virtual machine using `ssh <your_username>@<your_vm_private_ip>`, for example `ssh labsAdmin2023@10.10.4.4`. Select yes to the certificate fingerprint prompt.
+- You are now logged into your freshly created virtual machine. Lets run `sudo ss -ltn` to check if the VM is listening on any ports.
 
 <details>
   <summary>VM is not listening</summary>
@@ -86,8 +86,8 @@ Now that the pipeline has run and created your resources, we need to check that 
 
 <br>
 
-- Port 80 is not in the output, meaning nginx or apache are not currently running on our vm. Lets install nginx with 'sudo apt install nginx', confirm continue with 'Y'.
-- Now that nginx is installed, lets run 'sudo ss -ltn' again to check if port 80 is now listening. Now it appears in the list of listening ports.
+- Port 80 is not in the output, meaning nginx or apache are not currently running on our vm. Lets install nginx with `sudo apt install nginx`, confirm continue with `Y`.
+- Now that nginx is installed, lets run `sudo ss -ltn` again to check if port 80 is now listening. Now it appears in the list of listening ports.
 
 <details>
   <summary>VM is now listening</summary>
