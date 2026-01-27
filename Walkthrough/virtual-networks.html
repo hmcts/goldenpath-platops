@@ -177,6 +177,35 @@ In a production environment, its advised not to manually <code>apply</code> on m
     <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
 </details> 
 <p><br></p>
+<h3 id="step-2c">Step 2c</h3>
+<p>Now that the pipeline has run and created your resources, we need to check that there is a web application running on the virtual machine. To do this we must log into the machine using a bastion.</p>
+
+<ol>
+<li>Navigate to https://myaccess.microsoft.com/, click the organisations button, then My Access &gt; Access Packages. Self grant access to &lsquo;Non-Production Bastion Server Access&rsquo;.</li>
+<li>Once granted (see the &ldquo;Active&rdquo; tab), log into Azure terminal using the command &lsquo;az login&rsquo; and connect to the &lsquo;DTS-MANAGEMENT-SBOX-INTSVC&rsquo; subscription.</li>
+<li>When logged into Azure CLI run &lsquo;az ssh vm -n bastion-sbox -g bastion-sbox-rg&rsquo; to connect to the bastion host. Select yes to the certificate fingerprint prompt.</li>
+<li>Now you are logged onto the bastion host. Connect to your virtual machine using &lsquo;ssh <your_username>@<your_vm_private_ip>&rsquo;, for example &lsquo;ssh labsAdmin2023@10.10.4.4&rsquo;. Select yes to the certificate fingerprint prompt.</li>
+<li>You are now logged into your freshly created virtual machine. Lets run &lsquo;sudo ss -ltn&rsquo; to check if the VM is listening on any ports.</li>
+</ol>
+<p><br></p>
+
+<details>
+  <summary>VM is not listening</summary>
+  <img alt="Address object" src="./images/listening_before.png" width="auto">
+</details>
+<p><br></p>
+
+<ol>
+<li>Port 80 is not in the output, meaning nginx or apache are not currently running on our vm. Lets install nginx with &lsquo;sudo apt install nginx&rsquo;, confirm continue with &lsquo;Y&rsquo;.</li>
+<li>Now that nginx is installed, lets run &lsquo;sudo ss -ltn&rsquo; again to check if port 80 is now listening. Now it appears in the list of listening ports.</li>
+</ol>
+<p><br></p>
+
+<details>
+  <summary>VM is now listening</summary>
+  <img alt="Address object" src="./images/listening_after.png" width="auto">
+</details>
+<p><br></p>
 <p><strong>✅ Success Criteria - Step 2</strong></p>
 <p><strong>You&rsquo;ll know Step 2 worked when:</strong></p>
 
@@ -196,6 +225,7 @@ In a production environment, its advised not to manually <code>apply</code> on m
 </ul></li>
 <li><strong>Route table exists</strong> with default route to <code>10.10.200.36</code></li>
 <li><strong>Virtual machine created</strong> and shows &ldquo;Running&rdquo; status in Azure Portal</li>
+<li>**VM is listening on TCP port 80</li>
 <li><strong>VM has no public IP</strong> (security best practice)</li>
 <li><strong>Required tags present</strong> on all resources (check any resource&rsquo;s Tags section)</li>
 </ol>
