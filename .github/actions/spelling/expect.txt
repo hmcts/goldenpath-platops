@@ -110,6 +110,7 @@ nodepool
 nonline
 noout
 nsgs
+nsg
 nslookup
 NVA
 oidc
