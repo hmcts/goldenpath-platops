@@ -138,9 +138,9 @@ resource "azurerm_linux_virtual_machine" "res-2" {
     publisher = "cloud-infrastructure-services"
   }
   source_image_reference {
-    offer     = "apache_ubuntu24-04"
+    offer     = "apache_ubuntu20-04"
     publisher = "cloud-infrastructure-services"
-    sku       = "apache-ubuntu24-04"
+    sku       = "apache-ubuntu-24-04"
     version   = "latest"
   }
   depends_on = [
