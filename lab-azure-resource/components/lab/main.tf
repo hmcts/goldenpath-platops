@@ -133,8 +133,8 @@ resource "azurerm_linux_virtual_machine" "res-2" {
     storage_account_type = "StandardSSD_LRS"
   }
   plan {
-    name      = "apache-ubuntu24-04"
-    product   = "apache_ubuntu24-04"
+    name      = "apache-ubuntu-24-04"
+    product   = "apache_ubuntu20-04"
     publisher = "cloud-infrastructure-services"
   }
   source_image_reference {
