@@ -178,31 +178,25 @@ In a production environment, its advised not to manually <code>apply</code> on m
 </details> 
 <p><br></p>
 <h3 id="step-2c">Step 2c</h3>
-<p>Now that the pipeline has run and created your resources, we need to check that there is a web application running on the virtual machine. To do this we must log into the machine using a bastion.</p>
+<p>Now that the pipeline has run and created your resources, we need to check that the web application running on your virtual machine is listening on port 80. To do this we must log into the machine using a bastion.</p>
 
 <ul>
 <li>Navigate to https://myaccess.microsoft.com/, click the organisations button, then My Access &gt; Access Packages. Self grant access to &lsquo;Non-Production Bastion Server Access&rsquo;.</li>
 <li>Once granted (see the &ldquo;Active&rdquo; tab), log into Azure terminal using the command <code>az login</code> and connect to the <code>DTS-MANAGEMENT-SBOX-INTSVC</code> subscription.</li>
 <li>When logged into Azure CLI run <code>az ssh vm -n bastion-sbox -g bastion-sbox-rg</code> to connect to the bastion host. Select yes to the certificate fingerprint prompt.</li>
 <li>Now you are logged onto the bastion host. Connect to your virtual machine using <code>ssh &lt;your_username&gt;@&lt;your_vm_private_ip&gt;</code>, for example <code>ssh labsAdmin2023@10.10.4.4</code>. Select yes to the certificate fingerprint prompt.</li>
-<li>You are now logged into your freshly created virtual machine. Lets run <code>sudo ss -ltn</code> to check if the VM is listening on any ports.</li>
-</ul>
-
-<details>
-  <summary>VM is not listening</summary>
-  <img alt="Address object" src="./images/listening_before.png" width="auto">
-</details>
-<p><br></p>
-
-<ul>
-<li>Port 80 is not in the output, meaning nginx or apache are not currently running on our vm. Lets install nginx with <code>sudo apt install nginx</code>, confirm continue with <code>Y</code>.</li>
-<li>Now that nginx is installed, lets run <code>sudo ss -ltn</code> again to check if port 80 is now listening. Now it appears in the list of listening ports.</li>
+<li>You are now logged into your freshly created virtual machine. This VM SKU should come with apache installed. Lets run <code>sudo ss -ltn</code> to check if the VM is listening on any ports.</li>
 </ul>
 
 <details>
   <summary>VM is now listening</summary>
   <img alt="Address object" src="./images/listening_after.png" width="auto">
 </details>
+<p><br></p>
+
+<ul>
+<li>As shown in the above screenshot, port 80 is in the list of listening ports on the virtual machine.</li>
+</ul>
 <p><br></p>
 <p><strong>✅ Success Criteria - Step 2</strong></p>
 <p><strong>You&rsquo;ll know Step 2 worked when:</strong></p>
