@@ -445,7 +445,7 @@ NPCOL
 npmjs
 NSDT
 nsenter
-NSG
+nsg
 NSUPS
 nta
 NTRANS

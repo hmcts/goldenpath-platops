@@ -109,6 +109,7 @@ nodelocaldns
 nodepool
 nonline
 noout
+nsg
 nslookup
 NVA
 oidc
