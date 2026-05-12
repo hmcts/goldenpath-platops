@@ -109,8 +109,6 @@ nodelocaldns
 nodepool
 nonline
 noout
-nsgs
-nsg
 nslookup
 NVA
 oidc
@@ -124,7 +122,6 @@ pmd
 postgress
 prd
 prdatl
-prepatch
 prepatch
 Prereq
 privatednszonename
@@ -182,5 +179,6 @@ wrkagentpool
 wsdl
 xpack
 xxxx
+YOURNAME
 yourname
 zshrc
