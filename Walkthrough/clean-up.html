@@ -139,7 +139,7 @@ saves the business money and helps prevent floating resources.</p>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> terraform destroy
 </code></pre></div><p>❗️Make sure your account is still set to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription as described in <code>Step 1</code> above</p>
-<h3 id="removing-part-1-resources-azdo-pipeline-terraform-run">Removing Part 1 resources (AZDO Pipeline terraform run):</h3>
+<h3 id="removing-part-1-resources-azure-devops-pipeline-terraform-run">Removing Part 1 resources (Azure DevOps Pipeline terraform run):</h3>
 
 <ul>
 <li>If you used the CI/CD pipeline then you can <code>destroy</code> via the devops pipeline or simply remove the terraform resources in the TF files and commit, then running &lsquo;Apply&rsquo; will align the infrastructure to the new desired state (empty).</li>
@@ -161,7 +161,7 @@ saves the business money and helps prevent floating resources.</p>
 <li><a href="https://github.com/hmcts/azure-private-dns/pulls">https://github.com/hmcts/azure-private-dns/pulls</a> (aks part)</li>
 <li><a href="https://github.com/hmcts/cnp-flux-config/pulls">https://github.com/hmcts/cnp-flux-config/pulls</a> (utilise the clean up script)</li>
 <li>archive your unneeded repos (this Disables your Jenkins pipeline)</li>
-<li>Delete your AzDO pipeline from here: <a href="https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders">https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders</a></li>
+<li>Delete your Azure DevOps pipeline from here: <a href="https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders">https://dev.azure.com/hmcts/PlatformOperations/_build?view=folders</a></li>
 </ul></li>
 <li><p>Kubectl commands to get rid of your K8s pod</p></li>
 </ul>
@@ -187,17 +187,17 @@ kubectl delete pod &lt;NAME OF YOUR POD&gt; -n labs
   <a class="next" href="./futher-steps.html" title="Next">Next ❯</a>
 </div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-10-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-11-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 August 2023.
+      This page was last reviewed on 11 May 2026.
 
-        It needs to be reviewed again on 4 October 2023
+        It needs to be reviewed again on 11 November 2026
         by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 October 2023
+      This page was set to be reviewed before 11 November 2026
        by the page owner <a href="https://hmcts-reform.slack.com/messages/platops-build-notices">platops-build-notices</a>.
       This might mean the content is out of date.
     </div>
