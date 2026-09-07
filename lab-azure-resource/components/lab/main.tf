@@ -140,14 +140,14 @@ resource "azurerm_linux_virtual_machine" "res-2" {
   }
   plan {
     name      = "apache-ubuntu24-04"
-    product   = "apache_ubuntu24-04"
+    product   = "apache_ubuntu20-04"
     publisher = "cloud-infrastructure-services"
   }
   source_image_reference {
     offer     = "apache_ubuntu24-04"
     publisher = "cloud-infrastructure-services"
     sku       = "apache-ubuntu24-04"
-    version   = "latest"
+    version   = "1.0.6"
   }
   depends_on = [
     azurerm_network_interface.res-3
