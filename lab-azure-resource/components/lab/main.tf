@@ -1,6 +1,6 @@
 
 locals {
-  prefix      = "${formatdate("YYMMDDhhmm", timestamp())}"
+  prefix      = formatdate("YYMMDDhhmm", timestamp())
   rg_name     = "labs-rg-${local.prefix}"
   vnet_name   = "labs-vnet-${local.prefix}"
   pip_name    = "labs-ip-${local.prefix}"
@@ -116,6 +116,12 @@ resource "azurerm_route" "res-7" {
     azurerm_route_table.res-6
   ]
 }
+
+resource "random_password" "res-20" {
+  length  = 20
+  special = true
+}
+
 
 resource "azurerm_linux_virtual_machine" "res-2" {
   admin_username                  = "labsAdmin2023"

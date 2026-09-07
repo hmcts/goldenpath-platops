@@ -50,6 +50,9 @@ Platform Operations uses Git for its source control. To create a repo for your l
 
 - [Clone](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) your new repo to your local machine as you will need this later.
 
+- In the [lab-azure-resource folder](https://github.com/hmcts/goldenpath-platops/tree/master/lab-azure-resource) copy the `azure-pipelines.yaml` file into your repo root folder.
+  You will select this file in the next step when creating the lab pipeline. Commit the changes and push to the main branch of your repo.
+
 
 ## Lab Pipeline
 You will also need a Azure DevOps pipeline to run your code. To create a pipeline, follow the steps below
@@ -66,15 +69,23 @@ You will also need a Azure DevOps pipeline to run your code. To create a pipelin
       <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
     </details>
 
-- Specify where you code repository is, in our case this would be Git
+- Specify where you code repository is, in our case this would be GitHub
 
      <details>
-       <summary>Specify Git repository</summary>
-       <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
+       <summary>Specify GitHub repository</summary>
+       <img alt="Specify GitHub repository" src="./images/new-devops-pipeline-2.png" width="auto">
      </details>
 
-- Follow the relevant screens and prompts, select your lab repository in Git which would be an item in the repos listed after authentication
-  is complete. To keep things tidy, place your pipeline in the 'golden paths' folder. You may see screens similar to the once below
+- Follow the relevant screens and prompts, select your lab repository in GitHub which would be an item in the repos listed after authentication
+  is complete.
+
+- At the `Configure your pipeline` prompt, select the `Existing Azure Pipelines YAML file` option and specify the `main` branch and `/azure-pipelines.yaml` path in the presented dropdown list. Click `Continue`
+
+- A `Review your pipeline YAML` page is presented.  Click the dropdown next to `Run` (do not click `Run`) and click `Save`to create the pipeline.
+
+- To keep things tidy, place your pipeline in the 'golden paths' folder by clicking on the ellipsis next to `Run pipeline` and select `Rename/Move` and select the `Golden Paths` folder in the resulting dialog box.
+
+You may see screens similar to the once below for the above steps.
 
      <details>
        <summary>Create new pipeline</summary>
@@ -90,6 +101,21 @@ You will also need a Azure DevOps pipeline to run your code. To create a pipelin
        <summary>Authorise Azure DevOps</summary>
        <img alt="Authorise Azure DevOps" src="./images/new-devops-pipeline-5.png" width="auto">
      </details>
+
+      <details>
+        <summary>Select Existing YAML file</summary>
+        <img alt="Select Existing YAML file" src="./images/new-devops-pipeline-select-yaml.png" width="auto">
+      </details>
+
+      <details>
+        <summary>Save Changes</summary>
+        <img alt="Save Changes" src="./images/new-devops-pipeline-save-changes.png" width="auto">
+      </details>
+
+      <details>
+        <summary>Move pipeline to Golden Path folder</summary>
+        <img alt="Save Changes" src="./images/new-devops-pipeline-move-to-folder.png" width="auto">
+      </details>
 
 ## Build your resources
 To get your resources provisioned,  follow the steps below
@@ -110,7 +136,7 @@ To get your resources provisioned,  follow the steps below
   ```
 
 📣 **NOTE:** You may want to modify prefix in your resource names defined in [main.tf](https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3).
-This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed Azure limits, example:
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed [Azure limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules), example:
 
 ```yaml
   prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"
