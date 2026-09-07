@@ -1,6 +1,6 @@
 
 locals {
-  prefix      = "${formatdate("YYMMDDhhmm", timestamp())}"
+  prefix      = formatdate("YYMMDDhhmm", timestamp())
   rg_name     = "labs-rg-${local.prefix}"
   vnet_name   = "labs-vnet-${local.prefix}"
   pip_name    = "labs-ip-${local.prefix}"
@@ -117,6 +117,12 @@ resource "azurerm_route" "res-7" {
   ]
 }
 
+resource "random_password" "res-20" {
+  length  = 20
+  special = true
+}
+
+
 resource "azurerm_linux_virtual_machine" "res-2" {
   admin_username                  = "labsAdmin2023"
   admin_password                  = random_password.res-20.result
@@ -133,15 +139,15 @@ resource "azurerm_linux_virtual_machine" "res-2" {
     storage_account_type = "StandardSSD_LRS"
   }
   plan {
-    name      = "apache-ubuntu24-04"
-    product   = "apache_ubuntu24-04"
+    name      = "apache-ubuntu-24-04"
+    product   = "apache_ubuntu20-04"
     publisher = "cloud-infrastructure-services"
   }
   source_image_reference {
-    offer     = "apache_ubuntu24-04"
+    offer     = "apache_ubuntu20-04"
     publisher = "cloud-infrastructure-services"
-    sku       = "apache-ubuntu24-04"
-    version   = "latest"
+    sku       = "apache-ubuntu-24-04"
+    version   = "1.0.6"
   }
   depends_on = [
     azurerm_network_interface.res-3
