@@ -64,6 +64,16 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
+      - name: Show Ruby and dependency versions
+        run: |
+          ruby --version
+          bundle --version
+          bundle exec ruby -rjson -e 'puts JSON::VERSION; p JSON.method(:parse).parameters'
+          bundle exec gem list govuk_tech_docs middleman middleman-search-gds json
+
+      - name: Check outdated dependencies
+        run: bundle outdated govuk_tech_docs middleman middleman-search-gds json
+
       - name: Build
         run: bundle exec middleman build --clean --verbose
 
