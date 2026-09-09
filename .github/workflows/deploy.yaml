@@ -64,8 +64,18 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
+      - name: Show Ruby and dependency versions
+        run: |
+          ruby --version
+          bundle --version
+          bundle exec ruby -rjson -e 'puts JSON::VERSION; p JSON.method(:parse).parameters'
+          bundle exec gem list govuk_tech_docs middleman middleman-search-gds json
+
+      - name: Check outdated dependencies
+        run: bundle outdated govuk_tech_docs middleman middleman-search-gds json
+
       - name: Build
-        run: bundle exec middleman build
+        run: bundle exec middleman build --clean --verbose
 
       - name: 'Check for broken links'
         run: bundle exec rake check_urls
@@ -81,7 +91,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.1
+          ruby-version: 3.3.4
           bundler-cache: false
       - name: Install dependencies
         run: bundle install
