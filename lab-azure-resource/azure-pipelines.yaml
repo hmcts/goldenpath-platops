@@ -80,8 +80,5 @@ stages:
               component: "lab"
               terraformInitSubscription: ${{ variables.terraformInitSubscription }}
               tfVarsFile: NULL
-              initCommandOptions: >
-                -reconfigure
-              planCommandOptions: >
-                -compact-warnings
-                -lock-timeout=30s
+              initCommandOptions: "-reconfigure"
+              planCommandOptions: "-compact-warnings -lock-timeout=30s"
