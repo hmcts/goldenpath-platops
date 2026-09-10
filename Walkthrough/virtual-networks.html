@@ -168,14 +168,17 @@ In a production environment, its advised not to manually <code>apply</code> on m
 <li>A route table to one default route to <code>10.10.200.36</code></li>
 </ul>
 
-<details>
-  <summary> ❗️WARNING </summary>
-  <p> 
-    If your Terraform fails with peering errors it is likely that a previous lab exercise has not been cleared down correctly. <br>
-    Log into Azure and search for the the `core-infra-vnet-mgmt` virtual network then look at the existing Peering for the vnet. <br>
-    Search the peers for `labs` and any existing lab peering should appear, if any show as disconnected then these should be removed.
-    <img alt="Disconnected Peering" src="./images/disconnected-peering.png" width="auto">
-</details> 
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive">Warning</span>
+    If your Terraform fails with peering errors, it is likely that a previous lab exercise has not been cleared down correctly. <br>
+Log into Azure and search for the <code>core-infra-vnet-mgmt</code> virtual network, then review its existing peerings. <br>
+Search the peerings for <code>labs</code>. If any lab peerings show as disconnected, remove them. <br>
+Reference the variables.tf file for a full list of usable CIDR ranges, seen at the top of the file (note all of these ranges could be in use) cycle through the CIDR ranges by updating the address_space variable until you find one available. <br>
+<img alt="Example of a disconnected peering" src="./images/disconnected-peering.png" width="auto">
+  </strong>
+</div>
 <p><br></p>
 <h3 id="step-2c">Step 2c</h3>
 <p>Now that the pipeline has run and created your resources, we need to check that the web application running on your virtual machine is listening on port 80. To do this we must log into the machine using a bastion.</p>
