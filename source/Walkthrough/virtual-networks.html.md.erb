@@ -62,7 +62,7 @@ Verify the following exist
 <%= warning_text('If your Terraform fails with peering errors, it is likely that a previous lab exercise has not been cleared down correctly. <br>
 Log into Azure and search for the <code>core-infra-vnet-mgmt</code> virtual network, then review its existing peerings. <br>
 Search the peerings for <code>labs</code>. If any lab peerings show as disconnected, remove them. <br>
-Reference the variable.tf file for a full list of usable CIDR ranges, seen at the top of the file (note all of these ranges could be in use) cycle through the CIDR ranges by updating the address_space variable until you find one available. <br>
+Reference the variables.tf file for a full list of usable CIDR ranges, seen at the top of the file (note all of these ranges could be in use) cycle through the CIDR ranges by updating the address_space variable until you find one available. <br>
 <img alt="Example of a disconnected peering" src="./images/disconnected-peering.png" width="auto">') %>
 
 <br>
