@@ -165,7 +165,9 @@ double check the <a href="https://tools.hmcts.net/confluence/spaces/RRFM/pages/1
   learn more about this in the <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">Managing your repository’s settings and features</a> documentation.</p>
 
 <ul>
-<li><a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</li>
+<li><p><a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Clone</a> your new repo to your local machine as you will need this later.</p></li>
+<li><p>In the <a href="https://github.com/hmcts/goldenpath-platops/tree/master/lab-azure-resource">lab-azure-resource folder</a> copy the <code>azure-pipelines.yaml</code> file into your repo root folder.
+You will select this file in the next step when creating the lab pipeline. Commit the changes and push to the main branch of your repo.</p></li>
 </ul>
 <h2 id="lab-pipeline">Lab Pipeline</h2>
 <p>You will also need a Azure DevOps pipeline to run your code. To create a pipeline, follow the steps below</p>
@@ -182,27 +184,48 @@ double check the <a href="https://tools.hmcts.net/confluence/spaces/RRFM/pages/1
   <summary>Create new DevOps pipeline</summary>
   <img alt="Create new Devops pipeline" src="./images/new-devops-pipeline.png" width="auto">
 </details></li>
-<li><p>Specify where you code repository is, in our case this would be Git</p>
+<li><p>Specify where you code repository is, in our case this would be GitHub</p>
 <p><details>
-   <summary>Specify Git repository</summary>
-   <img alt="Specify Git repository" src="./images/new-devops-pipeline-2.png" width="auto">
+   <summary>Specify GitHub repository</summary>
+   <img alt="Specify GitHub repository" src="./images/new-devops-pipeline-2.png" width="auto">
  </details></p></li>
-<li><p>Follow the relevant screens and prompts, select your lab repository in Git which would be an item in the repos listed after authentication
-is complete. To keep things tidy, place your pipeline in the &lsquo;golden paths&rsquo; folder. You may see screens similar to the once below</p>
-<p><details>
-   <summary>Create new pipeline</summary>
-   <img alt="Create new pipeline" src="./images/new-devops-pipeline-3.png" width="auto">
- </details></p>
-<p><details>
-   <summary>Select new pipeline repo</summary>
-   <img alt="Select new pipeline repo" src="./images/new-devops-pipeline-4.png" width="auto">
- </details></p>
-<p><details>
-   <summary>Authorise Azure DevOps</summary>
-   <img alt="Authorise Azure DevOps" src="./images/new-devops-pipeline-5.png" width="auto">
- </details></p></li>
+<li><p>Follow the relevant screens and prompts, select your lab repository in GitHub which would be an item in the repos listed after authentication
+is complete.</p></li>
+<li><p>At the <code>Configure your pipeline</code> prompt, select the <code>Existing Azure Pipelines YAML file</code> option and specify the <code>main</code> branch and <code>/azure-pipelines.yaml</code> path in the presented dropdown list. Click <code>Continue</code></p></li>
+<li><p>A <code>Review your pipeline YAML</code> page is presented.  Click the dropdown next to <code>Run</code> (do not click <code>Run</code>) and click <code>Save</code>to create the pipeline.</p></li>
+<li><p>To keep things tidy, place your pipeline in the &lsquo;golden paths&rsquo; folder by clicking on the ellipsis next to <code>Run pipeline</code> and select <code>Rename/Move</code> and select the <code>Golden Paths</code> folder in the resulting dialog box.</p></li>
 </ul>
-<h2 id="build-your-resources">Build your resources</h2>
+<p>You may see screens similar to the once below for the above steps.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> &lt;details&gt;
+   &lt;summary&gt;Create new pipeline&lt;/summary&gt;
+   &lt;img alt="Create new pipeline" src="./images/new-devops-pipeline-3.png" width="auto"&gt;
+ &lt;/details&gt;
+
+ &lt;details&gt;
+   &lt;summary&gt;Select new pipeline repo&lt;/summary&gt;
+   &lt;img alt="Select new pipeline repo" src="./images/new-devops-pipeline-4.png" width="auto"&gt;
+ &lt;/details&gt;
+
+ &lt;details&gt;
+   &lt;summary&gt;Authorise Azure DevOps&lt;/summary&gt;
+   &lt;img alt="Authorise Azure DevOps" src="./images/new-devops-pipeline-5.png" width="auto"&gt;
+ &lt;/details&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;Select Existing YAML file&lt;/summary&gt;
+    &lt;img alt="Select Existing YAML file" src="./images/new-devops-pipeline-select-yaml.png" width="auto"&gt;
+  &lt;/details&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;Save Changes&lt;/summary&gt;
+    &lt;img alt="Save Changes" src="./images/new-devops-pipeline-save-changes.png" width="auto"&gt;
+  &lt;/details&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;Move pipeline to Golden Path folder&lt;/summary&gt;
+    &lt;img alt="Save Changes" src="./images/new-devops-pipeline-move-to-folder.png" width="auto"&gt;
+  &lt;/details&gt;
+</code></pre></div><h2 id="build-your-resources">Build your resources</h2>
 <p>To get your resources provisioned,  follow the steps below</p>
 
 <ul>
@@ -219,7 +242,7 @@ Your repo folder on your local machine should now look like this</li>
           ├── provider.tf
           └── variables.tf
 </code></pre></div><p>📣 <strong>NOTE:</strong> You may want to modify prefix in your resource names defined in <a href="https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3">main.tf</a>.
-This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed Azure limits, example:</p>
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed <a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules">Azure limits</a>, example:</p>
 <div class="highlight"><pre class="highlight yaml" tabindex="0"><code>  <span class="s">prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"</span>
 </code></pre></div>
 <ul>
