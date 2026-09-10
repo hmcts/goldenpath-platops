@@ -81,7 +81,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.1
+          ruby-version: '3.3.4'
           bundler-cache: false
       - name: Install dependencies
         run: bundle install
@@ -97,5 +97,4 @@ jobs:
           git diff --cached --quiet || git commit -m "Update Gemfile.lock [skip ci]"
           bundle exec rake publish
         if: github.ref == 'refs/heads/master'
-
 
