@@ -143,7 +143,7 @@ resource "azurerm_key_vault_secret" "vm-password" {
 }
 
 data "azuread_group" "kv_access" {
-  display_name     = "DTS PLatform Operations"
+  display_name     = "DTS Platform Operations"
   security_enabled = true
 }
 
