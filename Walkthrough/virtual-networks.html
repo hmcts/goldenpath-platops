@@ -233,6 +233,9 @@ Most importantly, for network traffic to flow from the <a href="https://tools.hm
 <li><a href="https://tools.hmcts.net/confluence/display/DTSPO/Tagging+v1">Tagged</a> resources using the <a href="https://github.com/hmcts/terraform-module-common-tags">tagging module</a>. Tagging is an important part of the way we manage resources and is essential for managing running infrastructure and cost. This is enforced via Azure Policy and is defined in the <a href="https://github.com/hmcts/azure-policy">azure-policy</a> repo</li>
 <li>A custom route table that routes all traffic to the hub. We operate a <a href="https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&amp;__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD">hub and spoke</a> model. All network traffic should pass through the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview">hub</a> for inspection before being forwarded to it&rsquo;s destination. In our <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview">hub</a> we have
 2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop which is usually another virtual network.</li>
+<li>A key vault to store the virtual machine credentials. This is a security best practice to avoid hard coding credentials in code.</li>
+<li>A key vault secret containing the virtual machine admin password.</li>
+<li>A role assignment granting the required permission to read secrets from the key vault.</li>
 <li>A virtual machine without a public IP. We normally dont allow direct access from the internet to the backend resources. This has to ingress via a route which passes the hub and firewalls. This pattern is followed for most if not all resources or applications.</li>
 <li>A virtual machine that can be <a href="https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions">accessed</a> via the bastions, as it does not have a public IP, because its been peered with the <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings">core-infra-vnet-mgmt</a> vnet, it can be accessed via the HMCTS <a href="https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview">bastions</a>. 
 <br>
@@ -240,10 +243,6 @@ Select the virtual network and copy the vnet address cidr e.g. <code>10.10.7.0/2
 <br></li>
 </ul>
 <p>📣 <strong>NOTE:</strong> You will need to be connected to the VPN to access the bastions, this will be explained in more detail later on in this tutorial.</p>
-<p><strong>Assignment</strong> 📕 If you want a bit of a stretch, notice that the vm&rsquo;s credentials are hard coded and checked into the git repo? That&rsquo;s a big no no in the real world.</p>
-<p>You could try adding a <a href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault">key vault</a> resource that holds the vm&rsquo;s username and password and also use the <a href="https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password">random password</a> provider to generate your vm&rsquo;s password.
-Take note of <a href="https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies">dependencies</a>, make sure your key vault and values are created first.</p>
-<p>Happy Hunting!!!</p>
 <h3 id="step-3">Step 3</h3>
 <h4 id="about-panorama-management">About Panorama Management</h4>
 <p><a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">Panorama</a> is Palo Alto&rsquo;s centralized firewall management platform. In Platform Operations, we use it to:</p>
@@ -555,6 +554,7 @@ Returns Apache HTML</p>
 <code>bash
 ssh labsAdmin2023@&lt;your-vm-private-ip&gt;
 </code>
+At the prompt for password, enter the VM admin password (retrieve from Key Vault)
 Successfully logs in</p>
 <p><strong>6. Browser Access</strong></p>
 
