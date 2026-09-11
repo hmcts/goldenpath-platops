@@ -50,3 +50,7 @@ variable "hub_sbox_subscription_id" {
 variable "subscription_id" {
   default = "a8140a9e-f1b0-481f-a4de-09e2ee23f7ab"
 }
+
+variable "tenant_id" {
+  default = "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+}

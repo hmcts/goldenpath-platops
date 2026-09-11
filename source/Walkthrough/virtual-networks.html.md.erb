@@ -111,6 +111,9 @@ Now that the pipeline has run and created your resources, we need to check that 
 - [Tagged](https://tools.hmcts.net/confluence/display/DTSPO/Tagging+v1) resources using the [tagging module](https://github.com/hmcts/terraform-module-common-tags). Tagging is an important part of the way we manage resources and is essential for managing running infrastructure and cost. This is enforced via Azure Policy and is defined in the [azure-policy](https://github.com/hmcts/azure-policy) repo
 - A custom route table that routes all traffic to the hub. We operate a [hub and spoke](https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1511141283&__ncforminfo=ymJBSB3MQGJBph2cKEBJyqCsBFWvxnc2MHXLdaHv9ij45Z6HI42LhSPf1gMsfkZf5Z9pFf8NqzFbb6eCiIdJLJ3k6a0QAqQD) model. All network traffic should pass through the [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) for inspection before being forwarded to it's destination. In our [hub](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ea3a8c1e-af9d-4108-bc86-a7e2d267f49c/resourceGroups/hmcts-hub-sbox-int/overview) we have
   2 active Palo Alto firewall NVA that inspects traffic and forwards it if allowed to the next hop which is usually another virtual network.
+- A key vault to store the virtual machine credentials. This is a security best practice to avoid hard coding credentials in code.
+- A key vault secret containing the virtual machine admin password.
+- A role assignment granting the required permission to read secrets from the key vault.
 - A virtual machine without a public IP. We normally dont allow direct access from the internet to the backend resources. This has to ingress via a route which passes the hub and firewalls. This pattern is followed for most if not all resources or applications.
 - A virtual machine that can be [accessed](https://tools.hmcts.net/confluence/display/DTSPO/Access+HMCTS+Bastions) via the bastions, as it does not have a public IP, because its been peered with the [core-infra-vnet-mgmt](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/rg-mgmt/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-mgmt/peerings) vnet, it can be accessed via the HMCTS [bastions](https://portal.azure.com/#@HMCTS.NET/resource/subscriptions/b3394340-6c9f-44ca-aa3e-9ff38bd1f9ac/resourceGroups/bastion-sbox-rg/overview). 
  <br>
@@ -118,13 +121,6 @@ Now that the pipeline has run and created your resources, we need to check that 
  <br>
  
 📣 **NOTE:** You will need to be connected to the VPN to access the bastions, this will be explained in more detail later on in this tutorial.
-
-**Assignment** 📕 If you want a bit of a stretch, notice that the vm's credentials are hard coded and checked into the git repo? That's a big no no in the real world.
-
-You could try adding a [key vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) resource that holds the vm's username and password and also use the [random password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) provider to generate your vm's password.
-Take note of [dependencies](https://developer.hashicorp.com/terraform/tutorials/configuration-language/dependencies), make sure your key vault and values are created first.
-
-Happy Hunting!!!
 
 ### Step 3
 
@@ -518,6 +514,7 @@ SSH to your VM:
 ```bash
 ssh labsAdmin2023@<your-vm-private-ip>
 ```
+At the prompt for password, enter the VM admin password (retrieve from Key Vault)
 Successfully logs in
 
 **6. Browser Access**
