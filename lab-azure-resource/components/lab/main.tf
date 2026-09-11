@@ -8,6 +8,7 @@ locals {
   nic_name    = "labs-nic-${local.prefix}"
   rt_name     = "labs-rt-${local.prefix}"
   vm_name     = "labs-vm-${local.prefix}"
+  kv_name     = format("labs-kv-%s", local.prefix)
   common_tags = module.ctags.common_tags
 }
 
@@ -120,6 +121,36 @@ resource "azurerm_route" "res-7" {
 resource "random_password" "res-20" {
   length  = 20
   special = true
+  override_special = "!%*?"
+}
+
+resource "azurerm_key_vault" "res-12" {
+  location                   = azurerm_resource_group.res-0.location
+  name                       = substr(local.kv_name, 0, 20)
+  resource_group_name        = azurerm_resource_group.res-0.name
+  sku_name                   = "standard"
+  tenant_id                  = var.tenant_id
+  rbac_authorization_enabled = true
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = true
+  tags                       = local.common_tags
+}
+
+resource "azurerm_key_vault_secret" "vm-password" {
+  key_vault_id = azurerm_key_vault.res-12.id
+  name         = "vm-password"
+  value        = random_password.res-20.result
+}
+
+data "azuread_group" "kv_access" {
+  display_name     = "DTS PLatform Operations"
+  security_enabled = true
+}
+
+resource "azurerm_role_assignment" "kv-access" {
+  principal_id         = data.azuread_group.kv_access.object_id
+  scope                = azurerm_key_vault.res-12.id
+  role_definition_name = "Key Vault Secrets User"
 }
 
 
