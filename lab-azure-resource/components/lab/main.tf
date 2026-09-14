@@ -60,19 +60,6 @@ resource "azurerm_subnet_route_table_association" "res-11" {
   ]
 }
 
-resource "azurerm_public_ip" "res-5" {
-  name                = local.pip_name
-  location            = azurerm_resource_group.res-0.location
-  resource_group_name = azurerm_resource_group.res-0.name
-  allocation_method   = "Static"
-  domain_name_label   = local.pip_name
-  sku                 = "Standard"
-  tags                = local.common_tags
-  depends_on = [
-    azurerm_resource_group.res-0
-  ]
-}
-
 resource "azurerm_network_security_group" "res-4" {
   name                = local.nsg_name
   location            = azurerm_resource_group.res-0.location
