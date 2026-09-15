@@ -311,18 +311,37 @@ to allow traffic coming from the &ldquo;untrusted&rdquo; zone, internet traffic 
 <ol>
 <li><strong>PR merged successfully</strong> in hub-panorama-terraform repo</li>
 <li><strong>Terraform pipeline completed</strong> without errors</li>
-<li><strong>In Panorama UI</strong> (requires VPN):
+<li><p><strong>Log into Panorama UI</strong></p>
 
 <ul>
-<li>Navigate to Objects &gt; Addresses</li>
-<li>Your address object <code>labs-goldenpath-&lt;yourname&gt;</code> exists with correct CIDR</li>
-<li>Navigate to Objects &gt; Address Groups</li>
-<li><code>G_trusted</code> group contains your address object</li>
-<li>Navigate to Policies &gt; Security</li>
-<li>Your security policy <code>labs-goldenpath-&lt;yourname&gt;</code> exists</li>
-<li>Policy shows: Source Zone = untrusted, Dest Zone = trusted, Action = allow</li>
-</ul></li>
+<li>Open the login page at <a href="https://panorama-sbox-uks-0.sandbox.platform.hmcts.net">https://panorama-sbox-uks-0.sandbox.platform.hmcts.net</a> or <a href="https://panorama-sandbox.hmcts.net">https://panorama-sandbox.hmcts.net</a></li>
+<li>Click on <code>Use Single Sign-On</code> at the bottom of the login page</li>
+</ul>
+<p><details>
+     <summary>Panorama login</summary>
+     <img alt="Address object" src="./images/panorama-login.png" width="auto">
+   </details></p></li>
 </ol>
+
+<ul>
+<li><p>On the Single Sign-On (SSO) page, click <code>Continue</code> (Do not enter any account details in the <code>SSO Account</code> field)</p>
+<p><details>
+     <summary>Panorama SSO</summary>
+     <img alt="Address object" src="./images/panorama-sso.png" width="auto">
+   </details></p></li>
+<li><p>You should then be automatically logged into the Panorama UI</p>
+
+<ol>
+<li><strong>In Panorama UI</strong> (requires VPN):</li>
+</ol></li>
+<li><p>Navigate to Objects &gt; Addresses</p></li>
+<li><p>Your address object <code>labs-goldenpath-&lt;yourname&gt;</code> exists with correct CIDR</p></li>
+<li><p>Navigate to Objects &gt; Address Groups</p></li>
+<li><p><code>G_trusted</code> group contains your address object</p></li>
+<li><p>Navigate to Policies &gt; Security</p></li>
+<li><p>Your security policy <code>labs-goldenpath-&lt;yourname&gt;</code> exists</p></li>
+<li><p>Policy shows: Source Zone = untrusted, Dest Zone = trusted, Action = allow</p></li>
+</ul>
 <p><strong>Verification in Panorama:</strong></p>
 
 <ol>
