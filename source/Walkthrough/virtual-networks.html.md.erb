@@ -210,7 +210,24 @@ Example below
 
 1. **PR merged successfully** in hub-panorama-terraform repo
 2. **Terraform pipeline completed** without errors
-3. **In Panorama UI** (requires VPN):
+3. **Log into Panorama UI**
+   - Open the login page at [https://panorama-sbox-uks-0.sandbox.platform.hmcts.net](https://panorama-sbox-uks-0.sandbox.platform.hmcts.net) or [https://panorama-sandbox.hmcts.net](https://panorama-sandbox.hmcts.net)
+   - Click on `Use Single Sign-On` at the bottom of the login page
+
+       <details>
+         <summary>Panorama login</summary>
+         <img alt="Address object" src="./images/panorama-login.png" width="auto">
+       </details>
+
+   - On the Single Sign-On (SSO) page, click `Continue` (Do not enter any account details in the `SSO Account` field)
+
+       <details>
+         <summary>Panorama SSO</summary>
+         <img alt="Address object" src="./images/panorama-sso.png" width="auto">
+       </details>
+
+   - You should then be automatically logged into the Panorama UI
+4. **In Panorama UI** (requires VPN):
    - Navigate to Objects > Addresses
    - Your address object `labs-goldenpath-<yourname>` exists with correct CIDR
    - Navigate to Objects > Address Groups
