@@ -23,9 +23,6 @@ resource "azurerm_virtual_network" "res-8" {
   resource_group_name = azurerm_resource_group.res-0.name
   address_space       = [var.address_space]
   tags                = local.common_tags
-  depends_on = [
-    azurerm_resource_group.res-0,
-  ]
 }
 
 resource "azurerm_subnet" "res-9" {
@@ -35,9 +32,6 @@ resource "azurerm_subnet" "res-9" {
   address_prefixes     = [var.address_space]
   resource_group_name  = azurerm_resource_group.res-0.name
   virtual_network_name = azurerm_virtual_network.res-8.name
-  depends_on = [
-    azurerm_virtual_network.res-8
-  ]
 }
 
 resource "azurerm_route_table" "res-6" {
@@ -45,17 +39,12 @@ resource "azurerm_route_table" "res-6" {
   location            = azurerm_resource_group.res-0.location
   resource_group_name = azurerm_resource_group.res-0.name
   tags                = local.common_tags
-  depends_on = [
-    azurerm_resource_group.res-0
-  ]
 }
 
 resource "azurerm_subnet_route_table_association" "res-11" {
   route_table_id = azurerm_route_table.res-6.id
   subnet_id      = azurerm_subnet.res-9.id
   depends_on = [
-    azurerm_route_table.res-6,
-    azurerm_subnet.res-9,
     azurerm_subnet_network_security_group_association.res-10
   ]
 }
@@ -65,9 +54,6 @@ resource "azurerm_network_security_group" "res-4" {
   location            = azurerm_resource_group.res-0.location
   resource_group_name = azurerm_resource_group.res-0.name
   tags                = local.common_tags
-  depends_on = [
-    azurerm_resource_group.res-0
-  ]
 }
 
 resource "azurerm_network_interface" "res-3" {
@@ -80,17 +66,11 @@ resource "azurerm_network_interface" "res-3" {
     private_ip_address_allocation = "Dynamic"
     subnet_id                     = azurerm_subnet.res-9.id
   }
-  depends_on = [
-    azurerm_subnet.res-9
-  ]
 }
 
 resource "azurerm_subnet_network_security_group_association" "res-10" {
   network_security_group_id = azurerm_network_security_group.res-4.id
   subnet_id                 = azurerm_subnet.res-9.id
-  depends_on = [
-    azurerm_network_security_group.res-4
-  ]
 }
 
 resource "azurerm_route" "res-7" {
@@ -100,9 +80,6 @@ resource "azurerm_route" "res-7" {
   next_hop_type          = "VirtualAppliance"
   resource_group_name    = azurerm_resource_group.res-0.name
   route_table_name       = azurerm_route_table.res-6.name
-  depends_on = [
-    azurerm_route_table.res-6
-  ]
 }
 
 resource "random_password" "res-20" {
@@ -167,9 +144,6 @@ resource "azurerm_linux_virtual_machine" "res-2" {
     sku       = "apache-ubuntu-24-04"
     version   = "1.0.6"
   }
-  depends_on = [
-    azurerm_network_interface.res-3
-  ]
 }
 
 /*
@@ -196,10 +170,6 @@ module "vnet_peer_hub_sbox" {
     azurerm.initiator = azurerm.labs
     azurerm.target    = azurerm.hub-sbox
   }
-
-  depends_on = [
-    azurerm_virtual_network.res-8
-  ]
 }
 
 /*
