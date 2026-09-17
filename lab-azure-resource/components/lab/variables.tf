@@ -54,3 +54,9 @@ variable "subscription_id" {
 variable "tenant_id" {
   default = "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
 }
+
+ variable "deploy" {
+   description = "Controls whether resources are deployed"
+   type        = bool
+   default     = true
+ }
