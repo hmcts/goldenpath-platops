@@ -13,11 +13,6 @@ If not already done so, navigate to your lab repository created in the [Prereq](
 Once you check in, following the Prereq steps, your pipeline will trigger and terraform will `init` and `plan` your code. You should now be able to review your plan from the Azure Devops pipeline.
 > ❗️ Make it a habit to always review your terraform plan. Even if you think you know what's in it already
 
-### Using Manual automation
-You can execute the terraform command below from your local PC if you opted out of not following the setup steps. I strongly advice to take the automation route though as it introduces you to the Git repo and Azure DevOps pipelines and some other important concepts in Platform Operations.
-
-📣 **NOTE:** You many run into permission issues using the manual process and would need to resolve it with your team members.
-
 ### Step 1
 
 Run the following commands to confirm you are in the right repository (if running from your local machine)
@@ -29,27 +24,10 @@ az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
 ```
 
-### Step 2a
-Run the following command terraform commands (if running from your local machine)
-
-```
-terraform init
-terraform plan
-terraform apply or terraform apply -auto-approve
-```
-
-Select `yes` to build resource as terraform will prompt you to approve you action if the `-auto-approve` is not provided
-Log into the Azure portal and navigate to the `DTS-SHAREDSERVICES-SBOX` subscription, you should now have a similar resources created. Search for your resource group name
-
-<details>
-  <summary>Terraform resources</summary>
-  <img alt="Address object" src="./images/labs-resources.png" width="auto">
-</details>
-
 <br>
 
-### Step 2b
-If using the pipeline, a commit will `init` and `plan` your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI.
+### Step 2a
+Deploy using the pipeline, a commit will `init` and `plan` your project. You can also optionally manually trigger a `plan` or `apply` from the devops UI.
 In a production environment, its advised not to manually `apply` on master. `apply` should happen on merge of your PR.
 
 
@@ -59,6 +37,11 @@ Verify the following exist
 - VNet has two peerings, one to the HMCTS Hub VNet and the other to the Core Management VNet
 - A route table to one default route to `10.10.200.36`
 
+<details>
+  <summary>Terraform resources</summary>
+  <img alt="Address object" src="./images/labs-resources.png" width="auto">
+</details>
+
 <%= warning_text('If your Terraform fails with peering errors, it is likely that a previous lab exercise has not been cleared down correctly. <br>
 Log into Azure and search for the <code>core-infra-vnet-mgmt</code> virtual network, then review its existing peerings. <br>
 Search the peerings for <code>labs</code>. If any lab peerings show as disconnected, remove them. <br>
@@ -67,7 +50,7 @@ Reference the variables.tf file for a full list of usable CIDR ranges, seen at t
 
 <br>
 
-### Step 2c
+### Step 2b
 Now that the pipeline has run and created your resources, we need to check that the web application running on your virtual machine is listening on port 80. To do this we must log into the machine using a bastion.
 
 - Navigate to https://myaccess.microsoft.com/, click the organisations button, then My Access > Access Packages. Self grant access to 'Non-Production Bastion Server Access'.
