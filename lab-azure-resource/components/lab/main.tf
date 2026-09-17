@@ -1,4 +1,3 @@
-
 locals {
   prefix      = formatdate("YYMMDDhhmm", timestamp())
   rg_name     = "labs-rg-${local.prefix}"
@@ -115,7 +114,7 @@ resource "azurerm_key_vault_secret" "vm-password" {
   count        = var.deploy ? 1 : 0
   key_vault_id = azurerm_key_vault.res-12[0].id
   name         = "vm-password"
-  value        = random_password.res-20.result
+  value        = random_password.res-20[0].result
 }
 
 data "azuread_group" "kv_access" {
@@ -134,9 +133,9 @@ resource "azurerm_role_assignment" "kv-access" {
 resource "azurerm_linux_virtual_machine" "res-2" {
   count                           = var.deploy ? 1 : 0
   admin_username                  = "labsAdmin2023"
-  admin_password                  = random_password.res-20.result
+  admin_password                  = random_password.res-20[0].result
   location                        = azurerm_resource_group.res-0[0].location
-  name                            = local.vnet_name[0]
+  name                            = local.vnet_name
   network_interface_ids           = [azurerm_network_interface.res-3[0].id]
   resource_group_name             = azurerm_resource_group.res-0[0].name
   size                            = "Standard_D2ds_v5"
