@@ -135,30 +135,15 @@
 <blockquote>
 <p>❗️ Make it a habit to always review your terraform plan. Even if you think you know what&rsquo;s in it already</p>
 </blockquote>
-<h3 id="using-manual-automation">Using Manual automation</h3>
-<p>You can execute the terraform command below from your local PC if you opted out of not following the setup steps. I strongly advice to take the automation route though as it introduces you to the Git repo and Azure DevOps pipelines and some other important concepts in Platform Operations.</p>
-<p>📣 <strong>NOTE:</strong> You many run into permission issues using the manual process and would need to resolve it with your team members.</p>
 <h3 id="step-1">Step 1</h3>
 <p>Run the following commands to confirm you are in the right repository (if running from your local machine)</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>az login
 az account show
 az account set --subscription DTS-SHAREDSERVICES-SBOX
 az account show
-</code></pre></div><h3 id="step-2a">Step 2a</h3>
-<p>Run the following command terraform commands (if running from your local machine)</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
-terraform plan
-terraform apply or terraform apply -auto-approve
-</code></pre></div><p>Select <code>yes</code> to build resource as terraform will prompt you to approve you action if the <code>-auto-approve</code> is not provided
-Log into the Azure portal and navigate to the <code>DTS-SHAREDSERVICES-SBOX</code> subscription, you should now have a similar resources created. Search for your resource group name</p>
-
-<details>
-  <summary>Terraform resources</summary>
-  <img alt="Address object" src="./images/labs-resources.png" width="auto">
-</details>
-<p><br></p>
-<h3 id="step-2b">Step 2b</h3>
-<p>If using the pipeline, a commit will <code>init</code> and <code>plan</code> your project. You can also optionally manually trigger a <code>plan</code> or <code>apply</code> from the devops UI.
+</code></pre></div><p><br></p>
+<h3 id="step-2a">Step 2a</h3>
+<p>Deploy using the pipeline, a commit will <code>init</code> and <code>plan</code> your project. You can also optionally manually trigger a <code>plan</code> or <code>apply</code> from the devops UI.
 In a production environment, its advised not to manually <code>apply</code> on master. <code>apply</code> should happen on merge of your PR.</p>
 <p>Verify the following exist</p>
 
@@ -167,6 +152,11 @@ In a production environment, its advised not to manually <code>apply</code> on m
 <li>VNet has two peerings, one to the HMCTS Hub VNet and the other to the Core Management VNet</li>
 <li>A route table to one default route to <code>10.10.200.36</code></li>
 </ul>
+
+<details>
+  <summary>Terraform resources</summary>
+  <img alt="Address object" src="./images/labs-resources.png" width="auto">
+</details>
 
 <div class="govuk-warning-text">
   <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -180,7 +170,7 @@ Reference the variables.tf file for a full list of usable CIDR ranges, seen at t
   </strong>
 </div>
 <p><br></p>
-<h3 id="step-2c">Step 2c</h3>
+<h3 id="step-2b">Step 2b</h3>
 <p>Now that the pipeline has run and created your resources, we need to check that the web application running on your virtual machine is listening on port 80. To do this we must log into the machine using a bastion.</p>
 
 <ul>
