@@ -137,13 +137,17 @@ To get your resources provisioned,  follow the steps below
           └── variables.tf
   ```
 
-📣 **NOTE:** You may want to modify prefix in your resource names defined in [main.tf](https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3).
-This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed [Azure limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules), example:
+📣 **NOTE:** You may want to modify "name" in your resource names defined in [main.tf](https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3).
+Also, choose an available CIDR range in the [variables.tf](https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/variables.tf#L5)
+to update the address_space variable, to view which ranges are available go to [Azure IPAM](https://ipam.hmcts.net/discover/vnet).
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed [Azure limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules), examples:
 
 ```yaml
-  prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"
+  name        = "<yourname>"
 ```
-
+```yaml
+  address_space = "<your-cidr-range>"
+```
 
 - Commit and push to your repo. This will trigger a devops pipeline run.
 
