@@ -1,6 +1,6 @@
 locals {
   name        = ""
-  prefix      = "${local.name}${formatdate("YYMMDDhhmm", timestamp())}"
+  prefix      = "${local.name}-${formatdate("YYMMDDhhmm", timestamp())}"
   kv_prefix   = formatdate("YYMMDDhhmm", timestamp())
   rg_name     = "labs-rg-${local.prefix}"
   vnet_name   = "labs-vnet-${local.prefix}"
