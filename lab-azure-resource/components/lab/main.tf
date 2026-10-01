@@ -1,5 +1,7 @@
 locals {
-  prefix      = formatdate("YYMMDDhhmm", timestamp())
+  name        = ""
+  prefix      = "${local.name}${formatdate("YYMMDDhhmm", timestamp())}"
+  kv_prefix   = formatdate("YYMMDDhhmm", timestamp())
   rg_name     = "labs-rg-${local.prefix}"
   vnet_name   = "labs-vnet-${local.prefix}"
   pip_name    = "labs-ip-${local.prefix}"
@@ -7,7 +9,7 @@ locals {
   nic_name    = "labs-nic-${local.prefix}"
   rt_name     = "labs-rt-${local.prefix}"
   vm_name     = "labs-vm-${local.prefix}"
-  kv_name     = format("labs-kv-%s", local.prefix)
+  kv_name     = "labs-kv-${local.kv_prefix}"
   common_tags = module.ctags.common_tags
 }
 
@@ -100,7 +102,7 @@ resource "random_password" "res-20" {
 resource "azurerm_key_vault" "res-12" {
   count                      = var.deploy ? 1 : 0
   location                   = azurerm_resource_group.res-0[0].location
-  name                       = substr(local.kv_name, 0, 20)
+  name                       = local.kv_name
   resource_group_name        = azurerm_resource_group.res-0[0].name
   sku_name                   = "standard"
   tenant_id                  = var.tenant_id
@@ -108,6 +110,13 @@ resource "azurerm_key_vault" "res-12" {
   soft_delete_retention_days = 7
   purge_protection_enabled   = true
   tags                       = local.common_tags
+
+  lifecycle {
+    precondition {
+      condition     = length(local.kv_name) >= 3 && length(local.kv_name) <= 24
+      error_message = "Key Vault name '${local.kv_name}' must be between 3 and 24 characters."
+    }
+  }
 }
 
 resource "azurerm_key_vault_secret" "vm-password" {
