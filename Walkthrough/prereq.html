@@ -237,9 +237,12 @@ Your repo folder on your local machine should now look like this</li>
           ├── main.tf
           ├── provider.tf
           └── variables.tf
-</code></pre></div><p>📣 <strong>NOTE:</strong> You may want to modify prefix in your resource names defined in <a href="https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3">main.tf</a>.
-This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed <a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules">Azure limits</a>, example:</p>
-<div class="highlight"><pre class="highlight yaml" tabindex="0"><code>  <span class="s">prefix      = "xy-${formatdate("YYMMDDhhmm", timestamp())}"</span>
+</code></pre></div><p>📣 <strong>NOTE:</strong> You may want to modify &ldquo;name&rdquo; in your resource names defined in <a href="https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/main.tf#L3">main.tf</a>.
+This will make them easier to identify, especially when there are multiple people doing labs at the same time. Ensure that the total resource name lengths do not exceed <a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules">Azure limits</a>.
+Also, choose an available CIDR range in the <a href="https://github.com/hmcts/goldenpath-platops/blob/master/lab-azure-resource/components/lab/variables.tf#L5">variables.tf</a>
+to update the address_space variable, to view which ranges are available go to <a href="https://ipam.hmcts.net/discover/vnet">Azure IPAM</a>, examples:</p>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code>  <span class="s">name        = "&lt;yourname&gt;"</span>
+</code></pre></div><div class="highlight"><pre class="highlight yaml" tabindex="0"><code>  <span class="s">address_space = "&lt;your-cidr-range&gt;"</span>
 </code></pre></div>
 <ul>
 <li>Commit and push to your repo. This will trigger a devops pipeline run.</li>
